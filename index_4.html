@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2027학년도 주요대학 입시설명회 영상 모음</title>
+<style>
+  :root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --surface-2:#eef1f8;
+    --border:#e1e6f0;
+    --text:#1a2233;
+    --text-soft:#5b6472;
+    --text-faint:#8892a0;
+    --accent:#1e4b8f;
+    --accent-2:#2f6fd1;
+    --accent-soft:#eaf1fc;
+    --shadow:0 1px 2px rgba(20,30,60,.06), 0 4px 14px rgba(20,30,60,.06);
+    --warn-bg:#fff4e5;
+    --warn-text:#8a5a00;
+    --warn-border:#f3d9a8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f1420;
+      --surface:#171e2c;
+      --surface-2:#1d2536;
+      --border:#2b3448;
+      --text:#e9edf5;
+      --text-soft:#a3adc2;
+      --text-faint:#727c92;
+      --accent:#7aa8ec;
+      --accent-2:#5590e8;
+      --accent-soft:#1b2942;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.35);
+      --warn-bg:#332405;
+      --warn-text:#f0c574;
+      --warn-border:#5a4315;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1420;
+    --surface:#171e2c;
+    --surface-2:#1d2536;
+    --border:#2b3448;
+    --text:#e9edf5;
+    --text-soft:#a3adc2;
+    --text-faint:#727c92;
+    --accent:#7aa8ec;
+    --accent-2:#5590e8;
+    --accent-soft:#1b2942;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.35);
+    --warn-bg:#332405;
+    --warn-text:#f0c574;
+    --warn-border:#5a4315;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
+
+  header.hero{
+    padding:40px 0 24px;
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg, var(--accent-soft), var(--bg) 85%);
+  }
+  header.hero .eyebrow{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--accent-2);
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  header.hero h1{
+    font-size:clamp(22px,4vw,32px);
+    margin:0 0 10px;
+    letter-spacing:-.01em;
+  }
+  header.hero p.lead{
+    margin:0 0 4px;
+    color:var(--text-soft);
+    font-size:15px;
+    max-width:720px;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 18px;
+    margin-top:16px;
+    font-size:13px;
+    color:var(--text-faint);
+  }
+  .meta-row b{color:var(--text);font-weight:700;}
+
+  .notice{
+    margin-top:18px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent-2);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    box-shadow:var(--shadow);
+  }
+  .notice strong{color:var(--text);}
+
+  .controls{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+    padding:14px 0;
+  }
+  .search-box{
+    position:relative;
+    display:flex;
+    align-items:center;
+  }
+  .search-box input{
+    width:100%;
+    padding:12px 42px 12px 16px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+    font-size:15px;
+    outline:none;
+  }
+  .search-box input:focus{border-color:var(--accent-2);}
+  .search-box .clear-btn{
+    position:absolute;
+    right:8px;
+    border:none;
+    background:transparent;
+    color:var(--text-faint);
+    font-size:18px;
+    cursor:pointer;
+    padding:6px 8px;
+    display:none;
+    border-radius:6px;
+  }
+  .search-box .clear-btn:hover{background:var(--surface-2);}
+
+  .chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:12px;
+  }
+  .chip{
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text-soft);
+    border-radius:999px;
+    padding:5px 12px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    line-height:1.4;
+  }
+  .chip:hover{border-color:var(--accent-2);color:var(--accent-2);}
+
+  #result-info{
+    margin:14px 0 4px;
+    font-size:13px;
+    color:var(--text-faint);
+    min-height:18px;
+  }
+  #result-info b{color:var(--accent-2);}
+
+  main{padding:8px 0 60px;}
+
+  .group-divider{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:34px 0 14px;
+  }
+  .group-divider:first-of-type{margin-top:18px;}
+  .group-divider .letter{
+    width:34px;height:34px;
+    border-radius:9px;
+    background:var(--accent);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:15px;
+    flex:none;
+  }
+  .group-divider .line{flex:1;height:1px;background:var(--border);}
+
+  .uni-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:18px 18px 8px;
+    margin-bottom:16px;
+    scroll-margin-top:150px;
+  }
+  .uni-card .uni-head{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:12px;
+  }
+  .uni-card h2{
+    font-size:17px;
+    margin:0;
+    letter-spacing:-.01em;
+  }
+  .uni-card .eng-tag{
+    font-size:13px;
+    color:var(--text-faint);
+    font-weight:500;
+  }
+  .uni-card .count-badge{
+    margin-left:auto;
+    font-size:12px;
+    color:var(--text-faint);
+    background:var(--surface-2);
+    border-radius:999px;
+    padding:3px 10px;
+    font-weight:600;
+  }
+  .uni-card .src-note{
+    font-size:12px;
+    color:var(--text-faint);
+    margin:-6px 0 12px;
+  }
+
+  .video-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:12px;
+    padding-bottom:14px;
+  }
+  .video-item{
+    display:block;
+    text-decoration:none;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--surface-2);
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .video-item:hover{border-color:var(--accent-2); transform:translateY(-2px);}
+  .thumb-wrap{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    background:linear-gradient(135deg, var(--accent-soft), var(--surface-2));
+    overflow:hidden;
+  }
+  .thumb-wrap img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .thumb-wrap .play{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .thumb-wrap .play svg{
+    width:38px;height:38px;
+    filter:drop-shadow(0 1px 4px rgba(0,0,0,.5));
+    opacity:.92;
+  }
+  .video-title{
+    padding:9px 11px 11px;
+    font-size:13px;
+    color:var(--text);
+    font-weight:500;
+    line-height:1.4;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    min-height:3.9em;
+  }
+  .video-flag{
+    display:inline-block;
+    margin:0 11px 10px;
+    font-size:11px;
+    color:var(--warn-text);
+    background:var(--warn-bg);
+    border:1px solid var(--warn-border);
+    border-radius:6px;
+    padding:2px 7px;
+  }
+
+  .no-result{
+    text-align:center;
+    color:var(--text-faint);
+    padding:60px 20px;
+    font-size:14px;
+  }
+
+  footer{
+    border-top:1px solid var(--border);
+    padding:26px 0 50px;
+    color:var(--text-faint);
+    font-size:13px;
+  }
+  footer .box{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px 18px;
+    margin-bottom:16px;
+    color:var(--text-soft);
+  }
+  footer .box b{color:var(--text);}
+  footer .box ul{margin:8px 0 0;padding-left:18px;}
+  footer .box li{margin:3px 0;}
+
+  #top-btn{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    width:44px;height:44px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--accent-2);
+    box-shadow:var(--shadow);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+    z-index:30;
+    font-size:18px;
+  }
+  #top-btn.show{opacity:1;pointer-events:auto;}
+
+  @media (max-width:520px){
+    .video-list{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
+    header.hero{padding:30px 0 18px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">2027학년도 대입 · 진로진학 자료</div>
+    <h1>주요대학 입시설명회 &amp; 입학안내 영상 모음</h1>
+    <p class="lead">2027학년도 대입을 준비하는 수험생·학부모·선생님들을 위해, 여러 대학의 공식 유튜브 채널에 올라온 입시설명회·입학안내 영상을 대학 이름 가나다순으로 정리했습니다.</p>
+    <div class="meta-row">
+      <span>정리·제작 <b>황부장</b></span>
+      <span>수록 대학·전형그룹 <b id="uniCount">-</b>개</span>
+      <span>수록 영상 <b id="videoCount">-</b>개</span>
+      <span>최종 정리일 <b>2026-08-26</b></span>
+    </div>
+    <div class="notice">
+      반톡에 공유하시거나 학생 상담 자료로 편하게 활용하세요. 다만 <strong>수시 지원을 고려 중인 대학이라면 입학요강 · 과년도(전년도) 입시결과 · 가이드북 · 입학안내영상은 기본적으로 꼼꼼히 확인</strong>하는 것이 좋습니다. 학생들에게도 "공부 안 되면 쉬는 셈 치고 이거나 보라"고 한 번씩 권해보세요.
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="대학 이름 또는 전형(예: 논술, 학생부종합, 면접)으로 검색..." autocomplete="off">
+      <button class="clear-btn" id="clearBtn" aria-label="지우기">✕</button>
+    </div>
+    <div class="chips" id="chipNav"></div>
+    <div id="result-info"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div id="listArea"></div>
+  <div class="no-result" id="noResult" style="display:none;">검색 결과가 없습니다. 다른 대학 이름이나 전형명으로 검색해 보세요.</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="box">
+      <b>정리 순서 안내</b>
+      <div style="margin-top:6px;">대학은 표기된 한글 이름(카이스트, 포스텍, 켄텍 등 영문 약칭 대학 포함) 기준 가나다순으로 정렬했습니다. 캠퍼스가 별도로 구분된 경우(건국대/건국대 글로컬, 동국대/동국대 WISE, 한양대 에리카 등)는 각각 독립된 항목으로 표기했습니다.</div>
+      <ul>
+        <li>이공계특성화대학 항목은 개별 대학이 아니라 대전진로진학TV에서 KAIST·GIST·UNIST·DGIST·KENTECH·POSTECH를 묶어 설명한 영상입니다.</li>
+        <li>영상 설명·모집요강 링크 등 세부 내용은 각 영상 안내란 또는 대학 입학처 홈페이지를 참고하세요.</li>
+      </ul>
+    </div>
+    <div>정리·제작: 황부장 · 2027학년도 입시설명회 영상 모음 · 최종 정리 2026-08-26</div>
+  </div>
+</footer>
+
+<button id="top-btn" aria-label="맨 위로">↑</button>
+
+<script>
+// ---------------------------------------------------------------
+// 데이터: 대학별 2027학년도 입시설명회 / 입학안내 영상 (가나다순 정렬)
+// group: 초성 그룹 표시용
+// ---------------------------------------------------------------
+const DATA = [
+{group:"ㄱ", name:"가천대", videos:[
+  {id:"UOa3zz0mMYM", title:"2027학년도 가천대학교 학생부종합전형 안내"},
+  {id:"NYIXTaHxMEY", title:"2027학년도 학생부교과 중심으로 소개하는 가천대 입시안내"},
+  {id:"GQVYKWDSLAo", title:"2027학년도 가천대학교 논술고사 입시안내"},
+  {id:"UihhlVvXB_c", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"가톨릭대", videos:[
+  {id:"lHjYMmhtHlw", title:"2027학년도 가톨릭대학교 수시모집 안내(수어 삽입)"},
+  {id:"DmUusgjotBU", title:"2026년 가톨릭대학교 진로진학가이드영상(2027학년도 대입전형안내)"},
+  {id:"kj1LZk0g5cg", title:"가톨릭대학교 2027학년도 수시모집 전형 및 학생부종합전형 평가 안내"},
+  {id:"9XPZfkzFFUI", title:"[경기진협] 26-27학년도 수시모집요강 비교", flag:"원본 표기 오류 추정(가톨릭대로 판단)"}
+]},
+{group:"ㄱ", name:"강남대", videos:[
+  {id:"5oO_h9I12kE", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"강원대", videos:[
+  {id:"4lyGK20cZ88", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"건국대", videos:[
+  {id:"hCgGkJWjGtM", title:"[입시KU:티비] 2026학년도 학생부위주전형 입시결과와 2027학년도 지원전략(KU지역균형)"},
+  {id:"a0EmVMBCzAo", title:"[입시KU:티비] 수시모집요강 읽어주는 건대 1편: 주요변경사항(2027학년도)"},
+  {id:"VW159GXuRUM", title:"[입시KU:티비] 수시모집요강 읽어주는 건대 2편: 학생부위주(2027학년도)"},
+  {id:"gjVvvnWohpA", title:"[입시KU:티비] 수시모집요강 읽어주는 건대 3편: 논술 및 실기/실적전형(2027학년도)"},
+  {id:"pG8JYwzdi1A", title:"[입시KU:티비] 꼬리에 꼬리를 무는 학생부위주전형에 대한 궁금증 1편(2027학년도)"},
+  {id:"dpFyKHY08es", title:"[입시KU:티비] 꼬리에 꼬리를 무는 학생부위주전형에 대한 궁금증 2편(2027학년도)"},
+  {id:"gFJeoGtylRw", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"건국대", eng:"글로컬캠퍼스", videos:[
+  {id:"IsVWTLip-QQ", title:"2027학년도 건국대학교 글로컬캠퍼스 입학전형안내(수시, 정시)"}
+]},
+{group:"ㄱ", name:"경기대", videos:[
+  {id:"YMdY0geZtBM", title:"2027학년도 수시모집 학생부종합 전형안내"},
+  {id:"mIXBmyAvVuE", title:"2027학년도 수시모집 학생부교과 전형안내"},
+  {id:"Vzl7RiVUeIE", title:"2027학년도 수시모집 논술우수자 전형안내(수어ver.)"},
+  {id:"7pfBRciJnc8", title:"2027학년도 정시모집 전형안내"},
+  {id:"n3j8qFEBZIk", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"경북대", videos:[
+  {id:"PvamLqG830U", title:"2027학년도 수시모집 경북대학교 입학전형 안내"}
+]},
+{group:"ㄱ", name:"경희대", videos:[
+  {id:"AgBSKEXf2U4", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"고려대", videos:[
+  {id:"LTYjR94Bm5s", title:"2027학년도 고려대학교 입학전형 및 2026학년도 전형결과 안내"},
+  {id:"R7PJDGxGHYg", title:"2027학년도 고려대학교 학생부종합전형 안내"},
+  {id:"WIQvmR61WFg", title:"2027학년도 고려대학교 논술, 특기자전형 안내"},
+  {id:"IQ25ngFz7Xw", title:"2027학년도 고려대학교 학생부교과전형 안내"},
+  {id:"NZD0iso_v-k", title:"2027학년도 고려대학교 정시전형 안내"},
+  {id:"gAIfzKBp6Bo", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"고려대", eng:"세종캠퍼스", videos:[
+  {id:"0xkpX4qSRRM", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"광운대", videos:[
+  {id:"jRsDUmh9p2k", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄱ", name:"광주대", videos:[
+  {id:"SA0WRKbxLZs", title:"2027학년도 광주대학교 신입생 수시모집 안내"}
+]},
+{group:"ㄱ", name:"교대 비교", eng:"서울·경인·공주·청주", videos:[
+  {id:"Gok_3OR9BNc", title:"[경기진협] 26-27학년도 수시모집요강 비교", flag:"서울·경인·공주·청주 교대 비교 영상(원본 표기 오류 추정)"}
+]},
+{group:"ㄱ", name:"국립공주대", videos:[
+  {id:"kMxHzRi2zdo", title:"2027학년도 대학입학전형 요약 안내 | 국립공주대학교"},
+  {id:"dhVfTIpQznw", title:"2027학년도 학생부교과전형 안내 | 국립공주대학교"},
+  {id:"LSox9hnEnSs", title:"2027학년도 학생부종합전형 안내 | 국립공주대학교"}
+]},
+{group:"ㄱ", name:"국립군산대", videos:[
+  {id:"ZCTxpYGKBjA", title:"국립군산대학교 2027학년도 입학전형"}
+]},
+{group:"ㄱ", name:"국립목포대", videos:[
+  {id:"ODteHHvxrug", title:"2027학년도 국립목포대학교 온라인 입학설명회"}
+]},
+{group:"ㄱ", name:"국립순천대", videos:[
+  {id:"83QHPkrh1Q4", title:"[국립순천대학교] 2027학년도 대입전형 안내영상"}
+]},
+{group:"ㄱ", name:"국민대", videos:[
+  {id:"dambdSc1g0o", title:"2027학년도 입학전형안내영상"},
+  {id:"PLaAANALWUY", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄷ", name:"단국대", videos:[
+  {id:"_4SgdoMSGNQ", title:"2027학년도 단국대학교 신입학전형 안내ㅣ수시모집"},
+  {id:"j5IUCmb9hHI", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄷ", name:"대구가톨릭대", videos:[
+  {id:"xbTT5zXpexY", title:"2027학년도 대구가톨릭대학교 수시모집 입학 전형 안내"}
+]},
+{group:"ㄷ", name:"대구대", videos:[
+  {id:"BlkblcaDBRo", title:"2027학년도 수시 전형안내!"}
+]},
+{group:"ㄷ", name:"대진대", videos:[
+  {id:"DZZEcVjpzdc", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄷ", name:"덕성여대", videos:[
+  {id:"1CW9pU7uS_M", title:"2027학년도 수시모집 안내"},
+  {id:"0zNxRKSWv1E", title:"2027학년도 학생부종합전형 서류평가 안내"},
+  {id:"597wXNGsBfc", title:"2027학년도 학생부종합전형 면접평가 안내"},
+  {id:"j6dy9_CYtZk", title:"2027학년도 학생부교과전형 안내"},
+  {id:"NlNi9lwlH7A", title:"2027학년도 논술전형 안내"},
+  {id:"NBwOC7TDR5o", title:"2026학년도 신입학 전형결과 안내"},
+  {id:"iwhKascXHEg", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄷ", name:"동국대", videos:[
+  {id:"q2fyeJHOSRc", title:"[Dream on-air 1회차] 2027학년도 동국대학교 전형안내 및 재학생 합격사례 발표"},
+  {id:"axljFc0kOiw", title:"[동대문을 열어라 Live] 2026학년도 전형결과 안내"},
+  {id:"Ad3iI8CS4F0", title:"2026학년도 학생부위주전형결과- 2027학년도 입학전형 주요사항"},
+  {id:"0Mf_JN27EHM", title:"학생부위주전형 준비의 출발점- 2027학년도 입학전형 주요사항"},
+  {id:"RXSlKuLTG_A", title:"논술전형 - 2027학년도 입학전형 주요사항"},
+  {id:"0H450JAUOkE", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㄷ", name:"동국대", eng:"WISE캠퍼스", videos:[
+  {id:"YrkKBEHkZlA", title:"동국대학교 WISE캠퍼스 2027학년도 수시모집 전형 안내"}
+]},
+{group:"ㄷ", name:"동덕여대", videos:[
+  {id:"U2l5kq-V0Eo", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅁ", name:"명지대", videos:[
+  {id:"tN1mBL6oGl0", title:"[명지대학교] 2027학년도 명지대학교 수시모집 안내"},
+  {id:"urF_605RUkc", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅁ", name:"목포해양대", videos:[
+  {id:"7elfF6oRtL0", title:"2027학년도 국립목포해양대학교 수시모집 안내"}
+]},
+{group:"ㅂ", name:"배재대", videos:[
+  {id:"tSVpfFtCWzc", title:"2027학년도 배재대학교 입학 전형 안내"}
+]},
+{group:"ㅂ", name:"백석대", videos:[
+  {id:"RZmo09d4oCg", title:"백석대학교 2027학년도 수시 전형안내"}
+]},
+{group:"ㅂ", name:"부산대", videos:[
+  {id:"xH0PiC2PEh4", title:"부산대학교 2027학년도 대학입학전형 안내"}
+]},
+{group:"ㅅ", name:"삼육대", videos:[
+  {id:"7962ZDJcU_0", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"상명대", videos:[
+  {id:"Lk5ancavzZ8", title:"[경기진협] 26-27학년도 수시모집요강 비교", flag:"캠퍼스 미기재(서울/천안 확인 필요)"}
+]},
+{group:"ㅅ", name:"상명대", eng:"천안캠퍼스", videos:[
+  {id:"dxs9MeSs3Mc", title:"2027학년도 상명대학교 천안캠퍼스 입학전형안내"}
+]},
+{group:"ㅅ", name:"상지대", videos:[
+  {id:"6AgjKR59d0Y", title:"[상지대학교] 2027학년도 수시모집 입학전형 안내"}
+]},
+{group:"ㅅ", name:"서강대", videos:[
+  {id:"MVqTWMg4n0o", title:"2027학년도 서강대학교 입학전형 설명회 THE Beginning"},
+  {id:"V7hKax2espA", title:"2027학년도 서강대학교 입학전형 설명회 - 논술전형 심화안내"},
+  {id:"aJhTa1gCmjY", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"서경대", videos:[
+  {id:"0ZIrhmF1AKI", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"서울과기대", videos:[
+  {id:"6nflKY_mhec", title:"2027학년도 서울과학기술대학교 대학입시설명회 | 2026년 8월 22일(토) 14시"},
+  {id:"qVA3xmtF-ZM", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"서울교대", videos:[
+  {id:"UuFBMnjff8c", title:"서울교육대학교 2027학년도 대입전형 안내"}
+]},
+{group:"ㅅ", name:"서울대", videos:[
+  {id:"yxxD0u64fO4", title:"2027학년도 서울대학교 대학 신입학생 입학전형 안내"},
+  {id:"2qm9npN8jxM", title:"2027학년도 서울대학교 학생부종합전형 서류평가 안내"},
+  {id:"qO4OfBKfqTM", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"서울시립대", videos:[
+  {id:"KBnc10Ru5yE", title:"[서울시립대 수시모집] UOS 함께하는 전형안내"},
+  {id:"i0tu9jWk9Y4", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"서울여대", videos:[
+  {id:"Gu53N7of5Pg", title:"2027학년도 서울여자대학교 수시모집 온라인 입학설명회"},
+  {id:"yh8hNgniOvo", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"서원대", videos:[
+  {id:"rjxbUnnOPS4", title:"[서원대학교] 2027 수시모집 전형안내(Q&A)"}
+]},
+{group:"ㅅ", name:"선문대", videos:[
+  {id:"LU00tjmY-uU", title:"2027학년도 선문대 수시모집 입학설명회"}
+]},
+{group:"ㅅ", name:"성결대", videos:[
+  {id:"MYDyznTtRqI", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"성균관대", videos:[
+  {id:"1Yq9MpgVeO8", title:"[경기진협] 26-27학년도 수시모집요강 비교", flag:"원본 표기 오류 추정(성균관대로 판단)"}
+]},
+{group:"ㅅ", name:"성신여대", videos:[
+  {id:"O_mAdNnWJWw", title:"2027학년도 학생부종합전형 안내 영상"},
+  {id:"FlfEfiECHds", title:"2027학년도 논술우수자전형 안내 영상"},
+  {id:"fTmwJJHlK6Q", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"세종대", videos:[
+  {id:"LTxIzvurVgs", title:"2027학년도 수시/정시모집 전형 안내"},
+  {id:"DYPkur2hgDo", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"수원대", videos:[
+  {id:"BzXnZtymK4s", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"숙명여대", videos:[
+  {id:"eU9f6QKosRM", title:"[숙명여대] 2027학년도 학생부종합전형 안내"},
+  {id:"ZpRU1-UPg9s", title:"[숙명여대] 2027학년도 학생부교과전형 안내"},
+  {id:"TfnTIvwXI9U", title:"[숙명여대] 2027학년도 논술전형 안내"},
+  {id:"HyXKJQIiHMM", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅅ", name:"순천향대", videos:[
+  {id:"lT3BD1aZ_EM", title:"[수시/정시] 2027학년도 순천향대학교 대입전형 안내"}
+]},
+{group:"ㅅ", name:"숭실대", videos:[
+  {id:"x1mgxEbYpIg", title:"[지원전략설명회(서울) 1부] 숭실대학교 소개 및 2026학년도 신입학 입시결과 안내"},
+  {id:"_P1BQpLy9jk", title:"[지원전략설명회(서울) 2부] 2027 수시 전형의 이해와 대비"},
+  {id:"mj-XqL3_flQ", title:"[경기진협] 26-27학년도 수시모집요강 비교", flag:"원본 표기 오류 추정(숭실대로 판단)"}
+]},
+{group:"ㅅ", name:"신한대", videos:[
+  {id:"TarcbG1SgJQ", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"아주대", videos:[
+  {id:"iVFCqhZAXhY", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"안양대", videos:[
+  {id:"D5mmcIu8MBs", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"연세대", videos:[
+  {id:"MnU9JcSSt7c", title:"2027학년도 연세대학교 지역거점설명회(서울)"},
+  {id:"fgE_2Nus6WY", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"연세대", eng:"미래캠퍼스", videos:[
+  {id:"U_MusArB-Ag", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"용인대", videos:[
+  {id:"KTKOkAKvW6A", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"우송대", videos:[
+  {id:"fLBpKR7cc0s", title:"2027학년도 우송대학교 수시 및 정시 모집 전형 안내"}
+]},
+{group:"ㅇ", name:"을지대", videos:[
+  {id:"y5kC8_9kKKU", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"이공계특성화대학", eng:"대전진로진학TV", videos:[
+  {id:"RzM0xu9olTY", title:"2026 수시모집 온라인 설명회_이공계 특성화 대학(KAIST·GIST·UNIST·DGIST·KENTECH·POSTECH)"}
+]},
+{group:"ㅇ", name:"이화여대", videos:[
+  {id:"tD3KJS6N3y4", title:"2027학년도 이화 입학콘서트(학생·학부모 입학설명회_전형 안내)"},
+  {id:"I09-M_CFrTM", title:"2027학년도 이화여자대학교 입학전형 안내"},
+  {id:"E7jHkcKUU5M", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"인제대", videos:[
+  {id:"DQdenURT78s", title:"2027학년도 인제대학교 입학설명회"},
+  {id:"iwp-G0-JMvk", title:"2027학년도 인제대학교 면접안내"}
+]},
+{group:"ㅇ", name:"인천대", videos:[
+  {id:"jGASVfthiig", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅇ", name:"인하대", videos:[
+  {id:"MNAhV96Vvzw", title:"[인하대학교] 2027학년도 인하대학교 대입전형 안내"},
+  {id:"O476OX-Q4uw", title:"[인하대학교] 2027학년도 인하대학교 학생부종합전형 서류평가 안내"},
+  {id:"iBBQ7OWejvk", title:"[인하대학교] 2027학년도 인하대학교 학생부종합전형 면접평가 안내"},
+  {id:"1s6hWZ2afoc", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅈ", name:"전북대", videos:[
+  {id:"caiE8qVFrAY", title:"입학사정관과 함께하는 '전북대학교 2027학년도 수시 대학입학전형'"}
+]},
+{group:"ㅈ", name:"전주대", videos:[
+  {id:"rP6wkgUyJLw", title:"전주대학교 2027학년도 수시모집 전형 안내"}
+]},
+{group:"ㅈ", name:"조선대", videos:[
+  {id:"1e4wVFx3PC0", title:"2027학년도 조선대학교 입학전형 안내"}
+]},
+{group:"ㅈ", name:"중앙대", videos:[
+  {id:"1UP1ZJBmIow", title:"[경기진협] 26-27학년도 수시모집요강 비교", flag:"원본 표기 오류 추정(중앙대로 판단)"}
+]},
+{group:"ㅊ", name:"차의과학대", videos:[
+  {id:"Oi2ZSROUGAI", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅊ", name:"충남대", videos:[
+  {id:"0mtAm07m7bs", title:"2027학년도 충남대학교 대학입학전형 온라인 설명회"},
+  {id:"tusMAAqU5-8", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅊ", name:"충북대", videos:[
+  {id:"IvXyk7mLTXo", title:"2027학년도 충북대학교 수시 대학입학전형 안내 영상"},
+  {id:"dfjpVgtHXLs", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅋ", name:"카이스트", eng:"KAIST", videos:[
+  {id:"jn_th8AsomI", title:"2027학년도 KAIST 학사과정 입학전형 안내"},
+  {id:"QDl-HrrpCRk", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅋ", name:"켄텍", eng:"KENTECH · 면접", videos:[
+  {id:"C0Gl0GeWuHY", title:"2026 창의성 면접 안내"}
+]},
+{group:"ㅍ", name:"평택대", videos:[
+  {id:"tP2O9zp0cq8", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅍ", name:"포스텍", eng:"POSTECH", videos:[
+  {id:"RU0NXSlxySc", title:"2027학년도 POSTECH 입학설명회 PART1 - 대학소개"},
+  {id:"xpBiJy9z0tM", title:"2027학년도 POSTECH 입학설명회 PART2 - 전형소개 & QnA"}
+]},
+{group:"ㅎ", name:"한경대", videos:[
+  {id:"L_eaojhkiXs", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"한국공학대", videos:[
+  {id:"jWX9WfWQKSA", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"한국교통대", videos:[
+  {id:"JXw-yDn6acQ", title:"2027학년도 국립한국교통대학교 수시전형 안내"}
+]},
+{group:"ㅎ", name:"한국기술교대", videos:[
+  {id:"LIkvAZEQ_ok", title:"한국기술교육대학교 입학전형이 궁금하다면? | 2027학년도 대학입학전형 안내"}
+]},
+{group:"ㅎ", name:"한국외대", videos:[
+  {id:"ahTEyY_KCvk", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"한동대", videos:[
+  {id:"beGhdfZsVVs", title:"2027학년도 한동대학교 수시 전형"},
+  {id:"WZyYGpTrJAE", title:"이모지 면접관과 함께하는 한동대학교 모의면접 시뮬레이션 1"}
+]},
+{group:"ㅎ", name:"한성대", videos:[
+  {id:"zTmxtH4OZlU", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"한세대", videos:[
+  {id:"VGkLkx52_1E", title:"[한세대학교] 입학사정관인터뷰 2027년 학생부종합전형"},
+  {id:"j-Oc9yD4RWs", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"한신대", videos:[
+  {id:"1EQ9CZmDo88", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"한양대", videos:[
+  {id:"vAuJrYHoynA", title:"[경기진협] 26-27학년도 수시모집요강 비교", flag:"캠퍼스 미기재(서울캠퍼스로 추정)"}
+]},
+{group:"ㅎ", name:"한양대", eng:"ERICA캠퍼스", videos:[
+  {id:"24C78vHYelU", title:"2027학년도 한양대학교 ERICA 학생부종합전형 안내영상"},
+  {id:"QlMk28TODtw", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"항공대", videos:[
+  {id:"J0MjCvGpEg4", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"협성대", videos:[
+  {id:"YM-y1JJcGo4", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]},
+{group:"ㅎ", name:"호서대", videos:[
+  {id:"qBBJpSUkqf4", title:"[호서대학교] 2027학년도 수시 주요 변경사항 안내"},
+  {id:"xPCvkTaVToU", title:"[호서대학교] 입학사정관과 함께 알아보는 학생부종합전형 서류평가 우수사례"}
+]},
+{group:"ㅎ", name:"홍익대", videos:[
+  {id:"MXsu8X4FAXY", title:"2027학년도 홍익대학교 인문·자연계열 전형 안내"},
+  {id:"Ily3lAnGBXQ", title:"2027학년도 홍익대학교 미술계열 전형 안내(공연예술 포함)"},
+  {id:"Bp48sWSUcsY", title:"2027학년도 홍익대학교 미술활동보고서 작성안내(지원자)"},
+  {id:"qV1GqvxAY-8", title:"[경기진협] 26-27학년도 수시모집요강 비교"}
+]}
+];
+
+// ---------------------------------------------------------------
+// 렌더링
+// ---------------------------------------------------------------
+const listArea = document.getElementById('listArea');
+const noResult = document.getElementById('noResult');
+const resultInfo = document.getElementById('result-info');
+const chipNav = document.getElementById('chipNav');
+
+function thumbUrl(id){ return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; }
+function videoUrl(id){ return `https://youtu.be/${id}`; }
+
+function esc(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function playIconSvg(){
+  return '<svg viewBox="0 0 68 48" class="play"><path d="M66.5 7.7c-.8-2.9-2.8-4.9-5.6-5.7C56 .7 34 .7 34 .7s-22 0-26.9 1.3C4.3 2.8 2.3 4.8 1.5 7.7 .2 12.6 .2 24 .2 24s0 11.4 1.3 16.3c.8 2.9 2.8 4.9 5.6 5.7C12 47.3 34 47.3 34 47.3s22 0 26.9-1.3c2.8-.8 4.8-2.8 5.6-5.7C67.8 35.4 67.8 24 67.8 24s0-11.4-1.3-16.3z" fill="rgba(0,0,0,.55)"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>';
+}
+
+function renderCard(item, idx){
+  const engTag = item.eng ? `<span class="eng-tag">${esc(item.eng)}</span>` : '';
+  const videos = item.videos.map(v => `
+    <a class="video-item" href="${videoUrl(v.id)}" target="_blank" rel="noopener" data-title="${esc(v.title.toLowerCase())}">
+      <div class="thumb-wrap">
+        <img src="${thumbUrl(v.id)}" alt="${esc(v.title)}" loading="lazy" onerror="this.style.display='none'">
+        <div class="play">${playIconSvg()}</div>
+      </div>
+      <div class="video-title">${esc(v.title)}</div>
+      ${v.flag ? `<span class="video-flag">⚠ ${esc(v.flag)}</span>` : ''}
+    </a>
+  `).join('');
+
+  return `
+    <div class="uni-card" id="card-${idx}" data-name="${esc(item.name.toLowerCase())}" data-group="${item.group}">
+      <div class="uni-head">
+        <h2>${esc(item.name)}</h2>
+        ${engTag}
+        <span class="count-badge">영상 ${item.videos.length}개</span>
+      </div>
+      <div class="video-list">${videos}</div>
+    </div>
+  `;
+}
+
+function render(){
+  let html = '';
+  let lastGroup = null;
+  DATA.forEach((item, idx) => {
+    if(item.group !== lastGroup){
+      html += `<div class="group-divider" id="group-${item.group}"><div class="letter">${item.group}</div><div class="line"></div></div>`;
+      lastGroup = item.group;
+    }
+    html += renderCard(item, idx);
+  });
+  listArea.innerHTML = html;
+
+  document.getElementById('uniCount').textContent = DATA.length;
+  document.getElementById('videoCount').textContent = DATA.reduce((sum, it) => sum + it.videos.length, 0);
+
+  // 초성 네비게이션 chip 생성
+  const groups = [...new Set(DATA.map(d => d.group))];
+  chipNav.innerHTML = groups.map(g => `<a class="chip" href="#group-${g}">${g}</a>`).join('');
+}
+
+function applyFilter(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  document.getElementById('clearBtn').style.display = q ? 'block' : 'none';
+
+  const cards = listArea.querySelectorAll('.uni-card');
+  let visibleCount = 0;
+  let lastVisibleGroup = null;
+
+  cards.forEach(card => {
+    const name = card.dataset.name;
+    const items = card.querySelectorAll('.video-item');
+    let nameMatch = !q || name.includes(q);
+    let anyVideoMatch = false;
+
+    items.forEach(v => {
+      const match = !q || v.dataset.title.includes(q);
+      if(match) anyVideoMatch = true;
+      v.style.display = (q && !nameMatch && !match) ? 'none' : '';
+    });
+
+    const show = !q || nameMatch || anyVideoMatch;
+    card.style.display = show ? '' : 'none';
+    if(show) visibleCount++;
+  });
+
+  // 그룹 구분선: 보이는 카드가 하나도 없는 구간은 숨김
+  const dividers = listArea.querySelectorAll('.group-divider');
+  dividers.forEach(div => {
+    let next = div.nextElementSibling;
+    let hasVisible = false;
+    while(next && !next.classList.contains('group-divider')){
+      if(next.style.display !== 'none') hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    div.style.display = hasVisible ? '' : 'none';
+  });
+
+  noResult.style.display = visibleCount === 0 ? 'block' : 'none';
+  resultInfo.innerHTML = q ? `<b>${visibleCount}</b>개 대학이 검색되었습니다.` : '';
+}
+
+document.getElementById('searchInput').addEventListener('input', applyFilter);
+document.getElementById('clearBtn').addEventListener('click', () => {
+  document.getElementById('searchInput').value = '';
+  applyFilter();
+  document.getElementById('searchInput').focus();
+});
+
+// 맨 위로 버튼
+const topBtn = document.getElementById('top-btn');
+window.addEventListener('scroll', () => {
+  topBtn.classList.toggle('show', window.scrollY > 600);
+});
+topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+render();
+</script>
+</body>
+</html>
