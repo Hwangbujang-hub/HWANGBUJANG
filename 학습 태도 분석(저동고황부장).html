@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습태도 및 행동 검사 - [저동고 황부장]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        /* 1. 기본 스타일 및 레이아웃 설정 (1280x720 고정) */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            padding: 50px 60px;
+            border-radius: 12px;
+        }
+
+        /* 배경 데코레이션 */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(79, 70, 229, 0) 100%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        header { position: relative; z-index: 1; margin-bottom: 30px; border-left: 6px solid #4f46e5; padding-left: 20px; }
+        h1 { font-size: 34px; color: #1e293b; letter-spacing: -1px; }
+        .intro-text { font-size: 16px; color: #64748b; margin-top: 5px; }
+
+        /* 문항 인터페이스 */
+        #survey-section { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1; }
+        .progress-wrapper { margin-bottom: 40px; }
+        .progress-bar-bg { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: #4f46e5; width: 5%; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .progress-info { display: flex; justify-content: space-between; margin-top: 10px; color: #94a3b8; font-size: 14px; font-weight: 500; }
+
+        .question-box { min-height: 120px; text-align: center; margin-bottom: 40px; }
+        .question-text { font-size: 30px; font-weight: 700; color: #1e293b; word-break: keep-all; line-height: 1.4; }
+
+        .options-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+        .option-card {
+            background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px;
+            padding: 25px 15px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative;
+        }
+        .option-card:hover { border-color: #4f46e5; background: #f5f3ff; transform: translateY(-3px); }
+        .option-card.selected { border-color: #4f46e5; background: #4f46e5; color: #ffffff; }
+        .option-card .point { display: block; font-size: 24px; font-family: 'Poppins', sans-serif; font-weight: 600; margin-bottom: 5px; }
+        .option-card .label { font-size: 14px; font-weight: 500; }
+
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 50px; }
+        button { padding: 14px 32px; font-size: 16px; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s; }
+        .btn-prev { background: #f1f5f9; color: #64748b; }
+        .btn-prev:hover:not(:disabled) { background: #e2e8f0; }
+        .btn-prev:disabled { opacity: 0; cursor: default; }
+        .btn-next { background: #4f46e5; color: #ffffff; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-next:hover { background: #4338ca; transform: translateY(-2px); }
+
+        /* 결과 리포트 섹션 */
+        #result-section { display: none; flex-grow: 1; z-index: 1; }
+        .result-grid { display: grid; grid-template-columns: 1fr 1.8fr; gap: 30px; height: 100%; max-height: 520px; }
+        
+        .score-card { background: #f8fafc; border-radius: 20px; padding: 30px; text-align: center; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; }
+        .total-score-val { font-size: 70px; font-family: 'Poppins', sans-serif; font-weight: 600; color: #4f46e5; line-height: 1; }
+        .score-unit { font-size: 20px; color: #64748b; margin-left: 5px; }
+        .tier-badge { display: inline-block; padding: 8px 20px; border-radius: 50px; background: #4f46e5; color: #fff; font-weight: 700; margin-top: 15px; font-size: 16px; }
+
+        .sub-scores { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px;}
+        .sub-score-item { flex: 1; background: #fff; padding: 15px 5px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .sub-val { font-size: 20px; font-weight: 700; color: #1e293b; }
+        .sub-name { font-size: 12px; color: #94a3b8; margin-top: 5px; }
+
+        .advice-area { overflow-y: auto; padding-right: 15px; display: flex; flex-direction: column; gap: 15px; }
+        .advice-area::-webkit-scrollbar { width: 6px; }
+        .advice-area::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .advice-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        /* 영역별 어드바이스 카드 */
+        .coaching-card {
+            background: #ffffff;
+            border-left: 5px solid #cbd5e1;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-top: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .coaching-card h3 { font-size: 17px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+        .coaching-card p { font-size: 15px; color: #475569; line-height: 1.6; word-break: keep-all; }
+        
+        /* 등급별 테마 색상 */
+        .status-high { border-left-color: #10b981; }
+        .status-high h3 { color: #047857; }
+        .status-mid { border-left-color: #f59e0b; }
+        .status-mid h3 { color: #b45309; }
+        .status-low { border-left-color: #ef4444; }
+        .status-low h3 { color: #b91c1c; }
+        
+        .status-badge { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: #f1f5f9; color: #64748b; font-weight: 600; }
+        .status-high .status-badge { background: #d1fae5; color: #047857; }
+        .status-mid .status-badge { background: #fef3c7; color: #b45309; }
+        .status-low .status-badge { background: #fee2e2; color: #b91c1c; }
+
+        .signature { position: absolute; bottom: 30px; right: 40px; font-size: 16px; font-weight: 700; color: #cbd5e1; letter-spacing: 2px; z-index: 1; }
+    </style>
+</head>
+<body>
+
+<div class="slide-container">
+    <header>
+        <h1 id="header-title">학습태도 및 행동 정밀 진단</h1>
+        <p class="intro-text" id="header-subtitle">성공적인 입시의 시작은 객관적인 자기 성찰에서 시작됩니다.</p>
+    </header>
+
+    <div id="survey-section">
+        <div class="progress-wrapper">
+            <div class="progress-info">
+                <span>진행률</span>
+                <span id="progress-text">1 / 20</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text" id="question-text"></div>
+        </div>
+
+        <div class="options-grid" id="options-container"></div>
+
+        <div class="nav-btns">
+            <button class="btn-prev" id="btn-prev" onclick="prevQuestion()" disabled>이전 단계</button>
+            <button class="btn-next" id="btn-next" onclick="nextQuestion()">다음 단계</button>
+        </div>
+    </div>
+
+    <div id="result-section">
+        <div class="result-grid">
+            <div class="score-card">
+                <p style="color: #64748b; font-weight: 500; margin-bottom: 10px;">종합 평가 점수</p>
+                <div>
+                    <span class="total-score-val" id="total-score">0</span>
+                    <span class="score-unit">/ <span id="total-max">100</span></span>
+                </div>
+                <div class="tier-badge" id="feedback-badge">분석 중...</div>
+
+                <div class="sub-scores">
+                    <div class="sub-score-item">
+                        <div class="sub-val" id="score-efficacy">0</div>
+                        <div class="sub-name">자기효능감</div>
+                    </div>
+                    <div class="sub-score-item">
+                        <div class="sub-val" id="score-strategy">0</div>
+                        <div class="sub-name">학습전략</div>
+                    </div>
+                    <div class="sub-score-item">
+                        <div class="sub-val" id="score-attitude">0</div>
+                        <div class="sub-name">학습태도</div>
+                    </div>
+                </div>
+                <button class="btn-restart" style="background: #e2e8f0; color: #475569; margin-top: 30px;" onclick="location.reload()">다시 검사하기</button>
+            </div>
+
+            <div class="advice-area" id="ai-advice">
+                </div>
+        </div>
+    </div>
+
+    <div class="signature">[저동고 황부장]</div>
+</div>
+
+<script>
+    // 엑셀 데이터를 기반으로 한 문항 세부 설정
+    const questions = [
+        { id: 1, text: "나는 수업에 필요한 학습자료 준비물을 잘 챙긴다.", category: "태도", weight: 1.17 },
+        { id: 2, text: "책을 읽기 전에 목차와 학습목표, 주제를 반드시 확인한다.", category: "전략", weight: 1.00 },
+        { id: 3, text: "집, 학교, 독서실 중에서 공부가 잘 되는 나만의 공부 장소가 있다.", category: "태도", weight: 0.93 },
+        { id: 4, text: "토론 모둠활동은 내가 공부하는 데 도움이 안 된다.", category: "효능감", weight: 0.98, reverse: true },
+        { id: 5, text: "중요한 사항을 정리하는 것이 어려울 때가 있다.", category: "전략", weight: 1.07, reverse: true },
+        { id: 6, text: "모르는 것을 질문하면 이해할 때까지 설명해주시는 편이다.", category: "효능감", weight: 1.04 },
+        { id: 7, text: "때때로 나는 학교에 가는 것이 즐겁지 않을 때가 있다.", category: "태도", weight: 1.11, reverse: true },
+        { id: 8, text: "우리 학교에는 나를 인정해 주는 선생님이 계신다.", category: "효능감", weight: 1.06 },
+        { id: 9, text: "과목별로 필기와 정리가 잘 되는 나만의 노트가 있다.", category: "전략", weight: 1.06 },
+        { id: 10, text: "나는 수업 중 배운 내용을 암기하려고 노력한다.", category: "효능감", weight: 0.98 },
+        { id: 11, text: "선생님은 내가 수업 시간에 다른 생각을 하는지 금방 아신다.", category: "효능감", weight: 1.10 },
+        { id: 12, text: "어려운 단어가 나오면 사전이나 용어집을 찾아본다.", category: "전략", weight: 0.97 },
+        { id: 13, text: "나는 공부하고 싶은 마음이 들어도 시작하기가 어렵다.", category: "태도", weight: 1.00, reverse: true },
+        { id: 14, text: "수업 내용과 관련하여 선생님께 질문을 잘 하는 편이다.", category: "전략", weight: 1.00 },
+        { id: 15, text: "문제가 어려우면 풀릴 때까지 여러 번 시도한다.", category: "태도", weight: 1.00 },
+        { id: 16, text: "배운 내용을 다른 사람에게 설명하는 것을 좋아한다.", category: "효능감", weight: 1.00 },
+        { id: 17, text: "내 진로 선택 시 주위 사람들의 의견이 영향력을 많이 주었다.", category: "태도", weight: 1.00, reverse: true },
+        { id: 18, text: "시험 후 문제지를 분석해서 틀린 이유를 살펴본다.", category: "전략", weight: 1.00 },
+        { id: 19, text: "나는 컴퓨터나 스마트폰 사용 시간이 많다고 생각한다.", category: "태도", weight: 1.13, reverse: true },
+        { id: 20, text: "공부를 잘 하면 내가 하고 싶은 일을 이룰 수 있을 것이다.", category: "효능감", weight: 0.59 }
+    ];
+
+    const options = [
+        { val: 1, label: "전혀 안 그렇다" },
+        { val: 2, label: "그렇지 않음" },
+        { val: 3, label: "보통임" },
+        { val: 4, label: "약간 그러함" },
+        { val: 5, label: "매우 그러함" }
+    ];
+
+    let currentIndex = 0;
+    let answers = new Array(questions.length).fill(null);
+    let maxSubScores = { "자기효능감": 0, "학습전략": 0, "학습태도": 0 };
+
+    function init() {
+        // 평가지표 명칭 매핑
+        questions.forEach(q => {
+            let cat = q.category === "태도" ? "학습태도" : (q.category === "전략" ? "학습전략" : "자기효능감");
+            maxSubScores[cat] += (q.weight * 5);
+        });
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const q = questions[currentIndex];
+        document.getElementById('question-text').innerText = `Q${currentIndex + 1}. ${q.text}`;
+        document.getElementById('progress-text').innerText = `${currentIndex + 1} / ${questions.length}`;
+        document.getElementById('progress-bar-fill').style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+        document.getElementById('btn-prev').disabled = (currentIndex === 0);
+        document.getElementById('btn-next').innerText = (currentIndex === questions.length - 1) ? "분석 결과 보기" : "다음 단계";
+
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        
+        options.forEach(opt => {
+            const card = document.createElement('div');
+            card.className = `option-card ${answers[currentIndex] === opt.val ? 'selected' : ''}`;
+            card.onclick = () => selectOption(opt.val);
+            card.innerHTML = `
+                <span class="point">${opt.val}</span>
+                <span class="label">${opt.label}</span>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function selectOption(val) {
+        answers[currentIndex] = val;
+        renderQuestion();
+        if (currentIndex < questions.length - 1) {
+            setTimeout(nextQuestion, 250);
+        }
+    }
+
+    function nextQuestion() {
+        if (answers[currentIndex] === null) {
+            alert("문항을 선택해 주세요.");
+            return;
+        }
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            renderQuestion();
+        }
+    }
+
+    function showResult() {
+        let scores = { "자기효능감": 0, "학습전략": 0, "학습태도": 0 };
+        questions.forEach((q, i) => {
+            let val = answers[i];
+            if (q.reverse) val = 6 - val;
+            let cat = q.category === "태도" ? "학습태도" : (q.category === "전략" ? "학습전략" : "자기효능감");
+            scores[cat] += (val * q.weight);
+        });
+
+        const totalMax = Object.values(maxSubScores).reduce((a, b) => a + b, 0);
+        const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+
+        document.getElementById('survey-section').style.display = 'none';
+        document.getElementById('result-section').style.display = 'block';
+        document.getElementById('header-title').innerText = "학습 행동 진단 리포트";
+        document.getElementById('header-subtitle').innerText = "선생님이 분석한 너의 학습 상태와 영역별 맞춤 솔루션이야.";
+
+        document.getElementById('total-score').innerText = totalScore.toFixed(1);
+        document.getElementById('total-max').innerText = totalMax.toFixed(1);
+        document.getElementById('score-efficacy').innerText = scores["자기효능감"].toFixed(1);
+        document.getElementById('score-strategy').innerText = scores["학습전략"].toFixed(1);
+        document.getElementById('score-attitude').innerText = scores["학습태도"].toFixed(1);
+
+        let tier = ""; let color = "";
+        if (totalScore >= 85) { tier = "맑음 (우수)"; color = "#10b981"; }
+        else if (totalScore >= 70) { tier = "내일은 맑음 (안정)"; color = "#f59e0b"; }
+        else { tier = "흐림 (보완 필요)"; color = "#ef4444"; }
+        
+        const badge = document.getElementById('feedback-badge');
+        badge.innerText = tier;
+        badge.style.background = color;
+
+        // 영역별 성취율(%) 계산 및 코멘트 생성
+        const categories = ["자기효능감", "학습전략", "학습태도"];
+        let adviceHtml = "";
+
+        categories.forEach(cat => {
+            let percent = (scores[cat] / maxSubScores[cat]) * 100;
+            adviceHtml += generateCategoryAdvice(cat, percent);
+        });
+
+        document.getElementById('ai-advice').innerHTML = adviceHtml;
+    }
+
+    function generateCategoryAdvice(category, percent) {
+        let statusClass = "";
+        let statusLabel = "";
+        let adviceText = "";
+
+        // 점수대에 따른 코칭 분기 (85% 이상 / 65%~84% / 65% 미만)
+        if (percent >= 85) {
+            statusClass = "status-high";
+            statusLabel = "매우 우수";
+            
+            if (category === "자기효능감") {
+                adviceText = "스스로에 대한 믿음이 훌륭합니다! 지금처럼 '나는 해낼 수 있다'는 긍정적인 마음가짐을 계속 유지하세요. 어려운 문제를 만났을 때 이를 스트레스가 아닌 내 실력을 올릴 기회로 여기는 지금의 훌륭한 태도가 성공적인 입시 결과로 이어질 것입니다.";
+            } else if (category === "학습전략") {
+                adviceText = "자신만의 효율적인 공부법을 이미 잘 확립했습니다. 아는 것과 모르는 것을 명확히 구분하는 '메타인지'가 아주 잘 작동하고 있군요. 지금처럼 목차를 먼저 파악하고 배운 내용을 스스로 정리하는 방법을 뚝심 있게 밀고 나가세요.";
+            } else if (category === "학습태도") {
+                adviceText = "학습 환경 통제력과 집중력이 대단히 뛰어납니다. 스마트폰이나 게임 등의 유혹을 이겨내고 계획한 바를 성실히 실천하는 강력한 의지력을 지녔습니다. 지금 몸에 밴 이 훌륭한 습관이 장기 레이스인 수험 생활의 가장 든든한 무기가 될 것입니다.";
+            }
+        } else if (percent >= 65) {
+            statusClass = "status-mid";
+            statusLabel = "안정/보완 필요";
+
+            if (category === "자기효능감") {
+                adviceText = "자신감이 적절히 형성되어 있지만, 가끔 어려운 과제 앞에서 흔들리거나 불안해할 때가 있군요. 처음부터 너무 높은 목표를 잡기보다는, 오늘 당장 이룰 수 있는 작은 목표들을 세워보세요. 하나씩 달성하며 얻는 '작은 성공 경험'이 단단한 자신감을 만들어 줄 것입니다.";
+            } else if (category === "학습전략") {
+                adviceText = "공부에 들이는 시간과 노력은 좋지만, 효율성을 조금 더 끌어올릴 수 있습니다. 무작정 본문을 읽고 외우기보다는, 공부 시작 전 단원의 목차를 보며 오늘 배울 내용의 '지도'를 머릿속에 먼저 그려보세요. 그리고 질문하는 것을 두려워하지 마세요.";
+            } else if (category === "학습태도") {
+                adviceText = "전반적인 태도는 양호하지만, 때때로 집중력이 흐트러지거나 미루고 싶은 유혹에 빠지기도 하는군요. 의지력에만 기대지 말고, 공부 시작 전 방해요소(스마트폰 등)를 내 시선 밖으로 완전히 치워버리는 '환경 통제' 규칙을 하나 세워보는 것을 추천합니다.";
+            }
+        } else {
+            statusClass = "status-low";
+            statusLabel = "집중 개선";
+
+            if (category === "자기효능감") {
+                adviceText = "결과에 대한 불안감이나 타인과의 비교가 집중을 방해하고 있을 수 있습니다. 남과 비교하는 것을 멈추고 '어제의 나'와만 비교하세요. 완벽하지 않아도 괜찮습니다. 틀린 문제는 내가 성장할 부분을 알려주는 고마운 힌트라고 생각하는 연습부터 해볼까요?";
+            } else if (category === "학습전략") {
+                adviceText = "오래 앉아 있어도 머리에 남는 것이 적다고 느껴질 수 있습니다. 눈으로만 보는 수동적인 공부(입력)를 잠시 멈추세요. 책을 덮고 방금 읽은 핵심 키워드 몇 개라도 백지에 적어보는 연습(출력)을 하루 10분만 시도해보세요. 공부의 질이 완전히 달라집니다.";
+            } else if (category === "학습태도") {
+                adviceText = "공부를 시작하기까지 마음먹기가 너무 힘들죠? 거창한 계획을 버리고 '딱 5분만 책상에 앉아서 책 펴놓기'부터 시작해 보세요. 우리 뇌는 일단 무언가를 시작하면 계속하고 싶어지는 '작업 흥분 효과'가 있답니다. 스스로를 탓하기보다 일단 시작하는 것이 핵심입니다.";
+            }
+        }
+
+        return `
+            <div class="coaching-card ${statusClass}">
+                <h3>${category} <span class="status-badge">${statusLabel}</span></h3>
+                <p>${adviceText}</p>
+            </div>
+        `;
+    }
+
+    init();
+</script>
+</body>
+</html>
