@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>2027학년도 수시모집 대학별 면접일정</title>
+<style>
+  body { font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; margin: 24px; color:#222; background:#f5f6f8; }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  .note { font-size: 12px; color:#666; margin-bottom: 10px; line-height:1.6; }
+  .legend { font-size: 12px; color:#555; margin-bottom: 16px; line-height:1.9; }
+  .legend .swatch { display:inline-block; width:11px; height:11px; border-radius:2px; margin:0 4px 0 12px; vertical-align:middle; border:1px solid rgba(0,0,0,0.15); }
+  .legend .swatch:first-child { margin-left:0; }
+  table { border-collapse: collapse; width: 100%; table-layout: fixed; background:#fff; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  th, td { border: 1px solid #b9c2cc; padding: 7px 8px; text-align: center; font-size: 12.5px; vertical-align: middle; }
+  thead tr:nth-child(1) th { background:#2f5597; color:#fff; font-weight:700; }
+  thead tr:nth-child(2) th { background:#8faadc; color:#fff; font-weight:700; }
+  td.date { font-weight: 700; color:#333; white-space: nowrap; }
+  td.cell { text-align:left; }
+  td.cell div.entry { margin:3px 0; }
+  td.cell div.sub { margin-bottom:5px; }
+  col.date-col { width: 12%; }
+
+  /* 대학명 */
+  .uname { font-weight:700; color:#1a1a1a; }
+  /* 전형명 (모집전형 안내, 괄호 안 내용) */
+  .jeon { color:#2c5aa0; font-weight:500; }
+  /* 모집단위 */
+  .sub { color:#767676; font-size:11px; line-height:1.6; display:block; }
+  /* 의약학계열 등 강조 모집단위 */
+  .dept { color:#c0392b; font-weight:700; }
+
+  .new, .added2, .added3, .added4, .added5, .added6 { background: none; }
+
+  /* 검색 패널 */
+  .search-panel { background:#fff; border:1px solid #b9c2cc; border-radius:8px; padding:14px 16px; margin-bottom:16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .search-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .search-row label { font-size:13px; font-weight:700; color:#2f5597; white-space:nowrap; }
+  #uni-search { flex:1; min-width:200px; padding:8px 10px; font-size:14px; border:1px solid #b9c2cc; border-radius:6px; outline:none; }
+  #uni-search:focus { border-color:#2f5597; box-shadow:0 0 0 2px rgba(47,85,151,0.15); }
+  #search-clear { padding:8px 12px; font-size:13px; border:1px solid #b9c2cc; border-radius:6px; background:#f0f2f5; cursor:pointer; color:#444; }
+  #search-clear:hover { background:#e4e7eb; }
+  #search-btn { padding:8px 14px; font-size:13px; font-weight:700; border:1px solid #2f5597; border-radius:6px; background:#2f5597; cursor:pointer; color:#fff; }
+  #search-btn:hover { background:#254578; }
+  #search-results { margin-top:10px; font-size:12.5px; }
+  #search-results .hint { color:#888; }
+  .result-uni-block { margin-bottom:10px; }
+  .result-uni-block .runame { font-weight:700; color:#1a1a1a; font-size:13.5px; margin-bottom:4px; }
+  .result-uni-block .rlist { list-style:none; padding-left:0; margin:0; }
+  .result-uni-block .rlist li { padding:4px 6px; border-bottom:1px dashed #e2e5e9; display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; }
+  .result-uni-block .rlist li:last-child { border-bottom:none; }
+  .rdate { font-weight:700; color:#2f5597; min-width:110px; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px; }
+  .rdate:hover { color:#c0392b; }
+  .row-jump-highlight { outline:3px solid #f5a623; outline-offset:-2px; animation: jumpFlash 2s ease-out; }
+  @keyframes jumpFlash { 0% { box-shadow: inset 0 0 0 999px rgba(255,224,64,0.55); } 100% { box-shadow: inset 0 0 0 999px rgba(255,224,64,0); } }
+  .rcol { color:#767676; background:#eef1f5; border-radius:4px; padding:1px 6px; font-size:11px; }
+  .rjeon { color:#2c5aa0; }
+  .rsub { color:#767676; font-size:11px; flex-basis:100%; }
+  .no-match { color:#c0392b; }
+  .table-highlight { outline:2px solid #f5a623; outline-offset:-2px; background:#fff6e0 !important; }
+
+  /* 맨 위로 이동 버튼 */
+  #to-top-btn {
+    position: fixed; right: 24px; bottom: 24px; width: 46px; height: 46px;
+    border-radius: 50%; background:#2f5597; color:#fff; border:none;
+    font-size: 20px; line-height:1; cursor:pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    display: none; align-items:center; justify-content:center; z-index: 999;
+    transition: background 0.2s, transform 0.15s;
+  }
+  #to-top-btn:hover { background:#254578; transform: translateY(-2px); }
+  #to-top-btn.show { display: flex; }
+</style>
+</head>
+<body>
+<a href="suksi2027.html" style="display:inline-block;color:#2f6fed;font-size:12.5px;text-decoration:none;margin-bottom:8px;">← 수시전형 검색기로</a>
+<h1>2027학년도 수시모집 대학별 면접일정</h1>
+
+<div class="search-panel">
+  <div class="search-row">
+    <label for="uni-search">대학명 검색</label>
+    <input type="text" id="uni-search" list="uni-list" placeholder="대학명을 입력하세요 (예: 가천대, 을지대...)" autocomplete="off">
+    <button type="button" id="search-btn">검색</button>
+    <button type="button" id="search-clear">지우기</button>
+  </div>
+  <datalist id="uni-list"></datalist>
+  <div id="search-results"><span class="hint">대학명을 입력한 후 Enter 또는 검색 버튼을 누르면 해당 대학의 면접 날짜가 여기에 표시됩니다.</span></div>
+</div>
+
+<div class="legend">
+  <span class="uname">대학명</span> · <span class="jeon">(전형명)</span> · 모집단위 · <span class="dept">의약학계열</span>
+  <span class="swatch" style="background:#dbeeff;"></span>토요일
+  <span class="swatch" style="background:#ffe0ea;"></span>일요일·공휴일
+</div>
+<table>
+<colgroup>
+  <col class="date-col">
+  <col><col><col><col><col><col>
+</colgroup>
+<thead>
+<tr>
+  <th rowspan="2">구분</th>
+  <th colspan="2">인문</th>
+  <th colspan="2">자연</th>
+  <th colspan="2">공통</th>
+</tr>
+<tr>
+  <th>학생부교과</th><th>학생부종합</th>
+  <th>학생부교과</th><th>학생부종합</th>
+  <th>학생부교과</th><th>학생부종합</th>
+</tr>
+</thead>
+<tbody>
+
+<tr class="new">
+  <td class="date">9.18.(목)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">남서울대</span><span class="jeon">(교과+면접전형)</span></div><div class="sub">AI보건의료복지대학 제외 전체 모집단위 / 비대면 녹화영상 면접 업로드일 10:00~16:00</div></td><td class="cell"></td>
+</tr>
+
+<tr class="new">
+  <td class="date">9.19.(금)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">남서울대</span><span class="jeon">(교과+면접전형-AI보건의료복지대학)</span></div><div class="sub">비대면 녹화영상 면접 업로드일 10:00~16:00</div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added3">
+  <td class="date" style="background:#dbeeff;">9.19.(토)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added3"><span class="uname">을지대</span><span class="jeon">(면접고사[인성면접]-기회균형[정원외]/농어촌학생)</span></div><div class="sub added3">의과대학</div>
+      <div class="entry uni added3"><span class="uname">을지대</span><span class="jeon">(면접고사-재외국민과 외국인전형[2% 제한])</span></div><div class="sub added3">전체 모집단위</div><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(에이블아트·스포츠학과전형)</span></div><div class="sub added5">정원 내·외</div></td>
+</tr>
+
+<tr>
+  <td class="date">10.2.(금)</td>
+  <td class="cell"><div class="entry uni"><span class="uname">강서대</span><span class="jeon">(일반학생전형-신학과)</span></div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#ffe0ea;">10.3.(토)</td>
+  <td class="cell"><div class="entry uni"><span class="uname">강서대</span><span class="jeon">(일반학생전형-경영학과/상담심리학과)</span></div><div class="entry uni added4"><span class="uname">성결대</span><span class="jeon">(목회자추천자전형/미래인재전형-신학과)</span></div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni added5"><span class="uname">한신대</span><span class="jeon">(참인재전형)</span></div><div class="sub added5">전체 모집단위(신학 전공은 목회자 추천 필요) 공통 일정</div></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#ffe0ea;">10.3.(토)~4.(일)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni added2"><span class="uname">신한대</span><span class="jeon">(일반전형)</span></div><div class="sub added2">모집단위별 세부일정은 입학홈페이지 공지</div></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(기회균형/농어촌종합/특성화고교전형)</span></div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#ffe0ea;">10.5.(월)</td>
+  <td class="cell"><div class="entry uni"><span class="uname">강서대</span><span class="jeon">(일반학생전형-사회복지학과)</span></div></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">강서대</span><span class="jeon">(일반학생전형-식품영양학과)</span></div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added5">
+  <td class="date">10.7.(수)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">한양대</span><span class="jeon">(실기/실적[연기특기자])</span></div><div class="sub added5">연극영화학과(연기)</div></td>
+</tr>
+
+<tr class="added2">
+  <td class="date" style="background:#ffe0ea;">10.9.(금)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">수원대</span><span class="jeon">(면접위주교과전형)</span></div><div class="sub">지능형SW융합대학, 라이프케어사이언스대학 / 1단계 합격자 발표 9.22.(화)</div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:linear-gradient(135deg, #ffe0ea 50%, #dbeeff 50%);">10.9.(금)~10.(토)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">강서대</span><span class="jeon">(일반학생전형-간호학과)</span></div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added2">
+  <td class="date" style="background:#dbeeff;">10.10.(토)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">수원대</span><span class="jeon">(면접위주교과전형)</span></div><div class="sub">혁신공과대학 / 1단계 합격자 발표 9.22.(화)</div></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">신한대</span><span class="jeon">(일반전형)</span></div><div class="sub">10.10.(토)~11.(일), 모집단위별 세부일정은 입학홈페이지 공지</div></td><td class="cell"></td>
+</tr>
+
+<tr class="added3">
+  <td class="date" style="background:linear-gradient(135deg, #dbeeff 50%, #ffe0ea 50%);">10.10.(토)~11.(일)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni added3"><span class="uname">안양대</span><span class="jeon">(아리학생부면접전형)</span></div><div class="sub added3">[1단계] 학생부교과 100%(6배수), [2단계] 1단계 60%+면접 40% / 전체 모집단위, 1단계 합격자 발표 10.2.(금)</div></td><td class="cell"></td>
+</tr>
+
+<tr class="added2">
+  <td class="date" style="background:#ffe0ea;">10.11.(일)</td>
+  <td class="cell"><div class="entry uni added2"><span class="uname">수원대</span><span class="jeon">(면접위주교과전형)</span></div><div class="sub added2">자유전공학부, 인문사회융합대학, 경영공학대학 / 1단계 합격자 발표 9.22.(화)</div></td><td class="cell"><div class="entry uni"><span class="uname">삼육대</span><span class="jeon">(신학특별전형)</span></div><div class="sub">신학과</div></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added4">
+  <td class="date">10.15.(목)</td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형)</span></div><div class="sub added4">기독교학부, 어문학부, 사회복지학부, 경찰학부, 경상학부, 관광학부, 외식산업학부, 사범학부(유아특수교육과)</div><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형-관광학부[항공서비스])</span></div><div class="sub added4">고사일 5일(10.15·16·17·19·20) 중 택1</div></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형)</span></div><div class="sub added4">AI컴퓨터공학부, 보건학부(물리치료학과, 안경광학과, 응급구조학과, 치위생학과, 작업치료학과, 간호학과)</div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added4">
+  <td class="date">10.16.(금)</td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형)</span></div><div class="sub added4">사회복지학부, 경찰학부, 경상학부, 관광학부, 관광학부(글로벌호텔비즈니스), 외식산업학부, 사범학부(유아교육과, 특수교육과)</div><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형-관광학부[항공서비스])</span></div><div class="sub added4">고사일 5일(10.15·16·17·19·20) 중 택1</div></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형)</span></div><div class="sub added4">AI컴퓨터공학부, 물리치료학과, 응급구조학과, 치위생학과</div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added3">
+  <td class="date" style="background:#dbeeff;">10.17.(토)</td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형-관광학부[항공서비스])</span></div><div class="sub added4">고사일 5일(10.15·16·17·19·20) 중 택1</div></td><td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(창의인재전형-관광학부[항공서비스])</span></div><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(미래창의인재전형-인문사회과학대학)</span></div></td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형-간호학과)</span></div><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(계약학과전형)</span></div></td><td class="cell"><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(미래창의인재전형-이공대학)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added3"><span class="uname">을지대</span><span class="jeon">(면접고사-사회기여 및 배려대상자전형)</span></div><div class="sub added3">전체 모집단위</div><div class="entry uni added4"><span class="uname">성결대</span><span class="jeon">(SKU창의전형[2단계])</span></div><div class="sub added4">토론 면접, 1단계 합격자 대상</div><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(웨슬리전형-자율전공학부)</span></div><div class="sub added5">10.17.(토)~18.(일)</div></td>
+</tr>
+
+<tr class="added2">
+  <td class="date" style="background:#ffe0ea;">10.18.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(미래창의인재전형-경영대학)</span></div><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(웨슬리전형-신학과)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">삼육대</span><span class="jeon">(S/W인재전형)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">삼육대</span><span class="jeon">(재림교회목회자추천전형)</span></div><div class="entry uni"><span class="uname">삼육대</span><span class="jeon">(기회균형Ⅰ전형)</span></div><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(웨슬리전형-자율전공학부)</span></div><div class="sub added5">10.17.(토)~18.(일)</div></td>
+</tr>
+
+<tr class="added4">
+  <td class="date">10.19.(월)</td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형-관광학부[항공서비스])</span></div><div class="sub added4">고사일 5일(10.15·16·17·19·20) 중 택1</div><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(특성화고교전형-관광학부[항공서비스])</span></div><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(농어촌학생전형-관광학부[항공서비스])</span></div></td><td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(창의인재전형-관광학부[항공서비스])</span></div></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added4">
+  <td class="date">10.20.(화)</td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(백석인재전형-관광학부[항공서비스])</span></div><div class="sub added4">고사일 5일(10.15·16·17·19·20) 중 택1</div><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(기초생활수급자및차상위계층전형-관광학부[항공서비스])</span></div><div class="entry uni added4"><span class="uname">백석대</span><span class="jeon">(서해5도민전형-관광학부[항공서비스])</span></div></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added5">
+  <td class="date">10.22.(목)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni added5"><span class="uname">호서대</span><span class="jeon">(조기취업형계약학과전형)</span></div><div class="sub added5">면접 일정 공지 10.14.(수) 16:00</div></td><td class="cell"></td>
+</tr>
+
+<tr class="added5">
+  <td class="date" style="background:linear-gradient(135deg, #ffffff 50%, #dbeeff 50%);">10.23.(금)~24.(토)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni added5"><span class="uname">호서대</span><span class="jeon">(학생부교과[면접전형]/재외국민전형)</span></div><div class="sub added5">지원자 수에 따라 25.(일)까지 면접 가능, 면접 일정 공지 10.14.(수) 16:00</div></td><td class="cell"></td>
+</tr>
+
+<tr class="added4">
+  <td class="date">10.22.(목)~23.(금)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added4"><span class="uname">GIST</span><span class="jeon">(일반전형/학교장추천전형/고른기회전형/특기자전형)</span></div><div class="sub added4">서류평가(1단계)+면접평가(2단계), 전형 구분 없이 공통 일정, 서류전형 합격자 발표 10.15.(목)</div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="new">
+  <td class="date" style="background:#dbeeff;">10.24.(토)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">강원대</span><span class="jeon">(특수교육대상자전형)</span></div><div class="sub">춘천·삼척(도계포함) 캠퍼스 공통 일정</div></td><td class="cell"><div class="entry uni added6"><span class="uname">인천대</span><span class="jeon">(실기우수자전형[체육교육과]/특기자전형)</span></div><div class="sub added6">체육교육과, 스포츠과학부, 스포츠<span class="dept">의학부</span></div></td>
+</tr>
+
+<tr class="added5">
+  <td class="date" style="background:linear-gradient(135deg, #dbeeff 50%, #ffe0ea 50%);">10.24.(토)~25.(일)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni added5"><span class="uname">한세대</span><span class="jeon">(면접우수자전형)</span></div><div class="sub added5">자유전공학부, 신학과, 인문사회학부, 첨단융합학부, 간호학과 등 전체 모집단위</div></td><td class="cell"></td>
+</tr>
+
+<tr class="added2">
+  <td class="date" style="background:#ffe0ea;">10.25.(일)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">삼육대</span><span class="jeon">(세움인재전형)</span></div><div class="entry uni"><span class="uname">삼육대</span><span class="jeon">(기회균형Ⅱ전형)</span></div><div class="entry uni"><span class="uname">삼육대</span><span class="jeon">(특수교육대상자전형)</span></div></td>
+</tr>
+
+<tr>
+  <td class="date">10.26.(월)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">건국대 글로컬</span><span class="jeon">(특수교육대상자전형)</span></div></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date">10.30.(금)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가톨릭대</span><span class="jeon">(잠재능력우수자면접/가톨릭지도자추천전형-신학과)</span></div></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="new">
+  <td class="date" style="background:#dbeeff;">10.31.(토)</td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">선문대</span><span class="jeon">(면접전형-항공서비스학과/신학과)</span></div><div class="sub added4">대면 면접</div></td><td class="cell"><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(융합인재Ⅱ전형-인문사회과학대학)</span></div><div class="sub added5">10.31.(토)~11.1.(일)</div></td>
+  <td class="cell"><div class="entry uni added4"><span class="uname">선문대</span><span class="jeon">(면접전형-간호학과/물리치료학과/치위생학과/응급구조학과)</span></div><div class="sub added4">비대면 녹화 면접</div><div class="entry uni added4"><span class="uname">선문대</span><span class="jeon">(면접전형[계약정원제/조기취업형]-AI소프트웨어학과/컴퓨터공학부/AI모빌리티융합공학과/스마트팩토리융합공학과/모빌리티시스템공학과)</span></div><div class="sub added4">계약학과, 대면 면접</div></td><td class="cell"><div class="entry uni added5"><span class="uname">한양대ERICA</span><span class="jeon">(학생부종합[국방전략기술공학])</span></div><div class="sub added5">2단계 면접고사, 1단계 합격자 발표 10.8.(목)</div><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(융합인재Ⅱ전형-이공대학)</span></div><div class="sub added5">10.31.(토)~11.1.(일)</div></td>
+  <td class="cell"><div class="entry uni"><span class="uname">명지대</span><span class="jeon">(교과면접전형)</span></div><div class="sub">인문캠퍼스(서울)에서 진행, 인문·자연 모집단위 공통 일정</div><div class="entry uni added4"><span class="uname">선문대</span><span class="jeon">(장애인등대상자전형)</span></div><div class="sub added4">전 모집단위, 비대면 녹화 면접</div></td>
+  <td class="cell"><div class="entry uni"><span class="uname">동덕여대</span><span class="jeon">(동덕창의리더전형)</span></div><div class="sub">10.31.(토)~11.1.(일)</div><div class="entry uni added2"><span class="uname">성공회대</span><span class="jeon">(열린인재전형)</span></div><div class="entry uni added2"><span class="uname">순천향대</span><span class="jeon">(조기취업형계약학과전형)</span></div><div class="sub added2">1단계 합격자 발표 10.21.(수)</div><div class="entry uni added3"><span class="uname">연세대 미래캠퍼스</span><span class="jeon">(학교생활우수자[면접형])</span></div><div class="sub added3">전 모집단위(<span class="dept">의예과</span> 제외), 면접장소 공개 10.27.(화)</div><div class="entry uni added3"><span class="uname">연세대 미래캠퍼스</span><span class="jeon">(글로벌인재전형)</span></div><div class="sub added3">동아시아국제학부, 글로벌엘리트학부(국외고)</div><div class="entry uni added5"><span class="uname">한국기술교육대</span><span class="jeon">(학생부종합[창의인재_면접형])</span></div><div class="sub added5">1단계 합격자 발표 10.23.(금)</div></td>
+</tr>
+
+<tr class="added5">
+  <td class="date" style="background:linear-gradient(135deg, #ffffff 50%, #dbeeff 50%);">10.29.(목)~31.(토)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">한양대ERICA</span><span class="jeon">(학생부종합[조기취업형 계약학과])</span></div><div class="sub added5">2단계 면접고사, 1단계 합격자 발표 10.8.(목)</div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:linear-gradient(135deg, #dbeeff 50%, #ffe0ea 50%);">10.31.(토)~11.1.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">광운대</span><span class="jeon">(광운참빛인재Ⅰ-면접형, 인문계열)</span></div>
+      <div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천바람개비전형)</span></div><div class="sub">경영학과, 관광경영학과, 의료산업경영학과, 응용통계학과, 패션산업학과, AI인문대학, 법과대학 / 1단계 발표 10.29.(목)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">광운대</span><span class="jeon">(광운참빛인재Ⅰ-면접형, 자연계열)</span></div>
+      <div class="entry uni"><span class="uname">광운대</span><span class="jeon">(소프트웨어우수인재전형)</span></div>
+      <div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천바람개비전형)</span></div><div class="sub">도시계획·조경학부, 화공생명배터리공학부, 기계공학과, 신소재공학과, 식품영양학과, 화학과, 반도체대학, 인공지능학과, 정보보호학과, 스마트시티학과, 간호학과 / 1단계 발표 10.29.(목)</div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="new">
+  <td class="date" style="background:#ffe0ea;">11.1.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">협성대</span><span class="jeon">(융합인재Ⅱ전형-경영대학)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added2"><span class="uname">성균관대</span><span class="jeon">(과학인재전형)</span></div></td>
+  <td class="cell"><div class="entry uni"><span class="uname">명지대</span><span class="jeon">(특수교육대상자전형)</span></div></td><td class="cell"><div class="entry uni added3"><span class="uname">연세대</span><span class="jeon">(국제인재전형)</span></div><div class="sub added3">언더우드학부(인문·사회/생명과학공학), 1단계 합격자 발표 10.26.(월)</div><div class="entry uni added3"><span class="uname">연세대</span><span class="jeon">(기회균형전형)</span></div><div class="sub added3">전체 모집단위, 1단계 합격자 발표 10.26.(월)</div><div class="entry uni added5"><span class="uname">한국기술교육대</span><span class="jeon">(충남형계약학과[조기취업형])</span></div></td>
+</tr>
+
+<tr>
+  <td class="date">11.4.(수)~5.(목)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">고려대</span><span class="jeon">(사이버국방전형)</span></div><div class="sub">군 주관 면접평가</div>
+      <div class="entry uni"><span class="uname">가천대</span><span class="jeon">(조기취업형 계약학과전형)</span></div>
+      <div class="entry uni added2"><span class="uname">세종대</span><span class="jeon">(사이버국방 특별전형-육군계약)</span></div><div class="sub added2">사이버국방학과, 11.4.(수)</div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="new">
+  <td class="date" style="background:#dbeeff;">11.7.(토)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">고려대</span><span class="jeon">(계열적합전형)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">남서울대</span><span class="jeon">(면접형)</span></div><div class="sub">치위생학과, 물리치료학과, 간호학과, 임상병리학과, 응급구조학과(디자인·스포츠 계열 모집단위는 예체능으로 제외)</div><div class="entry uni added4"><span class="uname">UNIST</span><span class="jeon">(탐구우수전형)</span></div><div class="sub added4">이공계열 전체 모집단위, 1단계 합격자 발표 11.4.(수)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">남서울대</span><span class="jeon">(계약학과 채용조건형)</span></div><div class="sub">AI충남형 플랫폼소프트웨어학과, 스마트충남형 산업시스템공학과, 충남형리안헤어뷰티아트학과</div><div class="entry uni added5"><span class="uname">한국항공대</span><span class="jeon">(미래인재전형/고른기회전형)</span></div><div class="sub added5">전 모집단위 공통 일정, 1단계 합격자 발표 10.30.(금)</div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:linear-gradient(135deg, #dbeeff 50%, #ffe0ea 50%);">11.7.(토)~8.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천바람개비전형)</span></div><div class="sub">회계세무학과, 미디어커뮤니케이션학과, 경제학과, 사회복지학과, 유아교육학과, 심리학과 / 1단계 발표 10.29.(목)</div>
+      <div class="entry uni"><span class="uname">강남대</span><span class="jeon">(학교생활우수자전형2/장애인 등 대상자전형)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천바람개비전형)</span></div><div class="sub">금융·빅데이터학부, 건축학부, 건축공학과, 화공생명배터리공학부, 스마트팩토리학과, 건설환경공학과, 바이오나노학과, 식품생명공학과, 생명과학과, 반도체물리학과, 시스템반도체학과, 컴퓨터공학과, 인공지능시스템학과, 전기공학과, 의공학과, 간호학과, 치위생학과, 응급구조학과, 물리치료학과, 방사선학과, 운동재활학과, 바이오로직스학과 / 1단계 발표 10.29.(목)</div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added2">
+  <td class="date" style="background:#ffe0ea;">11.8.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">성균관대</span><span class="jeon">(성균인재전형-사범대학)</span></div><div class="sub">교육학과, 한문교육과</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">고려대</span><span class="jeon">(계열적합전형)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added4"><span class="uname">UNIST</span><span class="jeon">(그릿인재전형)</span></div><div class="sub added4">계열무관(GSI인재융합학부), 1단계 합격자 발표 11.4.(수), 개인 포트폴리오 면접+단체 융합 프로젝트 면접</div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#dbeeff;">11.14.(토)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">국민대</span><span class="jeon">(국제인재/알고리즘우수자/기회균형Ⅰ전형)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">국민대</span><span class="jeon">(국제인재/알고리즘우수자/기회균형Ⅰ전형)</span></div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="new">
+  <td class="date" style="background:#dbeeff;">11.21.(토)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">덕성여대</span><span class="jeon">(기회균형전형Ⅰ_장애인 등 대상자)</span></div><div class="sub">글로벌융합대학(인문사회)</div><div class="entry uni added3"><span class="uname">연세대</span><span class="jeon">(활동우수형-인문·통합계열)</span></div><div class="sub added3">1단계 합격자 발표 11.16.(월)</div><div class="entry uni added3"><span class="uname">이화여대</span><span class="jeon">(미래인재전형[면접형]-인문과학대학)</span></div><div class="sub added3">국어국문·중어중문·불어불문·독어독문·사학·기독교학·영어영문학부, 13:20~19:00</div><div class="entry uni"><span class="uname">성신여대</span><span class="jeon">(자기주도인재전형)</span></div><div class="sub">인문융합예술대학(국어국문학과, 영어영문학과, 독일어문·문화학과, 프랑스어문·문화학과, 일본어문·문화학과, 중국어문·문화학과, 사학과), 사회과학대학(정치외교학과, 심리학과, 지리학과, 미디어커뮤니케이션학과), 법과대학(법학부) / 1단계 합격자 발표 11.13.(금)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added2"><span class="uname">세종대</span><span class="jeon">(국방AI융합시스템공학 특별전형-해군계약)</span></div><div class="entry uni added2"><span class="uname">세종대</span><span class="jeon">(국방AI로봇융합공학 특별전형-해병대계약)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">덕성여대</span><span class="jeon">(덕성인재전형Ⅱ)</span></div><div class="sub">유아교육과, 자유전공학부, 가상현실융합학과, 데이터사이언스학과, AI신<span class="dept">약학과</span></div><div class="entry uni added2"><span class="uname">세종대</span><span class="jeon">(세종인재전형(면접형)-창의소프트학부)</span></div><div class="sub added2">디자인이노베이션전공, 만화애니메이션텍전공</div><div class="entry uni added3"><span class="uname">인하대</span><span class="jeon">(인하미래인재전형[면접형])</span></div><div class="sub added3">경영대학, 사범대학(수학교육과 제외), 사회과학대학, 문과대학, 의류디자인학과(일반), 소프트웨어융합대학</div><div class="entry uni added3"><span class="uname">을지대</span><span class="jeon">(면접고사-EU면접형)</span></div><div class="sub added3">전체 모집단위, 대상자 발표 11.18.(수)</div><div class="entry uni added3"><span class="uname">아주대</span><span class="jeon">(첨단융합인재전형/국방IT우수인재1전형/특수교육대상자전형)</span></div><div class="sub added3">[면접평가]</div><div class="entry uni added5"><span class="uname">한국외대</span><span class="jeon">(학생부종합전형[면접형]-서울캠퍼스)</span></div><div class="sub added5">서울캠퍼스 전 모집단위, 1단계 합격자 발표 11.16.(월)</div><div class="entry uni added6"><span class="uname">인천대</span><span class="jeon">(자기추천전형/특수교육대상자전형)</span></div><div class="sub added6">1단계 합격자 발표 11.6.(금)</div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#ffe0ea;">11.22.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">국민대</span><span class="jeon">(국민프런티어전형, 인문계)</span></div><div class="entry uni"><span class="uname">성신여대</span><span class="jeon">(자기주도인재전형)</span></div><div class="sub">인문융합예술대학(문화예술경영학과), 사회과학대학(경제학과, 경영학과, 사회복지학과), 생활산업대학(의류산업학과, 소비자산업학과), 사범대학(교육학과, 사회교육과, 윤리교육과, 한문교육과, 유아교육과) / 1단계 합격자 발표 11.13.(금)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added3"><span class="uname">연세대</span><span class="jeon">(활동우수형-자연계열)</span></div><div class="sub added3">1단계 합격자 발표 11.16.(월)</div><div class="entry uni added3"><span class="uname">인하대</span><span class="jeon">(인하미래인재전형[면접형])</span></div><div class="sub added3">공과대학, 자연과학대학, 사범대학(수학교육과), 의과대학, 간호대학, 바이오시스템융합학부</div><div class="entry uni added3"><span class="uname">아주대</span><span class="jeon">(ACE전형)</span></div><div class="sub added3">공과대학, 첨단ICT융합대학 [면접평가]</div><div class="entry uni added5"><span class="uname">한양대</span><span class="jeon">(학생부종합[면접형]-공과대학/한양인터칼리지학부[자연])</span></div><div class="sub added5">비대면 현장 녹화 면접(제시문 기반), 1단계 합격자 발표 11.13.(금)</div><div class="entry uni"><span class="uname">성신여대</span><span class="jeon">(자기주도인재전형)</span></div><div class="sub">공과대학(바이오신약의과학부[생명공학/바이오신약/글로벌의과학전공]), 간호대학(간호학과) / 1단계 합격자 발표 11.13.(금)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">덕성여대</span><span class="jeon">(덕성인재전형Ⅱ)</span></div><div class="sub">글로벌융합대학(인문사회), 과학기술대학, <span class="dept">약학과</span></div><div class="entry uni added2"><span class="uname">세종대</span><span class="jeon">(세종인재전형(면접형)-인문계열,자연계열)</span></div><div class="entry uni added3"><span class="uname">이화여대</span><span class="jeon">(미래인재전형[면접형])</span></div><div class="sub added3">사회과학대학·경영대학·신산업융합대학·스크랜튼대학·자연과학대학·공과대학·사범대학·의과대학·간호대학·약학대학·인공지능대학</div><div class="entry uni added5"><span class="uname">한국외대</span><span class="jeon">(학생부종합전형[면접형]-글로벌캠퍼스)</span></div><div class="sub added5">글로벌캠퍼스 전 모집단위(면접은 서울캠퍼스에서 실시), 1단계 합격자 발표 11.16.(월)</div></td>
+</tr>
+
+<tr class="added5">
+  <td class="date">11.25.(수)~26.(목)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">한국공학대</span><span class="jeon">(학생부종합[조기취업형계약학과])</span></div><div class="sub added5">전체 모집단위, 예비대학 11.16.(월)~20.(금) 중 1일</div></td>
+</tr>
+
+<tr class="added5">
+  <td class="date">11.25.(수)~27.(금)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">한국교통대</span><span class="jeon">(학생부종합Ⅰ)</span></div><div class="sub added5">항공서비스학과, 대면 집단면접</div></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date">11.26.(목)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added4"><span class="uname">KAIST</span><span class="jeon">(일반전형/고른기회전형/특기자전형/반도체시스템인재전형)</span></div><div class="sub added4">Regular Admission 공통 일정, 1단계 합격자 발표 11.11.(수)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">공주대</span><span class="jeon">(일반전형/장애인 등 대상자전형-사범대학)</span></div><div class="sub">예술대학 제외</div></td>
+</tr>
+
+<tr>
+  <td class="date">11.27.(금)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">강원대</span><span class="jeon">(<span class="dept">치의예과</span>-미래인재면접Ⅰ/기회균형/농어촌학생전형)</span></div>
+      <div class="entry uni"><span class="uname">공주대</span><span class="jeon">(장애인 등 대상자전형-천안공과대학/산업과학대학)</span></div><div class="entry uni added2"><span class="uname">숭실대</span><span class="jeon">(실기/실적 정보보호특기자전형)</span></div><div class="sub added2">1단계 합격자 발표 11.23.(월)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni new"><span class="uname">강원대</span><span class="jeon">(미래인재면접전형/영농창업인재전형)</span></div><div class="sub new">춘천·삼척(도계포함) 캠퍼스 전체 모집단위 공통 일정</div><div class="entry uni added2"><span class="uname">서울대</span><span class="jeon">(일반전형-전 모집단위, 수의대·의대·치의학대학원<span class="dept">치의학과</span> 제외)</span></div><div class="sub added2">사범대학은 교직적성·인성면접 포함</div><div class="entry uni added2"><span class="uname">숭실대</span><span class="jeon">(SSU미래인재전형(면접형))</span></div><div class="sub added2">1단계 합격자 발표 11.23.(월)</div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#dbeeff;">11.28.(토)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added2"><span class="uname">서울시립대</span><span class="jeon">(전형Ⅰ/기회균형전형Ⅰ/사회공헌·통합전형-인문계열)</span></div></td>
+  <td class="cell"><div class="entry uni"><span class="uname">가톨릭대</span><span class="jeon">(지역균형전형-<span class="dept">의예과</span>)</span></div><div class="entry uni added3"><span class="uname">연세대 미래캠퍼스</span><span class="jeon">(교과우수자[추천형/일반형]/기회균형전형)</span></div><div class="sub added3"><span class="dept">의예과</span>, 면접장소 공개 11.24.(화)</div></td>
+      <td class="cell"><div class="entry uni new"><span class="uname">단국대</span><span class="jeon">(DKU인재면접형[의학·약학계열]/농어촌학생전형[의학·약학계열])</span></div><div class="sub new">천안캠퍼스</div><div class="entry uni added2"><span class="uname">서울대</span><span class="jeon">(일반전형-수의대·의대·치의학대학원<span class="dept">치의학과</span>)</span></div><div class="entry uni added3"><span class="uname">아주대</span><span class="jeon">(ACE전형)</span></div><div class="sub added3">소프트웨어융합대학, 자연과학대학, 간호대학 [면접평가]</div><div class="entry uni added3"><span class="uname">연세대 미래캠퍼스</span><span class="jeon">(학교생활우수자[면접형]/사회통합전형/기초생활연세한마음전형/농어촌학생전형/특수교육대상자전형/북한이탈주민)</span></div><div class="sub added3"><span class="dept">의예과</span>, 면접장소 공개 11.24.(화)</div><div class="entry uni"><span class="uname">성신여대</span><span class="jeon">(자기주도인재전형)</span></div><div class="sub">자연과학대학(수리통계데이터사이언스학부[수학/핀테크전공], 수리통계데이터사이언스학부[통계학/빅데이터사이언스전공], 화학·에너지융합학부[화학/스마트에너지전공], 바이오헬스융합학부[바이오헬스서비스/식품영양학전공]), 공과대학(청정신소재공학과, 바이오식품공학과) / 1단계 합격자 발표 11.13.(금)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added2"><span class="uname">서강대</span><span class="jeon">(특성화고교졸업자전형)</span></div><div class="entry uni added2"><span class="uname">서울과기대</span><span class="jeon">(학교생활우수자전형/창의융합인재전형/특수교육대상자전형)</span></div><div class="sub added2">1단계 합격자 발표 11.20.(금)</div><div class="entry uni added2"><span class="uname">서울여대</span><span class="jeon">(바롬인재면접전형/SW융합인재전형/기독교지도자전형)</span></div><div class="sub added2">1단계 합격자 발표 11.25.(수)</div><div class="entry uni added2"><span class="uname">숭실대</span><span class="jeon">(기회균형전형/SW우수자전형/특수교육대상자전형)</span></div><div class="sub added2">1단계 합격자 발표 11.23.(월)</div><div class="entry uni added5"><span class="uname">한국공학대</span><span class="jeon">(학생부종합[창의인재])</span></div><div class="sub added5">전체 모집단위, 09:00/13:00 2회 진행, 고사장 확인 11.24.(화)</div></td>
+</tr>
+
+<tr class="added5">
+  <td class="date" style="background:linear-gradient(135deg, #dbeeff 50%, #ffe0ea 50%);">11.28.(토)~29.(일)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">홍익대</span><span class="jeon">(미술우수자전형/농어촌학생전형-미술계열)</span></div><div class="sub added5">세종캠퍼스, 면접 대상자 발표 11.7.(토)</div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#ffe0ea;">11.29.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">경기대</span><span class="jeon">(SW우수자전형-소프트웨어경영대학 경영학 계열)</span></div><div class="entry uni added3"><span class="uname">아주대</span><span class="jeon">(ACE전형)</span></div><div class="sub added3">경영대학, 인문대학, 사회과학대학 [면접평가]</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천의약학전형-<span class="dept">의예과</span>/<span class="dept">한의예과</span>/<span class="dept">약학과</span>)</span></div>
+      <div class="entry uni"><span class="uname">경기대</span><span class="jeon">(SW우수자전형-소프트웨어경영대학 그 외 모집단위)</span></div><div class="entry uni added2"><span class="uname">서울시립대</span><span class="jeon">(전형Ⅰ/기회균형전형Ⅰ/사회공헌·통합전형-자연계열)</span></div><div class="entry uni"><span class="uname">성신여대</span><span class="jeon">(자기주도인재전형)</span></div><div class="sub">IT융합대학(AI융합학과, 융합AI반도체공학과, 컴퓨터공학과, 융합보안공학과, 서비스디자인공학과) / 1단계 합격자 발표 11.13.(금)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni new"><span class="uname">단국대</span><span class="jeon">(DKU인재면접형[문예창작과]/군사학과)</span></div><div class="sub new">천안캠퍼스</div><div class="entry uni added2"><span class="uname">서울과기대</span><span class="jeon">(기회균형전형-국가보훈대상자/기회균등/농어촌학생)</span></div><div class="sub added2">1단계 합격자 발표 11.20.(금)</div><div class="entry uni"><span class="uname">성신여대</span><span class="jeon">(자기주도인재전형)</span></div><div class="sub">생활산업대학(뷰티산업학과) / 1단계 합격자 발표 11.13.(금)</div><div class="entry uni added2"><span class="uname">성신여대</span><span class="jeon">(특수교육대상자전형)</span></div><div class="sub added2">1단계 합격자 발표 11.13.(금)</div><div class="entry uni added3"><span class="uname">연세대</span><span class="jeon">(국제형)</span></div><div class="sub added3">언더우드국제대학, 글로벌인재대학, 1단계 합격자 발표 11.23.(월)</div></td>
+</tr>
+
+<tr>
+  <td class="date">11.30.(월)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천의약학전형-인문계열)</span></div>
+      <div class="entry uni"><span class="uname">공주대</span><span class="jeon">(장애인 등 대상자전형-인문사회과학대학/국제학부)</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천의약학전형-간호학과/화공생명배터리공학부)</span></div><div class="sub">바이오로직스학과 포함, 인문계열과 같은 날짜로 안내됨</div>
+      <div class="entry uni"><span class="uname">공주대</span><span class="jeon">(장애인 등 대상자전형-자연과학대학/간호보건대학)</span></div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date">12.1.(화)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added6"><span class="uname">충남대</span><span class="jeon">(학생부종합Ⅰ[면접전형])</span></div><div class="sub added6">인문대학, 사회과학대학, 경상대학</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천의약학전형-자연계열)</span></div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added6">
+  <td class="date">12.2.(수)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added6"><span class="uname">충남대</span><span class="jeon">(학생부종합Ⅰ[면접전형])</span></div><div class="sub added6">자연과학대학, 약학대학, 의과대학, 간호대학, 수의과대학, 생활과학대학, 생명시스템과학대학</div><div class="entry uni added6"><span class="uname">충남대</span><span class="jeon">(학생부종합Ⅱ[국가안보융합인재전형-해양안보학전공])</span></div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added6">
+  <td class="date">12.3.(목)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added6"><span class="uname">충남대</span><span class="jeon">(학생부종합Ⅰ[면접전형])</span></div><div class="sub added6">공과대학, AI(인공지능)대학, 지식융합학부</div><div class="entry uni added6"><span class="uname">충남대</span><span class="jeon">(학생부종합Ⅱ[국가안보융합인재전형-국토안보학전공])</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added6"><span class="uname">충남대</span><span class="jeon">(학생부교과[일반전형])</span></div><div class="sub added6">사범대학(국어교육과, 수학교육과, 화학공학교육과, 기술교육과)</div></td><td class="cell"></td>
+</tr>
+
+<tr class="added2">
+  <td class="date">12.4.(금)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added6"><span class="uname">충남대</span><span class="jeon">(학생부교과[국가안보교과전형-국토안보학전공])</span></div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">서울대</span><span class="jeon">(지역균형전형-전 모집단위, 수의대·의대 제외)</span></div>
+      <div class="entry uni"><span class="uname">서울대</span><span class="jeon">(기회균형특별전형(사회통합)-전 모집단위, 수의대·의대 제외)</span></div><div class="entry uni added6"><span class="uname">충남대</span><span class="jeon">(학생부종합Ⅰ[면접전형])</span></div><div class="sub added6">농업생명과학대학, 사범대학(인문·자연계)</div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#dbeeff;">12.5.(토)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">경기대</span><span class="jeon">(KGU전형-인문대학)</span></div>
+      <div class="entry uni"><span class="uname">경기대</span><span class="jeon">(KGU전형-관광문화대학)</span></div><div class="sub">예체능 계열 모집단위, 자유전공학부 제외</div>
+      <div class="entry uni new"><span class="uname">단국대</span><span class="jeon">(DKU인재면접형)</span></div><div class="sub new">죽전캠퍼스 인문계열</div>
+      <div class="entry uni"><span class="uname">경희대</span><span class="jeon">(네오르네상스전형-인문(사회)계열)</span></div><div class="sub">서울캠퍼스: 문과대학, 호텔관광대학, 생활과학대학(아동가족학과·주거환경학과·의상학과), 정경대학, 경영대학, 이과대학(지리학과-인문), 자율전공학부</div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(탐구형인재전형)</span></div><div class="sub added4">인문대학(유럽문화학부[독일어문학/러시아어문학], 아시아문화학부[중국어문학]), 사회과학대학(사회복지학부, 도시계획‧부동산학과), 경영경제대학(광고홍보학부[광고홍보학], 국제물류학과), 1단계 합격자 발표 11.26.(목)</div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(성장형인재전형)</span></div><div class="sub added4">인문계열: 국어국문학부, 영어영문학과, 정치국제학과, 심리학과, 공공인재학부, 미디어커뮤니케이션학부, 경제학부, 응용통계학과, 산업보안학과(인문), 경영학부(경영학/글로벌금융), 1단계 합격자 발표 11.26.(목)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가톨릭대</span><span class="jeon">(가톨릭지도자추천/학교장추천전형-<span class="dept">의예과</span>/간호학과)</span></div><div class="sub">인·적성면접</div>
+      <div class="entry uni"><span class="uname">경기대</span><span class="jeon">(KGU전형-창의공과대학)</span></div><div class="entry uni added2"><span class="uname">서울대</span><span class="jeon">(지역균형전형-수의대·의대)</span></div><div class="entry uni added2"><span class="uname">서울대</span><span class="jeon">(기회균형특별전형(사회통합)-수의대·의대)</span></div>
+      <div class="entry uni"><span class="uname">경희대</span><span class="jeon">(네오르네상스전형-자연계열)</span></div><div class="sub">국제캠퍼스: 예술·디자인대학, 체육대학, 전자정보대학, 응용과학대학, 생명과학대학</div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(탐구형인재전형)</span></div><div class="sub added4">공과대학(첨단소재공학과, 사회기반시스템공학부[건설환경플랜트공학]), 의과대학(<span class="dept">의학부</span>), 자연과학대학(물리학과, 생명과학과), 창의ICT공과대학(지능형반도체공학과), 소프트웨어대학(AI학과), 생명공학대학(생명자원공학부[동물생명공학], 식품공학부[식품공학]), 1단계 합격자 발표 11.26.(목)</div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(성장형인재전형)</span></div><div class="sub added4">자연계열: 건축학부, 에너지시스템공학부, 화학공학과, 기계공학부, 전자전기공학부, 융합공학부, 소프트웨어학부, <span class="dept">약학부</span>, <span class="dept">의학부</span>, 1단계 합격자 발표 11.26.(목)</div><div class="entry uni added5"><span class="uname">한양대</span><span class="jeon">(학생부종합[면접형]-의과대학)</span></div><div class="sub added5"><span class="dept">의예과</span>, 대면 면접, 1단계 합격자 발표 11.13.(금)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">건국대</span><span class="jeon">(서울, KU자기추천전형)</span></div>
+      <div class="entry uni"><span class="uname">가톨릭대</span><span class="jeon">(잠재능력우수자면접/가톨릭지도자추천/학교장추천-<span class="dept">약학과</span>/장애인 등 대상자전형)</span></div><div class="sub">전체 모집단위</div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(성장형인재전형)</span></div><div class="sub added4">간호학과(전체 계열 공통 모집), 1단계 합격자 발표 11.26.(목)</div><div class="entry uni added6"><span class="uname">부산대</span><span class="jeon">(학생부종합전형)</span></div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:#ffe0ea;">12.6.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">경기대</span><span class="jeon">(KGU전형-사회과학대학)</span></div>
+      <div class="entry uni"><span class="uname">경기대</span><span class="jeon">(KGU전형-소프트웨어경영대학 경영학 계열)</span></div>
+      <div class="entry uni"><span class="uname">경희대</span><span class="jeon">(네오르네상스전형-인문(사회)계열)</span></div><div class="sub">서울캠퍼스: <span class="dept">한의예과</span>(인문)</div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(탐구형인재전형)</span></div><div class="sub added4">인문대학(국어국문학부[국어국문학/영어영문학과], 유럽문화학부[프랑스어문학], 아시아문화학부[일본어문학]), 사회과학대학(정치국제학과, 심리학과, 공공인재학부, 미디어커뮤니케이션학부), 경영경제대학(경제학부, 산업보안학과[인문], 경영학부[경영학/글로벌금융]), 1단계 합격자 발표 11.26.(목)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">경기대</span><span class="jeon">(KGU전형-융합과학대학)</span></div>
+      <div class="entry uni"><span class="uname">경기대</span><span class="jeon">(KGU전형-소프트웨어경영대학 그 외 모집단위)</span></div>
+      <div class="entry uni new"><span class="uname">단국대</span><span class="jeon">(DKU인재면접형)</span></div><div class="sub new">죽전캠퍼스 자연계열</div><div class="entry uni added2"><span class="uname">성균관대</span><span class="jeon">(성균인재전형-글로벌AI융합학부/<span class="dept">의예과</span>)</span></div>
+      <div class="entry uni"><span class="uname">경희대</span><span class="jeon">(네오르네상스전형-자연계열)</span></div><div class="sub">서울캠퍼스: 생활과학대학(식품영양학과), 이과대학, <span class="dept">의예과</span>, <span class="dept">한의예과</span>(자연), <span class="dept">치의예과</span>, <span class="dept">약학과</span>, 한<span class="dept">약학과</span>(14:00~18:00) / 국제캠퍼스: 공과대학, 소프트웨어융합대학, 자유전공학부, 외국어대학, 국제대학</div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(탐구형인재전형)</span></div><div class="sub added4">공과대학(에너지시스템공학부, 화학공학과, 기계공학부, 건축학부), 약학대학(<span class="dept">약학부</span>), 예술공학대학(예술공학부), 자연과학대학(화학과, 수학과), 창의ICT공과대학(전자전기공학부, 융합공학부), 소프트웨어대학(소프트웨어학부), 산업보안학과(자연), 생명공학대학(생명자원공학부[식물생명공학], 시스템생명공학과), 1단계 합격자 발표 11.26.(목)</div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(융합형인재전형-<span class="dept">의학부</span>)</span></div><div class="sub added4">1단계 합격자(<span class="dept">의학부</span>) 대상, 1단계 합격자 발표 11.26.(목)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added2"><span class="uname">성균관대</span><span class="jeon">(성균인재전형-자유전공계열)</span></div><div class="entry uni added4"><span class="uname">중앙대</span><span class="jeon">(탐구형인재전형)</span></div><div class="sub added4">간호학과(전체 계열 공통 모집), 1단계 합격자 발표 11.26.(목)</div><div class="entry uni added5"><span class="uname">한양대</span><span class="jeon">(학생부종합[면접형]-사범대학)</span></div><div class="sub added5">교육학과, 교육공학과, 국어교육과, 영어교육과, 수학교육과, 대면 면접, 1단계 합격자 발표 11.13.(금)</div></td>
+</tr>
+
+<tr class="added4">
+  <td class="date" style="background:linear-gradient(135deg, #dbeeff 50%, #ffe0ea 50%);">12.5.(토)~6.(일)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">홍익대</span><span class="jeon">(미술우수자전형/농어촌학생전형-미술계열)</span></div><div class="sub added5">서울캠퍼스, 면접 대상자 발표 11.7.(토)</div></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:linear-gradient(135deg, #dbeeff 50%, #ffffff 50%);">12.5.(토)~7.(월)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(지역균형전형)</span></div><div class="sub">전체 모집단위</div></td><td class="cell"></td>
+</tr>
+
+<tr class="added5">
+  <td class="date">12.11.(금)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(Do Dream전형)</span></div><div class="sub added5">문과대학(국어국문·문예창작학부, 사학과), 법과대학(법학과), 사회과학대학(북한학전공, 경제학과, 미디어커뮤니케이션학전공, 식품산업관리학과), 경영대학, 사범대학(교육학과, 역사교육과)</div><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(기회균형통합전형)</span></div><div class="sub added5">사범대학(교육학과), 경영대학</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(Do Dream전형)</span></div><div class="sub added5">이과대학(물리학과), 바이오시스템대학(융합환경과학과, 생명과학과), 공과대학(전자전기공학부, 화공생물공학과, 건축공학부), 첨단융합학부(컴퓨터·AI학부, 지능형네트워크융합학과), 사범대학(수학교육과), 예술대학(영화영상학과)</div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="added5">
+  <td class="date" style="background:#dbeeff;">12.12.(토)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(Do Dream전형)</span></div><div class="sub added5">문과대학(영어영문학부, 일본학과, 철학과), 사회과학대학(국제통상학과, 사회학전공, 광고홍보학과), 경찰사법대학(경찰행정학부), 사범대학(국어교육과, 지리교육과)</div><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(기회균형통합전형)</span></div><div class="sub added5">사범대학(국어교육과)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(Do Dream전형)</span></div><div class="sub added5">이과대학(수학과, 화학과), 바이오시스템대학(식품바이오융합공학과, 의생명공학과), 공과대학(정보통신공학과, 건설환경공학과, 기계로봇에너지공학과, 산업시스템공학과, 에너지신소재공학과), 첨단융합학부(시스템반도체학부, 의료인공지능공학과), 사범대학(가정교육과), 예술대학(연극학부), 약학대학(<span class="dept">약학과</span>)</div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date" style="background:linear-gradient(135deg, #ffe0ea 50%, #ffffff 50%);">12.13.(일)~14.(월)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천의약학전형-<span class="dept">의예과</span>)</span></div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr class="new">
+  <td class="date" style="background:#ffe0ea;">12.13.(일)</td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(Do Dream전형)</span></div><div class="sub added5">불교대학(문화유산학과), 문과대학(중어중문학과), 사회과학대학(정치외교학전공, 행정학전공, 사회복지학과)</div><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(기회균형통합전형)</span></div><div class="sub added5">법과대학(법학과), 사회과학대학(사회복지학과)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(Do Dream전형)</span></div><div class="sub added5">이과대학(통계학과)</div><div class="entry uni added5"><span class="uname">동국대</span><span class="jeon">(기회균형통합전형)</span></div><div class="sub added5">공과대학(전자전기공학부, 정보통신공학과), 첨단융합학부(컴퓨터·AI학부)</div></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">동국대</span><span class="jeon">(불교추천인재전형)</span></div><div class="sub">인문·자연계열 모집단위 공통 일정</div></td>
+</tr>
+
+<tr class="added3">
+  <td class="date">12.14.(월)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni added3"><span class="uname">아주대</span><span class="jeon">(ACE전형)</span></div><div class="sub added3"><span class="dept">의학과</span>, <span class="dept">약학과</span> [면접평가]</div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+<tr>
+  <td class="date">12.15.(화)</td>
+  <td class="cell"></td><td class="cell"></td>
+  <td class="cell"></td><td class="cell"><div class="entry uni"><span class="uname">가천대</span><span class="jeon">(가천의약학전형-<span class="dept">약학과</span>)</span></div></td>
+  <td class="cell"></td><td class="cell"></td>
+</tr>
+
+</tbody>
+</table>
+
+<button type="button" id="to-top-btn" aria-label="맨 위로 이동" title="맨 위로 이동">↑</button>
+
+<script>
+(function () {
+  var COL_LABELS = ["인문 · 학생부교과", "인문 · 학생부종합", "자연 · 학생부교과", "자연 · 학생부종합", "공통 · 학생부교과", "공통 · 학생부종합"];
+
+  var table = document.querySelector('table');
+  var rows = table.querySelectorAll('tbody tr');
+
+  // 대학명 -> [{date, col, jeon, sub, el(entry element)}]
+  var index = {};
+
+  rows.forEach(function (tr) {
+    var tds = tr.querySelectorAll('td');
+    if (!tds.length) return;
+    var dateText = tds[0].textContent.trim();
+    // tds[1..6] correspond to COL_LABELS[0..5]
+    for (var i = 1; i < tds.length; i++) {
+      var cell = tds[i];
+      var colLabel = COL_LABELS[i - 1] || '';
+      var entries = cell.querySelectorAll('.entry.uni');
+      entries.forEach(function (entryEl) {
+        var unameEl = entryEl.querySelector('.uname');
+        if (!unameEl) return;
+        var uname = unameEl.textContent.trim();
+        var jeonEl = entryEl.querySelector('.jeon');
+        var jeon = jeonEl ? jeonEl.textContent.trim() : '';
+        var subText = '';
+        var next = entryEl.nextElementSibling;
+        if (next && next.classList.contains('sub')) {
+          subText = next.textContent.trim();
+        }
+        if (!index[uname]) index[uname] = [];
+        index[uname].push({ date: dateText, col: colLabel, jeon: jeon, sub: subText, el: entryEl });
+      });
+    }
+  });
+
+  // datalist 채우기 (가나다 순)
+  var unameList = Object.keys(index).sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+  var datalist = document.getElementById('uni-list');
+  unameList.forEach(function (name) {
+    var opt = document.createElement('option');
+    opt.value = name;
+    datalist.appendChild(opt);
+  });
+
+  var searchInput = document.getElementById('uni-search');
+  var resultsDiv = document.getElementById('search-results');
+  var clearBtn = document.getElementById('search-clear');
+  var highlighted = [];
+  var rowRefs = [];
+  var jumpTimer = null;
+
+  function clearHighlight() {
+    highlighted.forEach(function (el) { el.classList.remove('table-highlight'); });
+    highlighted = [];
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function render(query) {
+    clearHighlight();
+    query = query.trim();
+    if (!query) {
+      resultsDiv.innerHTML = '<span class="hint">대학명을 입력한 후 Enter 또는 검색 버튼을 누르면 해당 대학의 면접 날짜가 여기에 표시됩니다.</span>';
+      rowRefs = [];
+      return;
+    }
+    var matchedNames = unameList.filter(function (name) {
+      return name.indexOf(query) !== -1;
+    });
+
+    if (!matchedNames.length) {
+      resultsDiv.innerHTML = '<span class="no-match">"' + escapeHtml(query) + '"에 해당하는 대학을 찾을 수 없습니다.</span>';
+      rowRefs = [];
+      return;
+    }
+
+    rowRefs = [];
+    var html = '';
+    matchedNames.forEach(function (name) {
+      var records = index[name].slice().sort(function (a, b) {
+        return a.date.localeCompare(b.date, 'ko');
+      });
+      html += '<div class="result-uni-block"><div class="runame">' + escapeHtml(name) + ' (' + records.length + '건)</div><ul class="rlist">';
+      records.forEach(function (rec) {
+        var tr = rec.el.closest('tr');
+        var ridx = rowRefs.length;
+        rowRefs.push(tr);
+        html += '<li><span class="rdate" data-ridx="' + ridx + '" title="표에서 이 날짜 행으로 이동">' + escapeHtml(rec.date) + '</span><span class="rcol">' + escapeHtml(rec.col) + '</span><span class="rjeon">' + escapeHtml(rec.jeon) + '</span>' +
+          (rec.sub ? '<span class="rsub">' + escapeHtml(rec.sub) + '</span>' : '') + '</li>';
+      });
+      html += '</ul></div>';
+    });
+    resultsDiv.innerHTML = html;
+  }
+
+  var searchBtn = document.getElementById('search-btn');
+
+  searchBtn.addEventListener('click', function () {
+    render(searchInput.value);
+  });
+  searchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      render(searchInput.value);
+    }
+  });
+  clearBtn.addEventListener('click', function () {
+    searchInput.value = '';
+    render('');
+    searchInput.focus();
+  });
+
+  resultsDiv.addEventListener('click', function (e) {
+    var target = e.target.closest('.rdate');
+    if (!target) return;
+    var ridx = Number(target.getAttribute('data-ridx'));
+    var tr = rowRefs[ridx];
+    if (!tr) return;
+
+    var prevHighlighted = table.querySelectorAll('.row-jump-highlight');
+    prevHighlighted.forEach(function (el) { el.classList.remove('row-jump-highlight'); });
+    if (jumpTimer) clearTimeout(jumpTimer);
+
+    tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    tr.querySelectorAll('td').forEach(function (td) { td.classList.add('row-jump-highlight'); });
+    jumpTimer = setTimeout(function () {
+      tr.querySelectorAll('td').forEach(function (td) { td.classList.remove('row-jump-highlight'); });
+    }, 2000);
+  });
+
+  var toTopBtn = document.getElementById('to-top-btn');
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 300) {
+      toTopBtn.classList.add('show');
+    } else {
+      toTopBtn.classList.remove('show');
+    }
+  });
+  toTopBtn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+
+</body>
+</html>
