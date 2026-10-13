@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>저동고 수시 지원 현황</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#e6dcc6; --board:#2d4a3c; --board2:#264034; --wood:#7a4e26; --wood2:#5e3a1a;
+  --chalk:#f4f1e6; --chalk-y:#f6d365; --chalk-p:#f5a3b5; --chalk-b:#9fd3f0; --chalk-g:#b9e4a5;
+  --paper:#fffdf6; --rule:#d7e3ef; --margin:#e9a3a3; --ink:#20283a; --pencil:#4a4a4a; --sub:#6b6f78;
+  --t1:#26457a; --t2:#2a8c82; --t3:#e08a2c; --t4:#9b59a8;
+  --cork:#b98a5c;
+  --title:"Black Han Sans","Noto Sans KR",sans-serif;
+  --hand:"Nanum Pen Script","Noto Sans KR",cursive;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;word-break:keep-all;font-family:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;color:var(--ink);background:var(--wall);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input,select{font:inherit}
+
+/* ================= INTRO ================= */
+#intro{position:fixed;inset:0;z-index:50;background:#0b1430;overflow:hidden}
+#intro svg.scene{position:absolute;inset:0;width:100%;height:100%}
+.tw{animation:tw 3s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.25}50%{opacity:1}}
+.gate-glow{animation:pulse 3.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+#walker{transform:translate(800px,842px);transition:transform 2.2s cubic-bezier(.45,.05,.3,1)}
+#intro.go #walker{transform:translate(800px,668px) scale(.32)}
+.leg{transform-box:fill-box;transform-origin:50% 0;animation:swing .55s ease-in-out infinite alternate}
+.leg.r{animation-delay:-.55s}
+@keyframes swing{from{transform:rotate(9deg)}to{transform:rotate(-9deg)}}
+.arm{transform-box:fill-box;transform-origin:50% 0;animation:swing .55s ease-in-out infinite alternate-reverse}
+.arm.r{animation-delay:-.55s}
+#torso{animation:bob .275s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+#gateGroup{transition:filter 1.6s}
+#intro.go #gateGroup{filter:brightness(1.5)}
+#intro.go .gate-glow{animation:none;opacity:1}
+.intro-copy{position:absolute;left:6vw;top:8vh;z-index:3;color:#fff}
+.intro-copy .l1{font-family:var(--title);font-weight:900;font-size:clamp(34px,5.4vw,78px);line-height:1.12;letter-spacing:-.01em;text-shadow:0 0 2px #0b1430,4px 4px 0 #1a2550,0 0 30px rgba(255,255,255,.25)}
+.intro-copy .l2{font-family:var(--title);font-weight:900;font-size:clamp(38px,6vw,86px);line-height:1.1;color:#f9b923;text-shadow:4px 4px 0 #1a2550,0 0 34px rgba(249,185,35,.45)}
+.emblem{display:flex;align-items:center;gap:12px;margin-top:22px;color:#e8ecf7;font-size:clamp(12px,1.1vw,16px);letter-spacing:.14em}
+.emblem svg{width:46px;height:46px}
+.intro-copy,.login{opacity:0;animation:rise 1s .4s ease forwards}
+.login{animation-delay:.9s}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.login{position:absolute;left:6vw;bottom:9vh;z-index:3;width:min(380px,88vw);background:rgba(13,22,52,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:22px 22px 20px;color:#fff;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.login .t{font-weight:900;font-size:18px}
+.login .s{font-size:13px;color:#c7cfe6;margin:2px 0 14px}
+.login .row{display:flex;gap:8px}
+.login input{flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:18px;letter-spacing:.3em;outline:none}
+.login input::placeholder{letter-spacing:0;color:#aab3cf;font-size:14px}
+.login input:focus{border-color:#f9b923;box-shadow:0 0 0 3px rgba(249,185,35,.25)}
+.login button{padding:0 20px;border:0;border-radius:12px;background:#f9b923;color:#1a2550;font-weight:900;font-size:16px;cursor:pointer;transition:transform .15s}
+.login button:hover{transform:translateY(-2px)}
+.login .msg{height:18px;margin-top:8px;font-size:13px;color:#ffb4b4}
+.login.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+#intro.go .login,#intro.go .intro-copy{transition:opacity .8s;opacity:0!important}
+.intro-sign{position:absolute;right:3vw;bottom:3vh;z-index:3;color:#e9d4a4;font-size:13px;font-weight:700;letter-spacing:.08em;opacity:.85}
+#flash{position:fixed;inset:0;z-index:60;pointer-events:none;background:radial-gradient(circle at 50% 66%,#fff 0,#fff6dc 35%,rgba(255,246,220,0) 70%);opacity:0;transform:scale(.2);transition:opacity .7s ease,transform 1s ease}
+#flash.on{opacity:1;transform:scale(3.2)}
+#flash.off{opacity:0;transition:opacity 1s ease}
+
+/* ================= APP SHELL ================= */
+#app{display:none}
+#app.show{display:block}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:10px 22px;background:rgba(94,58,26,.92);color:#f6e9d2;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.topbar .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14.5px}
+.topbar .brand b{font-family:var(--title);font-weight:400;font-size:19px;color:#ffd977;letter-spacing:.02em}
+.topbar .tb-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;cursor:pointer}
+.topbar .tb-btn:hover{background:rgba(255,255,255,.22)}
+.dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:10px}
+.dots button{position:relative;width:14px;height:14px;border-radius:50%;border:2px solid #7a4e26;background:#fff8e8;cursor:pointer;padding:0;transition:transform .2s,background .2s}
+.dots button.on{background:#f9b923;transform:scale(1.35)}
+.dots button span{position:absolute;right:24px;top:50%;transform:translateY(-50%);white-space:nowrap;background:#5e3a1a;color:#fff;font-size:12px;padding:3px 9px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .2s}
+.dots button:hover span{opacity:1}
+.badge{position:fixed;left:16px;bottom:14px;z-index:20;background:#5e3a1a;color:#ffd977;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;letter-spacing:.05em;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+
+section.slide{min-height:100vh;padding:86px 70px 60px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.inner{max-width:1240px;width:100%;margin:0 auto}
+
+/* period heading */
+.period{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.pno{display:inline-flex;align-items:center;justify-content:center;font-family:var(--title);font-size:18px;padding:6px 14px;border-radius:8px;background:var(--wood);color:#ffe6a8;transform:rotate(-3deg);box-shadow:2px 3px 0 rgba(0,0,0,.2)}
+.period h2{margin:0;font-family:var(--title);font-weight:400;font-size:clamp(28px,3.4vw,46px);letter-spacing:-.01em;line-height:1.1}
+.period .hand{font-family:var(--hand);font-size:clamp(22px,2vw,28px);color:var(--sub);line-height:1}
+
+/* chalkboard */
+.wall{background:var(--wall) repeating-linear-gradient(90deg,rgba(0,0,0,.015) 0 2px,transparent 2px 60px)}
+.board{position:relative;background:
+   radial-gradient(ellipse at 20% 30%,rgba(255,255,255,.06),transparent 50%),
+   radial-gradient(ellipse at 80% 70%,rgba(255,255,255,.05),transparent 55%),
+   radial-gradient(ellipse at 60% 10%,rgba(255,255,255,.035),transparent 40%),
+   linear-gradient(160deg,var(--board),var(--board2));
+   border:16px solid var(--wood);border-radius:6px;box-shadow:inset 0 0 70px rgba(0,0,0,.45),0 14px 30px rgba(60,40,15,.28);color:var(--chalk);padding:34px 40px 46px}
+.board:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(115deg,rgba(255,255,255,.012) 0 3px,transparent 3px 9px)}
+.tray{position:absolute;left:-16px;right:-16px;bottom:-30px;height:16px;background:var(--wood2);border-radius:0 0 6px 6px;box-shadow:0 6px 10px rgba(0,0,0,.25)}
+.tray i{position:absolute;top:-7px;height:8px;border-radius:3px}
+.board .period h2{color:var(--chalk);text-shadow:0 0 1px rgba(255,255,255,.6)}
+.board .period .hand{color:#cfe0d6}
+.chalk{font-family:var(--hand);color:var(--chalk);text-shadow:0 0 1px rgba(255,255,255,.5)}
+
+/* notebook */
+.notebook{background:var(--paper) repeating-linear-gradient(transparent 0 33px,var(--rule) 33px 34px);position:relative}
+.notebook:before{content:"";position:absolute;top:0;bottom:0;left:26px;width:2px;background:var(--margin);opacity:.7}
+.notebook:after{content:"";position:absolute;top:0;bottom:0;left:8px;width:10px;background:radial-gradient(circle,var(--wall) 4px,transparent 5px) 0 0/10px 70px}
+
+/* cork */
+.cork{background:var(--cork) radial-gradient(#a57647 1px,transparent 1.6px) 0 0/7px 7px;box-shadow:inset 0 0 0 14px #8a5b30,inset 0 0 60px rgba(0,0,0,.25)}
+
+/* generic animation helpers */
+.pop{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;transition-delay:calc(var(--d,0) * 1s)}
+.in .pop{opacity:1;transform:none}
+
+/* bars */
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:var(--lw,110px) 1fr 86px;align-items:center;gap:12px;font-size:15px}
+.bar .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .tr{height:16px;border-radius:8px;background:rgba(0,0,0,.07);overflow:hidden}
+.board .bar .tr{background:rgba(255,255,255,.1)}
+.bar .tr b{display:block;height:100%;width:0;border-radius:8px;transition:width 1.1s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0) * 60ms)}
+.bar .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.bar .v em{font-style:normal;font-weight:400;font-size:12.5px;opacity:.7;margin-left:4px}
+
+/* ===== S1 overview ===== */
+.big-title{font-family:var(--hand);font-size:clamp(30px,3.4vw,50px);line-height:1.2;margin:4px 0 26px;color:var(--chalk)}
+.big-title u{text-decoration:none;background:linear-gradient(transparent 70%,rgba(246,211,101,.45) 70%)}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.k{border:2px dashed rgba(244,241,230,.35);border-radius:16px;padding:20px 20px 18px;position:relative}
+.k .lab{font-family:var(--hand);font-size:26px;color:#d7e7dd}
+.k .num{font-family:var(--title);font-size:clamp(44px,5vw,76px);line-height:1;margin:6px 0 4px;color:var(--chalk-y)}
+.k .num small{font-family:var(--hand);font-size:30px;color:var(--chalk);margin-left:4px}
+.k .sub{font-family:var(--hand);font-size:24px;color:var(--chalk-b)}
+.k:nth-child(2) .num{color:var(--chalk-b)}
+.k:nth-child(3) .num{color:var(--chalk-p)}
+.k:nth-child(4) .num{color:var(--chalk-g)}
+.mini-stack{margin-top:30px}
+.mini-stack .lbl{font-family:var(--hand);font-size:26px;margin-bottom:8px}
+.stack{display:flex;height:52px;border-radius:12px;overflow:hidden;border:2px solid rgba(255,255,255,.3)}
+.stack div{width:0;display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;color:#1d2a22;font-weight:900;font-size:15px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.note{font-size:13px;opacity:.75;margin-top:16px}
+
+/* ===== S2 types ===== */
+.s2grid{display:grid;grid-template-columns:380px 1fr;gap:34px;align-items:center}
+.donut-box{position:relative;width:340px;height:340px;margin:0 auto}
+.donut-box svg{width:100%;height:100%}
+.seg{transition:stroke-dasharray 1.2s cubic-bezier(.3,.7,.2,1)}
+.donut-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.donut-c b{font-family:var(--title);font-weight:400;font-size:52px;line-height:1}
+.donut-c span{font-family:var(--hand);font-size:24px;color:var(--sub)}
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;margin-top:10px;font-size:14.5px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px}
+.cards4{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.icard{background:#fff;border-radius:6px;padding:20px 20px 16px;box-shadow:0 8px 18px rgba(30,30,50,.12);position:relative;border-top:6px solid var(--c)}
+.icard:before{content:"";position:absolute;top:-16px;left:50%;width:86px;height:24px;margin-left:-43px;background:rgba(249,226,160,.75);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.icard:nth-child(even){transform:rotate(.6deg)}
+.icard:nth-child(odd){transform:rotate(-.5deg)}
+.icard .h{display:flex;justify-content:space-between;align-items:baseline}
+.icard h3{margin:0;font-size:19px;font-weight:900}
+.icard .tot{font-family:var(--title);font-size:34px;color:var(--c)}
+.icard .tot small{font-family:var(--hand);font-size:22px;color:var(--sub);margin-left:4px}
+.icard .bars{margin-top:10px;gap:6px}
+.icard .bar{font-size:13.5px;grid-template-columns:118px 1fr 44px;gap:8px}
+.icard .bar .tr{height:12px}
+.icard .memo{margin-top:10px;font-family:var(--hand);font-size:20px;line-height:1.15;color:var(--pencil)}
+
+/* ===== S3 map ===== */
+.s3grid{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start}
+.kmap{display:grid;grid-template-columns:repeat(4,100px);grid-auto-rows:80px;gap:9px}
+.tile{border:2px dashed rgba(244,241,230,.45);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:transform .2s,box-shadow .2s,background-color .6s;opacity:0;transform:scale(.6)}
+.in .tile{opacity:1;transform:none;transition:opacity .5s,transform .5s cubic-bezier(.3,1.6,.5,1),background-color .6s,box-shadow .2s;transition-delay:calc(var(--d) * 1s)}
+.tile:hover{box-shadow:0 0 0 3px rgba(246,211,101,.8)}
+.tile.sel{box-shadow:0 0 0 4px #fff,0 0 22px rgba(255,255,255,.55)}
+.tile .n{font-family:var(--hand);font-size:26px;line-height:1}
+.tile .c{font-family:var(--title);font-size:26px;line-height:1.1}
+.tile.dark{color:#1d2a22}
+.map-legend{font-family:var(--hand);font-size:22px;margin-top:12px;color:#cfe0d6}
+.panel{display:flex;flex-direction:column;gap:16px}
+.panel h3{margin:0 0 10px;font-family:var(--hand);font-weight:400;font-size:32px;color:var(--chalk-y)}
+.unilist{max-height:270px;overflow:auto;padding-right:6px}
+.unilist::-webkit-scrollbar{width:8px}
+.unilist::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:4px}
+.board .bar .v{color:var(--chalk)}
+
+/* ===== S4 deep ===== */
+.cmp{display:flex;flex-direction:column;gap:14px;margin-bottom:26px}
+.cmp .row{display:grid;grid-template-columns:120px 1fr 70px;align-items:center;gap:14px}
+.cmp .row .nm{font-weight:900;font-size:16px}
+.cmp .row .tt{text-align:right;font-weight:700}
+.st100{display:flex;height:40px;border-radius:10px;overflow:hidden;background:rgba(0,0,0,.05)}
+.st100 div{width:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.flegend{display:flex;gap:16px;font-size:14px;margin:-4px 0 18px 134px;flex-wrap:wrap}
+.flegend span{display:inline-flex;align-items:center;gap:6px}
+.flegend i{width:12px;height:12px;border-radius:3px}
+.tabs{display:flex;gap:4px;align-items:flex-end;border-bottom:3px solid var(--ink);margin-bottom:0}
+.tabs button{border:2px solid var(--ink);border-bottom:0;border-radius:12px 12px 0 0;padding:10px 22px;background:#f1ece0;color:var(--sub);font-weight:900;font-size:16px;cursor:pointer;transform:translateY(3px);transition:all .2s}
+.tabs button.on{background:#fff;color:var(--ink);padding-top:14px}
+.tabs button[data-i="0"].on{box-shadow:inset 0 5px 0 var(--t1)}
+.tabs button[data-i="1"].on{box-shadow:inset 0 5px 0 var(--t2)}
+.tabs button[data-i="2"].on{box-shadow:inset 0 5px 0 var(--t3)}
+.tabbody{background:#fff;border:3px solid var(--ink);border-top:0;border-radius:0 0 14px 14px;padding:22px 24px}
+.insight{font-family:var(--hand);font-size:clamp(23px,1.9vw,29px);line-height:1.3;color:var(--pencil);margin-bottom:18px;padding-left:14px;border-left:5px solid var(--c)}
+.insight b{color:var(--c);font-weight:400;background:linear-gradient(transparent 62%,rgba(246,211,101,.55) 62%)}
+.g3{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:24px}
+.g3 h4{margin:0 0 10px;font-size:15px;font-weight:900;color:var(--sub)}
+.g3 .bar{font-size:14px;grid-template-columns:var(--lw,96px) 1fr 80px;gap:8px}
+
+/* ===== S5 top ===== */
+.paper{background:#fffdf3;border-radius:4px;padding:26px 30px 22px;box-shadow:0 10px 24px rgba(0,0,0,.25);position:relative}
+.pin{position:absolute;top:-10px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff8a80,#c62828 60%,#7f1010);box-shadow:2px 3px 4px rgba(0,0,0,.35)}
+.toprow{display:grid;grid-template-columns:44px 280px 1fr 70px;align-items:center;gap:12px;padding:5px 0;border-bottom:1px dashed #e4dccb;font-size:15px}
+.medal{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;background:#efe9db;color:var(--sub)}
+.m1{background:radial-gradient(circle at 35% 30%,#fff4c2,#e0a82e 60%,#a8741a);color:#5a3d06}
+.m2{background:radial-gradient(circle at 35% 30%,#ffffff,#b9c2cc 60%,#7e8994);color:#33404d}
+.m3{background:radial-gradient(circle at 35% 30%,#ffe2c7,#c98446 60%,#8b5424);color:#4a2a0e}
+.uname{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rtag{font-size:11.5px;font-weight:500;padding:1px 7px;border-radius:999px;background:#e8eef7;color:var(--t1);margin-left:6px}
+.rtag.j{background:#f8e7d2;color:#8a5a12}
+.toprow .tr{height:20px;background:#f1ece0;border-radius:4px;overflow:hidden}
+.toprow .tr b{display:block;height:100%;width:0;border-radius:4px;background:repeating-linear-gradient(135deg,var(--t1) 0 10px,#2f548f 10px 20px);transition:width 1s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i) * 70ms)}
+.toprow.gold .tr b{background:repeating-linear-gradient(135deg,#e0a82e 0 10px,#e9b84a 10px 20px)}
+.toprow .cnt{text-align:right;font-family:var(--title);font-size:22px}
+.toprow .cnt small{font-family:"Noto Sans KR";font-size:12px;color:var(--sub);margin-left:2px}
+#topList.two{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;grid-auto-flow:column;grid-template-rows:repeat(var(--rows),auto)}
+#topList.two .toprow{grid-template-columns:34px 210px 1fr 50px;padding:2px 0;font-size:14px}
+#topList.two .medal{width:28px;height:28px;font-size:13px}
+#topList.two .toprow .tr{height:14px}
+#topList.two .toprow .cnt{font-size:18px}
+.seg-btns{display:flex;gap:8px;margin-bottom:14px}
+.seg-btns button{border:2px solid #fff3dc;background:rgba(0,0,0,.18);color:#fff;border-radius:999px;padding:6px 16px;cursor:pointer;font-weight:700}
+.seg-btns button.on{background:#fff3dc;color:#5e3a1a}
+
+/* ===== S6 list ===== */
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.tools input,.tools select{font-size:15px;padding:10px 14px;border:2px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink)}
+.tools input{flex:1;min-width:200px}
+.cnt-line{font-family:var(--hand);font-size:24px;color:var(--pencil);margin-bottom:6px}
+.tblwrap{max-height:56vh;overflow:auto;border:2px solid var(--ink);border-radius:12px;background:#fff}
+table.full{width:100%;border-collapse:collapse;font-size:15px}
+table.full th{position:sticky;top:0;background:#f4efe2;text-align:left;font-size:13.5px;color:var(--sub);padding:10px 14px;border-bottom:2px solid var(--ink);z-index:1}
+table.full td{padding:8px 14px;border-bottom:1px solid #eee8da}
+table.full tr:hover td{background:#fff8e1}
+.inbar{display:flex;align-items:center;gap:10px}
+.inbar span{font-weight:700;min-width:28px;text-align:right}
+.inbar .tr{flex:1;max-width:320px;height:10px;background:#f1ece0;border-radius:5px;overflow:hidden}
+.inbar .tr b{display:block;height:100%;background:var(--t2);border-radius:5px}
+
+/* ===== S7 closing ===== */
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:16px 40px;margin:10px 0 30px}
+.sum div{font-family:var(--hand);font-size:clamp(25px,2.2vw,33px);line-height:1.25;color:var(--chalk);padding-left:32px;position:relative}
+.sum div:before{content:"";position:absolute;left:2px;top:12px;width:16px;height:16px;border:2.5px solid var(--chalk-y);border-radius:50%}
+.sum b{font-weight:400;color:var(--chalk-y)}
+.thanks{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;border-top:2px dashed rgba(255,255,255,.3);padding-top:22px}
+.thanks .ty{font-family:var(--title);font-size:clamp(40px,5vw,70px);color:var(--chalk);line-height:1}
+.thanks .made{font-family:var(--hand);font-size:38px;color:var(--chalk-y)}
+
+@media (max-width:1100px){
+  .s2grid,.s3grid{grid-template-columns:1fr}
+  .kgrid{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr}
+  .kmap{margin:0 auto}
+}
+@media (max-width:640px){
+  #topList.two{display:block}
+  section.slide{padding:76px 14px 44px 14px}
+  .board{padding:22px 18px 34px;border-width:10px}
+  .tray{left:-10px;right:-10px;bottom:-24px}
+  .dots{display:none}
+  .cards4{grid-template-columns:1fr}
+  .donut-box{width:270px;height:270px}
+  .kmap{grid-template-columns:repeat(4,1fr);grid-auto-rows:70px;gap:6px}
+  .tile .n{font-size:20px}.tile .c{font-size:19px}
+  .toprow{grid-template-columns:36px 1fr 52px;}
+  .toprow .tr{grid-column:2/4;grid-row:2}
+  .cmp .row{grid-template-columns:76px 1fr 44px;gap:8px}
+  .flegend{margin-left:0}
+  .sum{grid-template-columns:1fr}
+  .topbar .brand span{display:none}
+  .k .num{font-size:40px}
+  .intro-copy{top:6vh}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= INTRO ================= -->
+<div id="intro">
+  <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0a1230"/><stop offset=".45" stop-color="#1c2b5c"/><stop offset=".68" stop-color="#4a5a8e"/><stop offset=".78" stop-color="#c9a87a"/>
+      </linearGradient>
+      <radialGradient id="horizon" cx=".5" cy=".7" r=".45">
+        <stop offset="0" stop-color="#fff2c8" stop-opacity=".95"/><stop offset=".35" stop-color="#ffd27a" stop-opacity=".45"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6597"/><stop offset="1" stop-color="#262f58"/></linearGradient>
+      <linearGradient id="road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3d2"/><stop offset=".5" stop-color="#c6c3dc"/><stop offset="1" stop-color="#8d92b8"/></linearGradient>
+      <linearGradient id="letter" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbe9"/><stop offset=".55" stop-color="#ffe2a0"/><stop offset="1" stop-color="#ffb956"/></linearGradient>
+      <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbe9"/><stop offset="1" stop-color="#ffc66d"/></linearGradient>
+      <filter id="blur18" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
+      <filter id="blur6" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+    </defs>
+    <rect width="1600" height="900" fill="url(#sky)"/>
+    <g id="stars"></g>
+    <ellipse cx="800" cy="610" rx="760" ry="260" fill="url(#horizon)"/>
+    <path d="M0 610 L150 540 L300 590 L470 470 L640 560 L800 520 L960 560 L1130 455 L1300 585 L1460 520 L1600 570 V900 H0Z" fill="#3c4a82" opacity=".85"/>
+    <path d="M0 640 L210 575 L380 625 L520 590 L700 640 L900 640 L1080 590 L1240 620 L1420 570 L1600 625 V900 H0Z" fill="#2c3768"/>
+    <rect y="628" width="1600" height="272" fill="url(#ground)"/>
+    <polygon points="520,900 1080,900 828,630 772,630" fill="url(#road)" opacity=".92"/>
+    <polygon points="520,900 1080,900 828,630 772,630" fill="#fff6d8" opacity=".25" filter="url(#blur6)"/>
+    <!-- trees -->
+    <g fill="#121a36">
+      <circle cx="40" cy="640" r="70"/><circle cx="120" cy="600" r="80"/><circle cx="200" cy="660" r="70"/><circle cx="70" cy="730" r="100"/><circle cx="200" cy="790" r="90"/><circle cx="60" cy="860" r="120"/><circle cx="250" cy="900" r="80"/>
+      <circle cx="1560" cy="640" r="70"/><circle cx="1480" cy="595" r="82"/><circle cx="1400" cy="660" r="70"/><circle cx="1530" cy="730" r="100"/><circle cx="1400" cy="790" r="90"/><circle cx="1540" cy="860" r="120"/><circle cx="1350" cy="900" r="80"/>
+    </g>
+    <!-- gate: 저동 -->
+    <g id="gateGroup">
+      <g class="gate-glow" filter="url(#blur18)" opacity=".9">
+        <text x="590" y="628" text-anchor="middle" font-family="Black Han Sans, Noto Sans KR, sans-serif" font-size="300" fill="#ffcf73">저</text>
+        <text x="1010" y="628" text-anchor="middle" font-family="Black Han Sans, Noto Sans KR, sans-serif" font-size="300" fill="#ffcf73">동</text>
+        <rect x="440" y="352" width="720" height="44" rx="6" fill="#ffcf73"/>
+      </g>
+      <g id="extrude" font-family="Black Han Sans, Noto Sans KR, sans-serif" font-size="300" text-anchor="middle"></g>
+      <text x="590" y="628" text-anchor="middle" font-family="Black Han Sans, Noto Sans KR, sans-serif" font-size="300" fill="url(#letter)" stroke="#fffaf0" stroke-width="2">저</text>
+      <text x="1010" y="628" text-anchor="middle" font-family="Black Han Sans, Noto Sans KR, sans-serif" font-size="300" fill="url(#letter)" stroke="#fffaf0" stroke-width="2">동</text>
+            <rect x="440" y="352" width="720" height="40" rx="6" fill="url(#beam)" stroke="#fffaf0" stroke-width="2"/>
+      <rect x="446" y="392" width="720" height="9" rx="3" fill="#c97a26" opacity=".85"/>
+      <text x="800" y="380" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-weight="900" font-size="19" letter-spacing="9" fill="#8a4f12">JEODONG HIGH SCHOOL</text>
+    </g>
+    <!-- walking student -->
+    <g id="walker">
+      <ellipse cx="0" cy="78" rx="34" ry="7" fill="#000" opacity=".25"/>
+      <rect class="leg l" x="-17" y="12" width="14" height="62" rx="6" fill="#1f2747"/>
+      <rect class="leg r" x="3" y="12" width="14" height="62" rx="6" fill="#1f2747"/>
+      <g id="torso">
+        <rect class="arm l" x="-36" y="-52" width="12" height="54" rx="6" fill="#33406a"/>
+        <rect class="arm r" x="24" y="-52" width="12" height="54" rx="6" fill="#33406a"/>
+        <rect x="-28" y="-60" width="56" height="78" rx="16" fill="#3a4675"/>
+        <rect x="-22" y="-56" width="44" height="52" rx="12" fill="#8c6a48"/>
+        <rect x="-16" y="-30" width="32" height="18" rx="6" fill="#77583a"/>
+        <rect x="-24" y="-56" width="6" height="40" rx="3" fill="#5b4430"/>
+        <rect x="18" y="-56" width="6" height="40" rx="3" fill="#5b4430"/>
+        <circle cx="0" cy="-80" r="21" fill="#1b1a26"/>
+        <path d="M-21 -84 Q0 -112 21 -84 Q12 -92 0 -92 Q-12 -92 -21 -84Z" fill="#14131d"/>
+      </g>
+    </g>
+  </svg>
+
+  <div class="intro-copy">
+    <div class="l1">저동의 3년이 곧,</div>
+    <div class="l2">대학으로 가는 길</div>
+    <div class="emblem">
+      <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="none" stroke="#e8ecf7" stroke-width="2"/><circle cx="24" cy="24" r="17" fill="none" stroke="#e8ecf7" stroke-width="1" stroke-dasharray="2 3"/><text x="24" y="31" text-anchor="middle" font-family="Black Han Sans, sans-serif" font-size="20" fill="#f9b923">저</text></svg>
+      <span>저동고등학교 3학년부</span>
+    </div>
+  </div>
+
+  <form class="login" id="login" autocomplete="off">
+    <div class="t">2027학년도 대입 수시 지원 현황</div>
+    <div class="s">학부모 연수 자료 · 저동고등학교 3학년부</div>
+    <div class="row">
+      <input id="pw" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호를 입력하세요" aria-label="비밀번호">
+      <button type="submit">입장하기</button>
+    </div>
+    <div class="msg" id="msg"></div>
+  </form>
+  <div class="intro-sign">made by HA샘</div>
+</div>
+<div id="flash"></div>
+
+<!-- ================= APP ================= -->
+<div id="app">
+  <div class="topbar">
+    <div class="brand"><b>저동고</b><span>2027학년도 대입 수시 지원 현황 · 학부모 연수</span></div>
+    <button class="tb-btn" id="fsBtn" type="button">발표 모드 (전체화면)</button>
+  </div>
+  <nav class="dots" id="dots"></nav>
+  <div class="badge">made by HA샘</div>
+
+  <!-- S1 -->
+  <section class="slide wall" id="s1" data-name="한눈에 보기">
+    <div class="inner">
+      <div class="board">
+        <div class="period pop"><span class="pno">1교시</span><h2>한눈에 보기</h2><span class="hand">오늘의 학습 목표: 우리 학교 수시 지원 흐름 읽기</span></div>
+        <div class="big-title pop" style="--d:.15">2027학년도 수시, 저동고 3학년은 <u>이렇게 지원했습니다</u></div>
+        <div class="kgrid" id="kgrid"></div>
+        <div class="mini-stack pop" style="--d:.9">
+          <div class="lbl chalk">전형별로 나누어 보면</div>
+          <div class="stack" id="s1stack"></div>
+        </div>
+        <div class="note">4년제 대학 기준, 원서 접수 건수 집계</div>
+        <div class="tray"><i style="left:12%;width:60px;background:#fff"></i><i style="left:16%;width:44px;background:#f6d365"></i><i style="left:20%;width:38px;background:#f5a3b5"></i><i style="right:14%;width:90px;height:16px;top:-14px;background:#3d3d3d;border-radius:4px"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section class="slide notebook" id="s2" data-name="전형별 지원">
+    <div class="inner">
+      <div class="period pop"><span class="pno">2교시</span><h2>어떤 전형으로 지원했을까?</h2><span class="hand">학생부 위주 전형이 3건 중 2건</span></div>
+      <div class="s2grid">
+        <div class="pop" style="--d:.15">
+          <div class="donut-box"><svg viewBox="0 0 240 240" id="donutType"></svg><div class="donut-c"><b data-count="0" id="donutTypeTotal">0</b><span>전체 지원(건)</span></div></div>
+          <div class="legend" id="typeLegend"></div>
+        </div>
+        <div class="cards4" id="typeCards"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section class="slide wall" id="s3" data-name="지역별 지원">
+    <div class="inner">
+      <div class="board">
+        <div class="period pop"><span class="pno">3교시</span><h2>어느 지역 대학에 지원했을까?</h2><span class="hand">지도 칸을 누르면 그 지역 대학이 보여요</span></div>
+        <div class="s3grid">
+          <div>
+            <div class="kmap" id="kmap"></div>
+            <div class="map-legend">색이 진할수록 지원 건수가 많은 지역</div>
+          </div>
+          <div class="panel">
+            <div class="pop" style="--d:.3"><h3>권역별 지원</h3><div class="bars" id="zoneBars" style="--lw:70px"></div></div>
+            <div class="pop" style="--d:.5"><h3 id="regTitle">서울 소재 대학</h3><div class="unilist"><div class="bars" id="regList" style="--lw:220px"></div></div></div>
+          </div>
+        </div>
+        <div class="tray"><i style="left:70%;width:56px;background:#fff"></i><i style="left:75%;width:40px;background:#9fd3f0"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section class="slide notebook" id="s4" data-name="전형 심층 분석">
+    <div class="inner">
+      <div class="period pop"><span class="pno">4교시</span><h2>전형마다 다른 지원 모습</h2><span class="hand">교과 · 종합 · 논술 비교 분석</span></div>
+      <div class="pop" style="--d:.15">
+        <div class="cmp" id="cmp"></div>
+        <div class="flegend" id="flegend"></div>
+      </div>
+      <div class="pop" style="--d:.35">
+        <div class="tabs" id="tabs"></div>
+        <div class="tabbody" id="tabbody"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section class="slide cork" id="s5" data-name="지원 상위 대학">
+    <div class="inner">
+      <div class="period pop" style="color:#fff8ea"><span class="pno">5교시</span><h2 style="text-shadow:2px 2px 0 rgba(0,0,0,.25)">가장 많이 지원한 대학</h2><span class="hand" style="color:#fff0d4">게시판에 붙은 인기 순위표</span></div>
+      <div class="seg-btns pop" style="--d:.1"><button class="on" data-n="10" type="button">상위 10</button><button data-n="20" type="button">상위 20</button><button data-n="30" type="button">상위 30</button></div>
+      <div class="paper pop" style="--d:.2"><span class="pin" style="left:24px"></span><span class="pin" style="right:24px"></span><div id="topList"></div>
+        <div style="font-size:12.5px;color:var(--sub);margin-top:12px">순위는 원자료의 동순위 표기를 따름. 전문대학 2곳은 상위 학교 표에만 포함되어 4년제 총계에는 들어가지 않음.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section class="slide notebook" id="s6" data-name="전체 대학 명단">
+    <div class="inner">
+      <div class="period pop"><span class="pno">6교시</span><h2>지원 대학 전체 명단</h2><span class="hand">대학명이나 지역으로 찾아보세요</span></div>
+      <div class="pop" style="--d:.15">
+        <div class="tools">
+          <input id="q" type="search" placeholder="대학명 검색 (예: 강원대, 서울)">
+          <select id="rf"><option value="">전체 지역</option></select>
+          <select id="sf"><option value="cnt">지원 많은 순</option><option value="name">가나다순</option></select>
+        </div>
+        <div class="cnt-line" id="cntLine"></div>
+        <div class="tblwrap"><table class="full"><thead><tr><th style="width:90px">지역</th><th>대학(캠퍼스)</th><th style="width:40%">지원 건수</th></tr></thead><tbody id="tb"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section class="slide wall" id="s7" data-name="종례">
+    <div class="inner">
+      <div class="board">
+        <div class="period pop"><span class="pno">종례</span><h2>오늘 꼭 기억할 네 가지</h2></div>
+        <div class="sum" id="sum"></div>
+        <div class="thanks pop" style="--d:.9"><div class="ty">감사합니다</div><div class="made">made by HA샘</div></div>
+        <div class="tray"><i style="left:40%;width:60px;background:#fff"></i><i style="left:45%;width:42px;background:#b9e4a5"></i></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const D = {"unis": [["인천", "가천대학교(메디컬)", 5], ["경기", "가천대학교(성남)", 40], ["강원", "가톨릭관동대학교(강릉)", 4], ["경기", "가톨릭대학교(성심)", 22], ["경기", "강남대학교(용인)", 7], ["서울", "강서대학교(서울)", 2], ["강원", "강원대학교(강릉)", 12], ["강원", "강원대학교(도계)", 2], ["강원", "강원대학교(삼척)", 5], ["강원", "강원대학교(원주)", 5], ["강원", "강원대학교(춘천)", 13], ["충북", "건국대학교(글로컬)", 11], ["서울", "건국대학교(서울)", 22], ["충남", "건양대학교(논산)", 1], ["대전", "건양대학교(대전)", 2], ["서울", "경기대학교(서울)", 9], ["경기", "경기대학교(수원)", 20], ["경남", "경남대학교(마산)", 1], ["경기", "경동대학교(양주)", 4], ["강원", "경동대학교(원주문막)", 2], ["대구", "경북대학교(대구)", 8], ["경북", "경북대학교(상주)", 4], ["경남", "경상국립대학교(진주)", 2], ["경남", "경상국립대학교(통영)", 1], ["경북", "경운대학교(구미)", 1], ["인천", "경인교육대학교(인천)", 2], ["경북", "경일대학교(경산)", 1], ["경기", "경희대학교(국제)", 4], ["서울", "경희대학교(서울)", 17], ["대구", "계명대학교(대구)", 1], ["서울", "고려대학교(서울)", 7], ["세종", "고려대학교(세종)", 14], ["부산", "고신대학교(부산)", 1], ["서울", "광운대학교(서울)", 12], ["광주", "광주과학기술원", 1], ["광주", "광주대학교(광주)", 1], ["광주", "광주여자대학교(광주)", 1], ["충남", "국립공주대학교(공주)", 11], ["충남", "국립공주대학교(예산)", 1], ["전북", "국립군산대학교(군산)", 1], ["전남", "국립목포해양대학교(목포)", 2], ["부산", "국립부경대학교(부산)", 1], ["충북", "국립한국교통대학교(충주)", 6], ["부산", "국립한국해양대학교(부산)", 3], ["대전", "국립한밭대학교(대전)", 2], ["서울", "국민대학교(서울)", 25], ["충북", "극동대학교(음성)", 2], ["경북", "김천대학교(김천)", 1], ["충남", "남서울대학교(천안)", 5], ["경기", "단국대학교(죽전)", 18], ["충남", "단국대학교(천안)", 11], ["경북", "대구가톨릭대학교(경산)", 2], ["대구", "대구경북과학기술원", 1], ["경북", "대구대학교(경산)", 2], ["경북", "대구한의대학교(경산)", 2], ["대전", "대전대학교(대전)", 6], ["경기", "대진대학교(포천)", 9], ["서울", "덕성여자대학교(서울)", 15], ["경북", "동국대학교(WISE)", 1], ["경기", "동국대학교(고양)", 2], ["서울", "동국대학교(서울)", 19], ["서울", "동덕여자대학교(서울)", 10], ["부산", "동명대학교(부산)", 1], ["전남", "동신대학교(나주)", 3], ["부산", "동아대학교(부산)", 1], ["경기", "동양대학교(동두천)", 3], ["경북", "동양대학교(영주)", 3], ["서울", "명지대학교(서울)", 19], ["경기", "명지대학교(용인)", 11], ["대전", "목원대학교(대전)", 1], ["전남", "목포가톨릭대학교(목포)", 1], ["대전", "배재대학교(대전)", 5], ["충남", "백석대학교(천안)", 24], ["부산", "부산가톨릭대학교(부산)", 1], ["부산", "부산대학교(부산)", 4], ["부산", "부산외국어대학교(부산)", 1], ["서울", "삼육대학교(서울)", 8], ["서울", "상명대학교(서울)", 15], ["충남", "상명대학교(천안)", 3], ["강원", "상지대학교(원주)", 1], ["서울", "서강대학교(서울)", 7], ["서울", "서경대학교(서울)", 22], ["서울", "서울과학기술대학교(서울)", 6], ["서울", "서울교육대학교(서울)", 2], ["서울", "서울대학교(서울)", 5], ["서울", "서울시립대학교(서울)", 9], ["경기", "서울신학대학교(부천)", 2], ["서울", "서울여자대학교(서울)", 14], ["서울", "서울한영대학교(서울)", 1], ["충북", "서원대학교(청주)", 2], ["충남", "선문대학교(아산)", 1], ["경기", "성결대학교(안양)", 13], ["서울", "성공회대학교(서울)", 2], ["서울", "성균관대학교(서울)", 9], ["경기", "성균관대학교(수원)", 3], ["서울", "성신여자대학교(서울)", 16], ["충북", "세명대학교(제천)", 4], ["서울", "세종대학교(서울)", 17], ["경기", "수원대학교(수원)", 21], ["서울", "숙명여자대학교(서울)", 6], ["충남", "순천향대학교(아산)", 5], ["서울", "숭실대학교(서울)", 22], ["경북", "신경주대학교(경주)", 1], ["경기", "신한대학교(동두천)", 2], ["경기", "신한대학교(의정부)", 23], ["경기", "아주대학교(수원)", 1], ["인천", "안양대학교(강화)", 1], ["경기", "안양대학교(안양)", 6], ["강원", "연세대학교(미래)", 5], ["서울", "연세대학교(서울)", 8], ["경기", "용인대학교(용인)", 15], ["전북", "우석대학교(완주)", 1], ["대전", "우송대학교(대전)", 7], ["울산", "울산과학기술원", 4], ["전북", "원광대학교(익산)", 5], ["경북", "위덕대학교(경주)", 2], ["대전", "을지대학교(대전)", 1], ["경기", "을지대학교(성남)", 9], ["경기", "을지대학교(의정부)", 3], ["서울", "이화여자대학교(서울)", 12], ["경남", "인제대학교(김해)", 2], ["인천", "인천대학교(인천)", 16], ["인천", "인하대학교(인천)", 23], ["광주", "전남대학교(광주)", 5], ["전남", "전남대학교(여수)", 1], ["전북", "전북대학교(전주)", 7], ["전북", "전주대학교(전주)", 1], ["제주", "제주대학교(제주)", 3], ["광주", "조선대학교(광주)", 3], ["경기", "중부대학교(고양) - 고양캠퍼스", 29], ["충남", "중부대학교(금산) - 충청캠퍼스", 2], ["경기", "중앙대학교(다빈치)", 5], ["서울", "중앙대학교(서울)", 17], ["충북", "중원대학교(괴산)", 2], ["경기", "차의과학대학교(포천)", 3], ["인천", "청운대학교(인천)", 2], ["충남", "청운대학교(홍성)", 2], ["충북", "청주대학교(청주)", 5], ["서울", "총신대학교(서울)", 1], ["서울", "추계예술대학교(서울)", 1], ["강원", "춘천교육대학교(춘천)", 1], ["대전", "충남대학교(대전)", 5], ["충북", "충북대학교(청주)", 9], ["경기", "평택대학교(평택)", 3], ["경기", "한경국립대학교(안성)", 6], ["경기", "한국공학대학교(시흥)", 4], ["충북", "한국교원대학교(청주)", 2], ["충남", "한국기술교육대학교(천안)", 4], ["서울", "한국예술종합학교", 7], ["서울", "한국외국어대학교(서울)", 8], ["경기", "한국외국어대학교(용인) - 글로벌캠퍼스", 5], ["서울", "한국체육대학교(서울)", 4], ["경기", "한국항공대학교(고양)", 11], ["대전", "한남대학교(대전)", 1], ["경북", "한동대학교(포항)", 1], ["강원", "한라대학교(원주)", 1], ["강원", "한림대학교(춘천)", 2], ["충남", "한서대학교(서산)", 13], ["서울", "한성대학교(서울)", 20], ["경기", "한세대학교(군포)", 3], ["경기", "한신대학교(오산)", 2], ["경기", "한양대학교(ERICA)", 7], ["서울", "한양대학교(서울)", 13], ["경기", "협성대학교(화성)", 2], ["충남", "호서대학교(아산)", 6], ["전북", "호원대학교(군산)", 4], ["서울", "홍익대학교(서울)", 19], ["세종", "홍익대학교(세종)", 10]], "regions": [["서울", 428], ["경기", 318], ["인천", 49], ["강원", 53], ["충북", 43], ["세종", 24], ["충남", 89], ["대전", 30], ["경북", 21], ["대구", 10], ["경남", 6], ["부산", 13], ["울산", 4], ["전북", 19], ["전남", 7], ["광주", 11], ["제주", 3]], "zones": [{"k": "수도권", "v": 795}, {"k": "강원권", "v": 53}, {"k": "충청권", "v": 186}, {"k": "경상권", "v": 54}, {"k": "전라권", "v": 37}, {"k": "제주권", "v": 3}], "zoneOf": {"서울": "수도권", "경기": "수도권", "인천": "수도권", "강원": "강원권", "충북": "충청권", "세종": "충청권", "충남": "충청권", "대전": "충청권", "경북": "경상권", "대구": "경상권", "경남": "경상권", "부산": "경상권", "울산": "경상권", "전북": "전라권", "전남": "전라권", "광주": "전라권", "제주": "제주권"}, "types": [{"name": "학생부교과", "total": 370, "items": [["지역균형", 79], ["기회균형/사회통합", 5], ["그외 일반", 286]]}, {"name": "학생부종합", "total": 367, "items": [["계약학과", 2], ["사회통합", 12], ["기회균형", 7], ["종교", 3], ["지역균형/추천", 6], ["그외 일반", 337]], "memo": "지역균형/추천: 서울대, 한양대, 광주과학기술원, 대구경북과학기술원"}, {"name": "논술", "total": 203, "items": [["교과논술/약술", 79], ["일반", 124]], "memo": "교과논술/약술: 가천대, 강남대, 국민대, 삼육대, 상명대, 서경대, 수원대, 신한대, 을지대, 한국공학대, 한국기술교대, 홍익대(세종) 자연계"}, {"name": "실기/실적", "total": 188, "items": [["미술/디자인 등", 80], ["연기/영화/영상 등", 62], ["체육/체육교육 등", 25], ["음악/실용음악 등", 21]]}], "deep": [{"name": "학생부교과", "types": [["지역균형", 79], ["기회균형/사회통합", 5], ["그외 일반", 286]], "field": {"인문": 165, "자연": 148, "예체능": 21, "공통": 36}, "region": {"서울": 77, "경기": 94, "인천": 10, "강원": 29, "충북": 22, "세종": 11, "충남": 45, "대전": 21, "경남": 5, "부산": 10, "대구": 4, "경북": 18, "전북": 10, "전남": 7, "광주": 6, "제주": 1}, "total": 370}, {"name": "학생부종합", "types": [["계약학과", 2], ["사회통합", 12], ["기회균형", 7], ["종교", 3], ["지역균형/추천", 6], ["그외 일반", 337]], "field": {"인문": 214, "자연": 130, "예체능": 11, "공통": 12}, "region": {"서울": 170, "경기": 85, "인천": 18, "강원": 21, "충북": 14, "세종": 6, "충남": 20, "대전": 6, "경남": 1, "부산": 2, "울산": 4, "대구": 6, "경북": 3, "전북": 5, "전남": 0, "광주": 4, "제주": 2}, "total": 367}, {"name": "논술", "types": [["교과논술/약술", 79], ["그외 일반", 124]], "field": {"인문": 129, "자연": 53, "예체능": 2, "공통": 19}, "region": {"서울": 110, "경기": 70, "인천": 14, "강원": 1, "충북": 0, "세종": 6, "충남": 2, "대전": 0, "경남": 0, "부산": 0, "대구": 0, "경북": 0, "전북": 0, "전남": 0, "광주": 0, "제주": 0}, "total": 203}], "top": [["1", "경기", "가천대학교(성남)", 40], ["2", "경기", "중부대학교(고양) - 고양캠퍼스", 29], ["3", "서울", "국민대학교(서울)", 25], ["4", "충남", "백석대학교(천안)", 24], ["5", "경기", "신한대학교(의정부)", 23], ["5", "인천", "인하대학교(인천)", 23], ["6", "경기", "가톨릭대학교(성심)", 22], ["6", "서울", "건국대학교(서울)", 22], ["6", "서울", "서경대학교(서울)", 22], ["6", "서울", "숭실대학교(서울)", 22], ["7", "경기", "수원대학교(수원)", 21], ["8", "경기", "경기대학교(수원)", 20], ["8", "서울", "한성대학교(서울)", 20], ["9", "서울", "동국대학교(서울)", 19], ["9", "서울", "명지대학교(서울)", 19], ["9", "서울", "홍익대학교(서울)", 19], ["10", "경기", "단국대학교(죽전)", 18], ["11", "서울", "경희대학교(서울)", 17], ["11", "서울", "세종대학교(서울)", 17], ["11", "서울", "중앙대학교(서울)", 17], ["12", "서울", "성신여자대학교(서울)", 16], ["12", "인천", "인천대학교(인천)", 16], ["13", "서울", "덕성여자대학교(서울)", 15], ["13", "서울", "상명대학교(서울)", 15], ["13", "경기", "용인대학교(용인)", 15], ["14", "세종", "고려대학교(세종)", 14], ["14", "서울", "서울여자대학교(서울)", 14], ["15", "강원", "강원대학교(춘천)", 13], ["15", "경기", "성결대학교(안양)", 13], ["15", "충남", "한서대학교(서산)", 13], ["15", "서울", "한양대학교(서울)", 13], ["16", "강원", "강원대학교(강릉)", 12], ["16", "서울", "광운대학교(서울)", 12], ["16", "서울", "이화여자대학교(서울)", 12], ["17", "충북", "건국대학교(글로컬)", 11], ["17", "충남", "국립공주대학교(공주)", 11], ["17", "충남", "단국대학교(천안)", 11], ["17", "경기", "명지대학교(용인)", 11], ["17", "경기", "한국항공대학교(고양)", 11], ["18", "서울", "동덕여자대학교(서울)", 10], ["18", "세종", "홍익대학교(세종)", 10], ["19", "서울", "경기대학교(서울)", 9], ["19", "경기", "대진대학교(포천)", 9], ["19", "서울", "서울시립대학교(서울)", 9], ["19", "서울", "성균관대학교(서울)", 9], ["19", "경기", "을지대학교(성남)", 9], ["19", "충북", "충북대학교(청주)", 9], ["20", "대구", "경북대학교(대구)", 8], ["20", "서울", "삼육대학교(서울)", 8], ["20", "서울", "연세대학교(서울)", 8], ["20", "서울", "한국외국어대학교(서울)", 8], ["21", "경기", "강남대학교(용인)", 7], ["21", "서울", "고려대학교(서울)", 7], ["21", "서울", "서강대학교(서울)", 7], ["21", "대전", "우송대학교(대전)", 7], ["21", "전북", "전북대학교(전주)", 7], ["21", "서울", "한국예술종합학교", 7], ["21", "경기", "한양대학교(ERICA)", 7], ["22", "충북", "국립한국교통대학교(충주)", 6], ["22", "대전", "대전대학교(대전)", 6], ["22", "서울", "서울과학기술대학교(서울)", 6], ["22", "서울", "숙명여자대학교(서울)", 6], ["22", "경기", "안양대학교(안양)", 6], ["22", "경기", "한경국립대학교(안성)", 6], ["22", "충남", "호서대학교(아산)", 6], ["23", "인천", "가천대학교(메디컬)", 5], ["23", "강원", "강원대학교(삼척)", 5], ["23", "강원", "강원대학교(원주)", 5], ["23", "충남", "남서울대학교(천안)", 5], ["23", "대전", "배재대학교(대전)", 5], ["23", "서울", "서울대학교(서울)", 5], ["23", "충남", "순천향대학교(아산)", 5], ["23", "강원", "연세대학교(미래)", 5], ["23", "전북", "원광대학교(익산)", 5], ["23", "광주", "전남대학교(광주)", 5], ["23", "경기", "중앙대학교(다빈치)", 5], ["23", "충북", "청주대학교(청주)", 5], ["23", "대전", "충남대학교(대전)", 5], ["23", "경기", "한국외국어대학교(용인) - 글로벌캠퍼스", 5], ["24", "강원", "가톨릭관동대학교(강릉)", 4], ["24", "경기", "경동대학교(양주)", 4], ["24", "경북", "경북대학교(상주)", 4], ["24", "경기", "경희대학교(국제)", 4], ["24", "부산", "부산대학교(부산)", 4], ["24", "경기", "부천대학교", 4], ["24", "충북", "세명대학교(제천)", 4], ["24", "울산", "울산과학기술원", 4], ["24", "경기", "청강문화산업대학교", 4], ["24", "경기", "한국공학대학교(시흥)", 4], ["24", "충남", "한국기술교육대학교(천안)", 4], ["24", "서울", "한국체육대학교(서울)", 4], ["24", "전북", "호원대학교(군산)", 4], ["25", "부산", "국립한국해양대학교(부산)", 3], ["25", "전남", "동신대학교(나주)", 3], ["25", "경기", "동양대학교(동두천)", 3], ["25", "경북", "동양대학교(영주)", 3], ["25", "충남", "상명대학교(천안)", 3], ["25", "경기", "성균관대학교(수원)", 3], ["25", "경기", "을지대학교(의정부)", 3], ["25", "제주", "제주대학교(제주)", 3], ["25", "광주", "조선대학교(광주)", 3], ["25", "경기", "차의과학대학교(포천)", 3], ["25", "경기", "평택대학교(평택)", 3], ["25", "경기", "한세대학교(군포)", 3]], "junior": ["부천대학교", "청강문화산업대학교"]};
+const PASSWORD = '2026';
+const fmt = n => Number(n).toLocaleString('ko-KR');
+const pct = (a,b) => (a/b*100).toFixed(1);
+const TOTAL = D.types.reduce((s,t)=>s+t.total,0);
+const TC = ['#26457a','#2a8c82','#e08a2c','#9b59a8'];
+const CHALKC = ['#f6d365','#9fd3f0','#f5a3b5','#b9e4a5'];
+const FIELDS = ['인문','자연','예체능','공통'];
+const ZC = ['#f6d365','#9fd3f0','#f5a3b5','#ffb877','#c9b6f2','#b9e4a5'];
+const byId = id => document.getElementById(id);
+const zoneSum = (obj,z) => Object.entries(obj).filter(([r])=>D.zoneOf[r]===z).reduce((s,[,v])=>s+v,0);
+
+/* ---------- animation engine ---------- */
+function countUp(el){
+  const to = parseFloat(el.dataset.count), dec = +(el.dataset.dec||0), dur = 1400;
+  const t0 = performance.now();
+  cancelAnimationFrame(el._raf);
+  const step = now => {
+    const p = Math.min(1,(now-t0)/dur), e = 1-Math.pow(1-p,3);
+    const v = to*e;
+    el.textContent = dec ? v.toFixed(dec) : fmt(Math.round(v));
+    if(p<1) el._raf = requestAnimationFrame(step);
+  };
+  el._raf = requestAnimationFrame(step);
+}
+function play(root){
+  root.classList.add('in');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    root.querySelectorAll('[data-w]').forEach(b=>b.style.width=b.dataset.w+'%');
+    root.querySelectorAll('.seg').forEach(s=>s.style.strokeDasharray=`${s.dataset.len} ${s.dataset.c}`);
+    root.querySelectorAll('[data-count]').forEach(countUp);
+  }));
+}
+function reset(root){
+  root.classList.remove('in');
+  root.querySelectorAll('[data-w]').forEach(b=>b.style.width='0');
+  root.querySelectorAll('.seg').forEach(s=>s.style.strokeDasharray=`0 ${s.dataset.c}`);
+  root.querySelectorAll('[data-count]').forEach(el=>{cancelAnimationFrame(el._raf);el.textContent='0';});
+}
+function barHTML(label,v,max,color,i,base,unit){
+  return `<div class="bar" style="--i:${i}"><span class="nm" title="${label}">${label}</span><span class="tr"><b style="background:${color}" data-w="${(v/max*100).toFixed(2)}"></b></span><span class="v">${fmt(v)}${unit||''}${base?`<em>${pct(v,base)}%</em>`:''}</span></div>`;
+}
+function donut(svg,segs,total,opt){
+  const r=opt.r||88, sw=opt.sw||36, C=2*Math.PI*r; let acc=0;
+  let h=`<circle cx="120" cy="120" r="${r}" fill="none" stroke="${opt.track||'rgba(0,0,0,.06)'}" stroke-width="${sw}"/>`;
+  segs.forEach((s,i)=>{
+    const len=s.v/total*C, rot=-90+acc/total*360; acc+=s.v;
+    h+=`<circle class="seg" cx="120" cy="120" r="${r}" fill="none" stroke="${s.c}" stroke-width="${sw}" data-len="${Math.max(len-1.5,0)}" data-c="${C}" stroke-dasharray="0 ${C}" transform="rotate(${rot} 120 120)" style="transition-delay:${i*.18}s"><title>${s.k} ${fmt(s.v)}건</title></circle>`;
+  });
+  svg.innerHTML=h;
+}
+
+/* ---------- S1 ---------- */
+const metro = zoneSum(Object.fromEntries(D.regions),'수도권');
+const stud = D.types[0].total + D.types[1].total;
+const topUni = D.unis.slice().sort((a,b)=>b[2]-a[2])[0];
+byId('kgrid').innerHTML = [
+  ['총 수시 지원', TOTAL, '건', '4년제 대학 원서 기준'],
+  ['지원한 대학', D.unis.length, '곳', '최다 '+topUni[1].replace(/\(.*/,'')+' '+topUni[2]+'건'],
+  ['수도권 대학', metro, '건', '전체의 '+pct(metro,TOTAL)+'%'],
+  ['학생부 위주', stud, '건', '교과+종합 '+pct(stud,TOTAL)+'%']
+].map((k,i)=>`<div class="k pop" style="--d:${.3+i*.15}"><div class="lab">${k[0]}</div><div class="num"><span data-count="${k[1]}">0</span><small>${k[2]}</small></div><div class="sub">${k[3]}</div></div>`).join('');
+byId('s1stack').innerHTML = D.types.map((t,i)=>`<div style="background:${CHALKC[i]}" data-w="${t.total/TOTAL*100}" title="${t.name} ${t.total}건">${t.name} ${pct(t.total,TOTAL)}%</div>`).join('');
+
+/* ---------- S2 ---------- */
+donut(byId('donutType'), D.types.map((t,i)=>({k:t.name,v:t.total,c:TC[i]})), TOTAL, {r:88,sw:40});
+byId('donutTypeTotal').dataset.count = TOTAL;
+byId('typeLegend').innerHTML = D.types.map((t,i)=>`<span><i style="background:${TC[i]}"></i>${t.name} <b>${pct(t.total,TOTAL)}%</b></span>`).join('');
+byId('typeCards').innerHTML = D.types.map((t,i)=>`<div class="icard pop" style="--c:${TC[i]};--d:${.25+i*.15}">
+  <div class="h"><h3>${t.name}</h3><div class="tot"><span data-count="${t.total}">0</span><small>건</small></div></div>
+  <div class="bars">${t.items.map((x,j)=>barHTML(x[0],x[1],t.total,TC[i],j)).join('')}</div>
+  ${t.memo?`<div class="memo">${t.memo}</div>`:''}</div>`).join('');
+
+/* ---------- S3 map ---------- */
+const POS = {'인천':[1,1],'서울':[2,1],'경기':[3,1],'강원':[4,1],'충남':[1,2],'세종':[2,2],'충북':[3,2],'경북':[4,2],'전북':[1,3],'대전':[2,3],'대구':[3,3],'울산':[4,3],'전남':[1,4],'광주':[2,4],'경남':[3,4],'부산':[4,4],'제주':[1,5]};
+const RMAX = Math.max(...D.regions.map(r=>r[1]));
+byId('kmap').innerHTML = D.regions.map(([r,v],i)=>{
+  const a = .1 + .82*Math.sqrt(v/RMAX), p = POS[r]||[1,6];
+  return `<div class="tile ${a>.5?'dark':''}" data-r="${r}" style="grid-column:${p[0]};grid-row:${p[1]};background-color:rgba(246,211,101,${a.toFixed(2)});--d:${(i*.04).toFixed(2)}" title="${r} ${v}건"><span class="n">${r}</span><span class="c" data-count="${v}">0</span></div>`;
+}).join('');
+const zmax = Math.max(...D.zones.map(z=>z.v));
+byId('zoneBars').innerHTML = D.zones.map((z,i)=>barHTML(z.k,z.v,zmax,ZC[i],i,TOTAL)).join('');
+function showRegion(r){
+  document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('sel',t.dataset.r===r));
+  const list = D.unis.filter(u=>u[0]===r).sort((a,b)=>b[2]-a[2]);
+  const sum = list.reduce((s,u)=>s+u[2],0);
+  byId('regTitle').textContent = `${r} 소재 대학 ${list.length}곳 · ${fmt(sum)}건`;
+  const mx = Math.max(...list.map(u=>u[2]));
+  const box = byId('regList');
+  box.innerHTML = list.map((u,i)=>barHTML(u[1],u[2],mx,'#9fd3f0',i,null,'건')).join('');
+  box.parentElement.scrollTop = 0;
+  play(box);
+}
+byId('kmap').addEventListener('click',e=>{const t=e.target.closest('.tile'); if(t) showRegion(t.dataset.r);});
+
+/* ---------- S4 deep ---------- */
+const deep = D.deep;
+byId('cmp').innerHTML = deep.map((d,di)=>`<div class="row"><span class="nm">${d.name}</span><div class="st100">${FIELDS.map((f,fi)=>{const v=d.field[f]||0;return `<div style="background:${TC[fi]}" data-w="${(v/d.total*100).toFixed(2)}" title="${f} ${v}건">${v/d.total>.07?f+' '+pct(v,d.total)+'%':''}</div>`}).join('')}</div><span class="tt">${fmt(d.total)}건</span></div>`).join('');
+byId('flegend').innerHTML = FIELDS.map((f,i)=>`<span><i style="background:${TC[i]}"></i>${f}${f==='공통'?' (자유·자율·무전공)':''}</span>`).join('');
+const INS = {
+  '학생부교과': d => `교과전형은 <b>경기(${d.region['경기']}건)</b>가 서울(${d.region['서울']}건)보다 많고, 수도권 비중이 <b>${pct(zoneSum(d.region,'수도권'),d.total)}%</b>로 세 전형 중 가장 낮아요. 충청권 ${zoneSum(d.region,'충청권')}건, 강원권 ${zoneSum(d.region,'강원권')}건까지 넓게 지원했습니다.`,
+  '학생부종합': d => `종합전형은 <b>인문계열이 ${pct(d.field['인문'],d.total)}%</b>로 가장 많고, <b>서울 소재 대학이 ${d.region['서울']}건(${pct(d.region['서울'],d.total)}%)</b>으로 집중되어 있어요.`,
+  '논술': d => `논술은 <b>수도권이 ${pct(zoneSum(d.region,'수도권'),d.total)}%</b>로 거의 전부입니다. 교과논술/약술이 ${d.types[0][1]}건, 인문(${d.field['인문']}건)이 자연(${d.field['자연']}건)의 약 ${(d.field['인문']/d.field['자연']).toFixed(1)}배예요.`
+};
+byId('tabs').innerHTML = deep.map((d,i)=>`<button type="button" data-i="${i}" class="${i?'':'on'}">${d.name} ${fmt(d.total)}건</button>`).join('');
+function renderDeep(i){
+  const d = deep[i], c = TC[i], body = byId('tabbody');
+  const regs = Object.entries(d.region).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  const zl = D.zones.map(z=>[z.k,zoneSum(d.region,z.k)]);
+  body.style.setProperty('--c',c);
+  body.innerHTML = `<div class="insight">${INS[d.name](d)}</div>
+   <div class="g3">
+     <div><h4>세부 전형</h4><div class="bars" style="--lw:110px">${d.types.map((x,j)=>barHTML(x[0],x[1],d.total,c,j,d.total)).join('')}</div>
+       <h4 style="margin-top:20px">권역</h4><div class="bars" style="--lw:60px">${zl.map((x,j)=>barHTML(x[0],x[1],d.total,c,j+4,d.total)).join('')}</div></div>
+     <div><h4>계열</h4><div class="donut-box" style="width:230px;height:230px"><svg viewBox="0 0 240 240" id="fieldDonut"></svg><div class="donut-c"><b style="font-size:40px" data-count="${d.total}">0</b><span>건</span></div></div>
+       <div class="legend">${FIELDS.map((f,fi)=>`<span><i style="background:${TC[fi]}"></i>${f} ${d.field[f]||0}</span>`).join('')}</div></div>
+     <div><h4>시도별 상위 10</h4><div class="bars" style="--lw:44px">${regs.slice(0,10).map(([k,v],j)=>barHTML(k,v,regs[0][1],c,j,d.total)).join('')}</div></div>
+   </div>`;
+  donut(byId('fieldDonut'), FIELDS.map((f,fi)=>({k:f,v:d.field[f]||0,c:TC[fi]})), d.total, {r:86,sw:34});
+  play(body);
+}
+byId('tabs').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  renderDeep(+b.dataset.i);
+});
+
+/* ---------- S5 top ---------- */
+function renderTop(n){
+  const list = D.top.slice(0,n), mx = list[0][3];
+  const box = byId('topList');
+  box.classList.toggle('two', n>10); box.style.setProperty('--rows', Math.ceil(n/2));
+  box.innerHTML = list.map((t,i)=>{
+    const rk=+t[0], jc=D.junior.includes(t[2]);
+    return `<div class="toprow ${rk<=3?'gold':''}"><span class="medal ${rk<=3?'m'+rk:''}">${t[0]}</span><span class="uname" title="${t[2]}">${t[2]}<span class="rtag ${jc?'j':''}">${jc?'전문대':t[1]}</span></span><span class="tr"><b style="--i:${i}" data-w="${(t[3]/mx*100).toFixed(2)}"></b></span><span class="cnt"><span data-count="${t[3]}">0</span><small>명</small></span></div>`;
+  }).join('');
+  reset(box); play(box);
+}
+document.querySelector('.seg-btns').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('.seg-btns button').forEach(x=>x.classList.toggle('on',x===b));
+  renderTop(+b.dataset.n);
+});
+
+/* ---------- S6 list ---------- */
+const rf = byId('rf');
+D.regions.forEach(r=>rf.insertAdjacentHTML('beforeend',`<option>${r[0]}</option>`));
+const UMAX = Math.max(...D.unis.map(u=>u[2]));
+function renderList(){
+  const q = byId('q').value.trim().replace(/\s/g,''), r = rf.value, s = byId('sf').value;
+  let list = D.unis.filter(u=>(!r||u[0]===r)&&(!q||(u[1]+u[0]).replace(/\s/g,'').includes(q)));
+  list.sort(s==='cnt'?(a,b)=>b[2]-a[2]||a[1].localeCompare(b[1],'ko'):(a,b)=>a[1].localeCompare(b[1],'ko'));
+  byId('cntLine').textContent = `${list.length}곳 · 합계 ${fmt(list.reduce((a,u)=>a+u[2],0))}건`;
+  byId('tb').innerHTML = list.map(u=>`<tr><td>${u[0]}</td><td>${u[1]}</td><td><div class="inbar"><span>${u[2]}</span><span class="tr"><b style="width:${u[2]/UMAX*100}%"></b></span></div></td></tr>`).join('');
+}
+['input','change'].forEach(ev=>[byId('q'),rf,byId('sf')].forEach(el=>el.addEventListener(ev,renderList)));
+
+/* ---------- S7 summary ---------- */
+const dk = deep.find(d=>d.name==='논술');
+const seoul = D.regions.find(r=>r[0]==='서울')[1];
+byId('sum').innerHTML = [
+  `학생부 위주 전형(교과+종합)이 <b>${pct(stud,TOTAL)}%</b>, 수시의 중심은 학생부`,
+  `수도권 대학 지원 <b>${pct(metro,TOTAL)}%</b>, 서울만 <b>${fmt(seoul)}건</b>`,
+  `교과는 지역을 넓게, 논술은 수도권 <b>${pct(zoneSum(dk.region,'수도권'),dk.total)}%</b> 집중`,
+  `가장 많이 지원한 대학은 <b>${topUni[1]}</b> ${topUni[2]}건`
+].map((t,i)=>`<div class="pop" style="--d:${.2+i*.18}">${t}</div>`).join('');
+
+/* ---------- navigation ---------- */
+const slides = [...document.querySelectorAll('section.slide')];
+byId('dots').innerHTML = slides.map((s,i)=>`<button type="button" data-i="${i}" aria-label="${s.dataset.name}"><span>${s.dataset.name}</span></button>`).join('');
+byId('dots').addEventListener('click',e=>{const b=e.target.closest('button'); if(b) slides[+b.dataset.i].scrollIntoView({behavior:'smooth'});});
+function current(){let best=0,bd=1e9;slides.forEach((s,i)=>{const d=Math.abs(s.getBoundingClientRect().top-50);if(d<bd){bd=d;best=i;}});return best;}
+document.addEventListener('keydown',e=>{
+  if(!byId('app').classList.contains('show')) return;
+  if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  let k=e.key, i=current();
+  if(['ArrowDown','PageDown',' ','ArrowRight'].includes(k)){e.preventDefault();slides[Math.min(i+1,slides.length-1)].scrollIntoView({behavior:'smooth'});}
+  if(['ArrowUp','PageUp','ArrowLeft'].includes(k)){e.preventDefault();slides[Math.max(i-1,0)].scrollIntoView({behavior:'smooth'});}
+  if(k==='f'||k==='F') toggleFS();
+});
+function toggleFS(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{});} else {document.exitFullscreen();} }
+byId('fsBtn').addEventListener('click',toggleFS);
+document.addEventListener('fullscreenchange',()=>byId('fsBtn').textContent=document.fullscreenElement?'전체화면 끝내기':'발표 모드 (전체화면)');
+
+function startApp(){
+  renderDeep(0); renderTop(10); renderList(); showRegion('서울');
+  const io = new IntersectionObserver(es=>es.forEach(en=>{
+    const i = slides.indexOf(en.target);
+    if(en.isIntersecting){
+      play(en.target);
+      document.querySelectorAll('#dots button').forEach((b,j)=>b.classList.toggle('on',j===i));
+    } else reset(en.target);
+  }),{threshold:.28});
+  slides.forEach(s=>io.observe(s));
+}
+
+/* ---------- intro ---------- */
+(function(){
+  const g = byId('stars'); let h='';
+  for(let i=0;i<90;i++){
+    const x=Math.random()*1600, y=Math.random()*430, r=(Math.random()*1.4+.5).toFixed(2);
+    h+=`<circle class="tw" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r}" fill="#fff" style="animation-delay:${(Math.random()*3).toFixed(2)}s;animation-duration:${(2+Math.random()*3).toFixed(1)}s"/>`;
+  }
+  g.innerHTML=h;
+  let ex='';
+  for(let k=10;k>=1;k--){
+    const col = `rgb(${190-k*6},${110-k*5},${40-k*2})`;
+    ex+=`<text x="${590+k*1.6}" y="${628+k*1.3}" fill="${col}">저</text><text x="${1010+k*1.6}" y="${628+k*1.3}" fill="${col}">동</text>`;
+  }
+  byId('extrude').innerHTML=ex;
+})();
+byId('pw').focus();
+byId('login').addEventListener('submit',e=>{
+  e.preventDefault();
+  const box = byId('login'), pw = byId('pw');
+  if(pw.value.trim()===PASSWORD){
+    byId('msg').textContent='';
+    pw.blur();
+    byId('intro').classList.add('go');
+    setTimeout(()=>byId('flash').classList.add('on'),1700);
+    setTimeout(()=>{
+      byId('intro').style.display='none';
+      byId('app').classList.add('show');
+      window.scrollTo(0,0);
+      startApp();
+      byId('flash').classList.add('off');
+    },2500);
+    setTimeout(()=>{byId('flash').className='';},3600);
+  } else {
+    byId('msg').textContent='비밀번호가 맞지 않습니다. 다시 입력해 주세요.';
+    box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
+    pw.value=''; pw.focus();
+  }
+});
+</script>
+</body>
+</html>
