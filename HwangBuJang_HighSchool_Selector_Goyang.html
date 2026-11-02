@@ -5,261 +5,215 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>황부장 고교 선택 분석기</title>
 <style>
-/* 레이아웃: 상담 테이블 위에 놓인 파스텔 카드 — 머리글, 탭, 흰 카드 세 층으로 쌓고 지표는 색으로 구분한다 */
+/* 레이아웃: 밝은 상담 책상 위의 흰 카드 — 머리글, 탭, 카드 세 층으로 쌓고 지표는 색으로 구분한다.
+   상담실·연수장 조명 아래 학부모가 읽는 화면이므로 밝은 바탕에 진한 남색 글씨, 코발트 한 색을 주조로 쓴다. */
 :root{
- --wash:#0d1626; --wash2:#16233a; --paper:#152034; --line:#2a3b58; --line2:#3a5078;
- --ink:#eaf2ff; --ink2:#b4c6e2; --ink3:#8698b7;
- --mint:#5fe0c0; --mint-b:#0f3129; --mint-l:#2a6b5a;
- --lav:#b6a1ff;  --lav-b:#241f45;  --lav-l:#4b3f85;
- --peach:#ffb07a;--peach-b:#38251a;--peach-l:#74492e;
- --lemon:#ffd877;--lemon-b:#38301a;--lemon-l:#766331;
- --rose:#ff93bb; --rose-b:#361a2a;--rose-l:#733554;
- --sky:#6fc3ff;  --sky-b:#102740;  --sky-l:#2b5a86;
- --edge:rgba(130,190,255,.30); --edge2:rgba(150,200,255,.46);
- --glow:0 0 0 1px rgba(120,180,255,.07), 0 0 22px rgba(70,140,230,.16), 0 12px 30px rgba(0,0,0,.45),
-  inset 0 1px 0 rgba(200,228,255,.07);
- --glow-s:0 0 0 1px rgba(120,180,255,.06), 0 0 12px rgba(70,140,230,.14), 0 4px 12px rgba(0,0,0,.35);
- --shadow:0 0 22px rgba(70,140,230,.14), 0 12px 30px rgba(0,0,0,.42);
- --shadow-s:0 0 12px rgba(70,140,230,.12), 0 4px 12px rgba(0,0,0,.32);
- --r:18px; --r-s:12px; --r-p:999px;
+ --wash:#f1f4f8; --wash2:#e4e9f0; --paper:#ffffff; --line:#dde3ec; --line2:#c4cedc;
+ --ink:#0f1e36; --ink2:#2f405a; --ink3:#4e5d74;
+ --co:#1f56c9; --co-d:#1a46a6; --co-b:#e9f0fd; --co-l:#b7cbf1;
+ --gold:#c9a24a; --gold-t:#e6c46f; --navy:#13264a;
+ --mint:#07694f;  --mint-b:#e1f4ec; --mint-l:#a6d9c5;
+ --lav:#4a35a8;   --lav-b:#eeeafb;  --lav-l:#c9bdf0;
+ --peach:#8a3f0c; --peach-b:#fdefe3;--peach-l:#efc29c;
+ --lemon:#7f5200; --lemon-b:#fdf3d6;--lemon-l:#e8cd84;
+ --rose:#ac2148;  --rose-b:#fde9ef; --rose-l:#efb3c4;
+ --sky:#1652a8;   --sky-b:#e7f0fc;  --sky-l:#b1cbee;
+ --shadow:0 1px 2px rgba(15,30,54,.05), 0 8px 22px -10px rgba(15,30,54,.16);
+ --shadow-s:0 1px 2px rgba(15,30,54,.06);
+ --shadow-h:0 2px 4px rgba(15,30,54,.06), 0 14px 30px -12px rgba(31,86,201,.28);
+ --r:16px; --r-s:11px; --r-p:999px;
  --f-ui:'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Malgun Gothic','맑은 고딕','Noto Sans KR',system-ui,sans-serif;
- color-scheme:dark;
-}
-@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
- --wash:#0d1626; --wash2:#16233a; --paper:#152034; --line:#2a3b58; --line2:#3a5078;
- --ink:#eaf2ff; --ink2:#b4c6e2; --ink3:#8698b7;
- --mint:#5fe0c0; --mint-b:#0f3129; --mint-l:#2a6b5a;
- --lav:#b6a1ff;  --lav-b:#241f45;  --lav-l:#4b3f85;
- --peach:#ffb07a;--peach-b:#38251a;--peach-l:#74492e;
- --lemon:#ffd877;--lemon-b:#38301a;--lemon-l:#766331;
- --rose:#ff93bb; --rose-b:#361a2a;--rose-l:#733554;
- --sky:#6fc3ff;  --sky-b:#102740;  --sky-l:#2b5a86;
- --edge:rgba(130,190,255,.30); --edge2:rgba(150,200,255,.46);
- --glow:0 0 0 1px rgba(120,180,255,.07), 0 0 22px rgba(70,140,230,.16), 0 12px 30px rgba(0,0,0,.45),
-  inset 0 1px 0 rgba(200,228,255,.07);
- --glow-s:0 0 0 1px rgba(120,180,255,.06), 0 0 12px rgba(70,140,230,.14), 0 4px 12px rgba(0,0,0,.35);
- --shadow:0 0 22px rgba(70,140,230,.14), 0 12px 30px rgba(0,0,0,.42);
- --shadow-s:0 0 12px rgba(70,140,230,.12), 0 4px 12px rgba(0,0,0,.32);
- color-scheme:dark;
-}}
-:root[data-theme="dark"]{
- --wash:#0d1626; --wash2:#16233a; --paper:#152034; --line:#2a3b58; --line2:#3a5078;
- --ink:#eaf2ff; --ink2:#b4c6e2; --ink3:#8698b7;
- --mint:#5fe0c0; --mint-b:#0f3129; --mint-l:#2a6b5a;
- --lav:#b6a1ff;  --lav-b:#241f45;  --lav-l:#4b3f85;
- --peach:#ffb07a;--peach-b:#38251a;--peach-l:#74492e;
- --lemon:#ffd877;--lemon-b:#38301a;--lemon-l:#766331;
- --rose:#ff93bb; --rose-b:#361a2a;--rose-l:#733554;
- --sky:#6fc3ff;  --sky-b:#102740;  --sky-l:#2b5a86;
- --edge:rgba(130,190,255,.30); --edge2:rgba(150,200,255,.46);
- --glow:0 0 0 1px rgba(120,180,255,.07), 0 0 22px rgba(70,140,230,.16), 0 12px 30px rgba(0,0,0,.45),
-  inset 0 1px 0 rgba(200,228,255,.07);
- --glow-s:0 0 0 1px rgba(120,180,255,.06), 0 0 12px rgba(70,140,230,.14), 0 4px 12px rgba(0,0,0,.35);
- --shadow:0 0 22px rgba(70,140,230,.14), 0 12px 30px rgba(0,0,0,.42);
- --shadow-s:0 0 12px rgba(70,140,230,.12), 0 4px 12px rgba(0,0,0,.32);
- color-scheme:dark;
+ color-scheme:light;
+ accent-color:var(--co);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{background:var(--wash);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.65;
- position:relative;
- -webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums}
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
- background:
-  radial-gradient(900px 520px at 12% -6%,  rgba(58,120,210,.42), transparent 66%),
-  radial-gradient(820px 480px at 88% 2%,   rgba(86,76,190,.36), transparent 66%),
-  radial-gradient(760px 460px at 0% 56%,   rgba(40,110,160,.30), transparent 64%),
-  radial-gradient(820px 500px at 100% 66%, rgba(70,60,170,.30), transparent 64%),
-  radial-gradient(900px 540px at 50% 108%, rgba(36,96,170,.34), transparent 66%);
- opacity:1}
-a{color:var(--lav);text-decoration:none;border-bottom:1px solid var(--lav-l)}
-a:hover{border-bottom-color:var(--lav)}
-:focus-visible{outline:3px solid var(--lav-l);outline-offset:2px;border-radius:6px}
+html{scrollbar-color:#b7c3d4 var(--wash)}
+body{background:var(--wash);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.7;
+ -webkit-text-size-adjust:100%;font-variant-numeric:tabular-nums;caret-color:var(--co);
+ -webkit-font-smoothing:antialiased}
+::selection{background:#cddcf8;color:var(--ink)}
+a{color:var(--co);text-decoration:none;border-bottom:1px solid var(--co-l);font-weight:700}
+a:hover{border-bottom-color:var(--co)}
+:focus-visible{outline:3px solid var(--co);outline-offset:2px;border-radius:6px}
 
 /* 머리글 */
-header{position:relative;overflow:hidden;padding:26px 20px 22px;
- background:linear-gradient(104deg,#132a4a 0%,#152748 26%,#1b2552 52%,#16304f 76%,#123048 100%);
- border-bottom:1px solid var(--edge);
- box-shadow:0 1px 0 rgba(140,195,255,.16), 0 10px 40px rgba(20,60,140,.45)}
-header::before{content:"";position:absolute;inset:-40% -10% auto auto;width:420px;height:420px;border-radius:50%;
- background:radial-gradient(circle,rgba(110,190,255,.22),rgba(110,190,255,0) 70%);pointer-events:none}
-header::after{content:"";position:absolute;left:-60px;bottom:-130px;width:320px;height:320px;border-radius:50%;
- background:radial-gradient(circle,rgba(150,130,255,.2),rgba(150,130,255,0) 70%);pointer-events:none}
+header{position:relative;padding:26px 20px 22px;background:var(--paper);border-bottom:1px solid var(--line)}
 header .wrap{position:relative;max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:18px}
 header .wrap .htxt{min-width:0;flex:1}
-.hwlogo{flex:0 0 auto;width:82px;height:82px;border-radius:50%;position:relative;
- display:flex;align-items:center;justify-content:center;
- background:linear-gradient(145deg,#4fa8ee 0%,#5f7ce8 38%,#8a6ae6 72%,#b36ad0 100%);
- box-shadow:0 0 0 1px rgba(170,215,255,.5), 0 0 26px rgba(90,150,255,.5),
-  0 8px 22px rgba(0,0,0,.45), inset 0 2px 6px rgba(255,255,255,.3);
- border:3px solid rgba(175,215,255,.5)}
-.hwlogo span{font-family:'Nanum Myeongjo','Batang','바탕',serif;font-size:40px;font-weight:700;
- color:#fff;line-height:1;text-shadow:0 0 14px rgba(190,225,255,.75),0 2px 5px rgba(0,0,0,.45);transform:translateY(1px)}
-.hwlogo::after{content:"";position:absolute;left:16%;top:11%;width:36%;height:22%;border-radius:50%;
- background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0));pointer-events:none}
-header h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.6px;text-wrap:balance}
-header .sub{color:var(--ink2);font-size:13.5px;margin-top:5px;font-weight:600}
-header .meta{color:var(--ink2);font-size:12px;margin-top:8px;line-height:1.55}
+.hwlogo{flex:0 0 auto;width:78px;height:78px;border-radius:50%;position:relative;
+ display:flex;align-items:center;justify-content:center;background:var(--navy);
+ border:3px solid var(--gold);
+ box-shadow:inset 0 0 0 3px var(--navy), inset 0 0 0 4.5px var(--gold), 0 6px 16px -6px rgba(19,38,74,.45)}
+.hwlogo span{font-family:'Nanum Myeongjo','Batang','바탕',serif;font-size:38px;font-weight:700;
+ color:var(--gold-t);line-height:1;transform:translateY(1px)}
+header h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.6px;text-wrap:balance;color:var(--ink)}
+header .sub{color:var(--ink2);font-size:15px;margin-top:4px;font-weight:600}
+header .meta{color:var(--ink3);font-size:13px;margin-top:8px;line-height:1.6}
 
 /* 탭 */
-nav{position:sticky;top:0;z-index:50;background:rgba(10,19,34,.82);
- backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
- border-bottom:1px solid var(--edge);padding:10px 14px;
- box-shadow:0 1px 0 rgba(140,195,255,.12), 0 8px 24px rgba(0,0,0,.4)}
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);
+ backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);
+ border-bottom:1px solid var(--line);padding:10px 14px;box-shadow:0 6px 16px -12px rgba(15,30,54,.25)}
 nav .wrap{max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:7px}
-nav button{background:rgba(26,40,66,.75);color:var(--ink2);border:1px solid var(--edge);
- padding:9px 16px;border-radius:var(--r-p);font-size:13.5px;cursor:pointer;font-family:inherit;font-weight:700;
- box-shadow:var(--shadow-s);transition:transform .14s ease,background .14s ease,color .14s ease}
-nav button:hover{transform:translateY(-1px);color:var(--ink);border-color:var(--edge2);
- box-shadow:0 0 14px rgba(110,180,255,.28)}
-nav button.on{background:linear-gradient(135deg,#3f93e8 0%,#6f6ae4 55%,#9b63d8 100%);color:#fff;
- border-color:rgba(175,215,255,.55);
- box-shadow:0 0 0 1px rgba(175,215,255,.3), 0 0 22px rgba(90,150,255,.55), 0 6px 18px rgba(0,0,0,.4)}
+nav button{background:var(--paper);color:var(--ink2);border:1px solid var(--line2);
+ padding:9px 17px;border-radius:var(--r-p);font-size:14.5px;cursor:pointer;font-family:inherit;font-weight:700;
+ box-shadow:var(--shadow-s);transition:background .15s ease,color .15s ease,border-color .15s ease}
+nav button:hover{color:var(--ink);border-color:var(--co-l);background:var(--co-b)}
+nav button.on{background:var(--co);color:#fff;border-color:var(--co);
+ box-shadow:0 4px 12px -4px rgba(31,86,201,.5)}
 
-main{max-width:1240px;margin:0 auto;padding-block:22px 72px;padding-left:16px;padding-right:16px}
+main{max-width:1240px;margin:0 auto;padding-block:24px 72px;padding-left:16px;padding-right:16px}
 section{display:none}
 section.on{display:block}
 
-h2{font-size:19px;font-weight:800;margin:26px 0 12px;display:flex;align-items:center;gap:9px;letter-spacing:-.3px}
-h2::before{content:"";width:9px;height:9px;border-radius:50%;flex:0 0 9px;
- background:linear-gradient(135deg,#6fc3ff,#b6a1ff);box-shadow:0 0 0 4px rgba(90,150,255,.16), 0 0 14px rgba(110,180,255,.7)}
-h3{font-size:15.5px;font-weight:800;margin:18px 0 9px;color:var(--ink)}
+h2{font-size:20px;font-weight:800;margin:30px 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-.4px;color:var(--ink)}
+section>h2:first-child{margin-top:6px}
+h2::before{content:"";width:8px;height:20px;border-radius:3px;flex:0 0 8px;background:var(--co)}
+h3{font-size:16.5px;font-weight:800;margin:18px 0 9px;color:var(--ink)}
+.card>h3:first-child{margin-top:0}
 
-.card{background:linear-gradient(180deg,rgba(28,43,72,.86) 0%,rgba(19,30,52,.9) 100%);
- backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
- border:1px solid var(--edge);border-radius:var(--r);padding:18px;
- margin-bottom:14px;box-shadow:var(--glow)}
-.grid{display:grid;gap:13px}
-.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:20px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:end}
 .g3{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
 .flex{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
 .flex>div{min-width:0}
 
-label{display:block;font-size:12px;color:var(--ink2);margin-bottom:5px;font-weight:700;letter-spacing:.1px}
-input[type=number],input[type=text],select,textarea{width:100%;background:rgba(12,22,40,.8);color:var(--ink);
- border:1.5px solid var(--edge);border-radius:var(--r-s);padding:10px 12px;font-size:14.5px;font-family:inherit;
- box-shadow:inset 0 1px 3px rgba(0,0,0,.4);
- transition:border-color .14s ease,box-shadow .14s ease}
-input:focus,select:focus,textarea:focus{outline:none;border-color:rgba(150,205,255,.7);
- box-shadow:0 0 0 3px rgba(90,160,255,.22), inset 0 1px 3px rgba(0,0,0,.4)}
-select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink3) 50%),linear-gradient(135deg,var(--ink3) 50%,transparent 50%);
+label{display:block;font-size:13.5px;color:var(--ink2);margin-bottom:6px;font-weight:700}
+input[type=number],input[type=text],select,textarea{width:100%;background:var(--paper);color:var(--ink);
+ border:1.5px solid var(--line2);border-radius:var(--r-s);padding:10px 12px;font-size:15.5px;font-family:inherit;
+ transition:border-color .15s ease,box-shadow .15s ease}
+input::placeholder,textarea::placeholder{color:#6a778b}
+input:hover,select:hover,textarea:hover{border-color:#9fb0c7}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--co);box-shadow:0 0 0 3px rgba(31,86,201,.18)}
+select{appearance:none;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,var(--ink2) 50%),linear-gradient(135deg,var(--ink2) 50%,transparent 50%);
  background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
 
-.btn{background:linear-gradient(135deg,#6f6ae4 0%,#3f93e8 100%);color:#fff;border:1px solid rgba(175,215,255,.5);
- border-radius:var(--r-p);padding:11px 24px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;
- box-shadow:0 0 0 1px rgba(175,215,255,.22), 0 0 22px rgba(90,150,255,.5), 0 6px 18px rgba(0,0,0,.4);
- transition:transform .14s ease,box-shadow .14s ease}
-.btn:hover{transform:translateY(-1.5px);box-shadow:0 0 0 1px rgba(190,225,255,.35), 0 0 30px rgba(110,170,255,.65), 0 8px 22px rgba(0,0,0,.45)}
-.btn.sec{background:rgba(26,40,66,.8);color:var(--ink2);box-shadow:var(--glow-s);border:1px solid var(--edge)}
-.btn.sec:hover{box-shadow:0 0 18px rgba(110,180,255,.3);color:var(--ink);border-color:var(--edge2)}
-.btn.sm{padding:7px 15px;font-size:12.5px}
+.btn{background:var(--co);color:#fff;border:1px solid var(--co);
+ border-radius:var(--r-p);padding:11px 26px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;
+ box-shadow:0 4px 12px -4px rgba(31,86,201,.55);transition:background .15s ease,box-shadow .15s ease,transform .15s ease}
+.btn:hover{background:var(--co-d);border-color:var(--co-d);transform:translateY(-1px);box-shadow:0 8px 18px -6px rgba(31,86,201,.6)}
+.btn:active{transform:translateY(0)}
+.btn.sec{background:var(--paper);color:var(--ink2);border:1px solid var(--line2);box-shadow:var(--shadow-s)}
+.btn.sec:hover{background:var(--co-b);color:var(--ink);border-color:var(--co-l);box-shadow:var(--shadow-s)}
+.btn.sm{padding:7px 16px;font-size:13.5px}
 
 .chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{background:rgba(26,40,66,.78);border:1.5px solid var(--edge);color:var(--ink2);padding:7px 15px;
- border-radius:var(--r-p);font-size:12.5px;cursor:pointer;user-select:none;font-weight:700;
- box-shadow:var(--glow-s);transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease}
-.chip:hover{transform:translateY(-1px);border-color:var(--edge2);box-shadow:0 0 16px rgba(110,180,255,.3)}
-.chip.on{background:linear-gradient(135deg,#6f6ae4 0%,#3f93e8 100%);color:#fff;border-color:rgba(175,215,255,.55);
- box-shadow:0 0 0 1px rgba(175,215,255,.25), 0 0 20px rgba(90,150,255,.5)}
+.chip{background:var(--paper);border:1.5px solid var(--line2);color:var(--ink2);padding:7px 15px;
+ border-radius:var(--r-p);font-size:14px;cursor:pointer;user-select:none;font-weight:700;
+ transition:background .15s ease,border-color .15s ease,color .15s ease}
+.chip:hover{border-color:var(--co-l);background:var(--co-b);color:var(--ink)}
+.chip.on{background:var(--co);color:#fff;border-color:var(--co)}
 
 .tag{display:inline-block;background:var(--sky-b);color:var(--sky);border:1px solid var(--sky-l);
- padding:3px 10px;border-radius:var(--r-p);font-size:11.5px;margin:2px 3px 2px 0;font-weight:700}
+ padding:3px 10px;border-radius:var(--r-p);font-size:12.5px;margin:2px 3px 2px 0;font-weight:700}
 .tag.g{background:var(--mint-b);color:var(--mint);border-color:var(--mint-l)}
 .tag.o{background:var(--lemon-b);color:var(--lemon);border-color:var(--lemon-l)}
 .tag.r{background:var(--rose-b);color:var(--rose);border-color:var(--rose-l)}
-.pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:var(--r-p);background:var(--lav-b);
- color:var(--lav);font-weight:700;border:1px solid var(--lav-l)}
+.pill{display:inline-block;font-size:12.5px;padding:2px 10px;border-radius:var(--r-p);background:var(--lav-b);
+ color:var(--lav);font-weight:700;border:1px solid var(--lav-l);letter-spacing:0}
 .pill.pg{background:var(--mint-b);color:var(--mint);border-color:var(--mint-l)}
-.pill.pn{background:rgba(24,38,64,.8);color:var(--ink3);border-color:var(--edge)}
+.pill.pn{background:var(--wash);color:var(--ink3);border-color:var(--line2)}
 
 /* 표 */
-.scroll{overflow-x:auto;border-radius:var(--r-s);border:1px solid var(--edge);
- background:rgba(20,31,53,.78);box-shadow:var(--glow-s)}
-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
-th,td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.scroll{overflow-x:auto;border-radius:var(--r-s);border:1px solid var(--line);background:var(--paper);box-shadow:var(--shadow)}
+.scroll::-webkit-scrollbar{height:10px}
+.scroll::-webkit-scrollbar-track{background:var(--wash)}
+.scroll::-webkit-scrollbar-thumb{background:#b7c3d4;border-radius:10px;border:2px solid var(--wash)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px}
+th,td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap;color:var(--ink)}
 td.l{white-space:normal;min-width:84px}
-th{background:rgba(26,42,70,.95);color:var(--ink2);font-weight:800;white-space:nowrap;cursor:pointer;
- position:sticky;top:0;font-size:12px;letter-spacing:.1px}
-th:hover{background:rgba(44,70,112,.95);color:#cfe6ff}
+th{background:#eaf0f8;color:var(--ink2);font-weight:800;white-space:nowrap;
+ position:sticky;top:0;font-size:13px;border-bottom:1px solid var(--line2)}
+#tbl2 th{cursor:pointer}
+#tbl2 th:hover{background:#dce6f4;color:var(--ink)}
+tbody tr:nth-child(even) td{background:#f8fafc}
 tbody tr:last-child td{border-bottom:none}
-tbody tr:hover td{background:rgba(52,86,140,.28)}
+tbody tr:hover td{background:var(--co-b)}
 td.l{text-align:left}
-.sc{font-weight:800;font-size:14px}
+.sc{font-weight:800;font-size:15px}
 .s1{color:var(--mint)}.s2{color:var(--sky)}.s3{color:var(--lemon)}.s4{color:var(--rose)}
-.vgood{color:var(--mint);font-weight:700}
-.vwarn{color:var(--lemon);font-weight:700}
-.vbad{color:var(--rose);font-weight:700}
+.vgood{color:var(--mint);font-weight:800}
+.vwarn{color:var(--lemon);font-weight:800}
+.vbad{color:var(--rose);font-weight:800}
 
 /* 추천 카드 */
-.rank{display:flex;align-items:flex-start;gap:14px;
- background:linear-gradient(180deg,rgba(28,43,72,.86) 0%,rgba(19,30,52,.9) 100%);
- backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
- border:1px solid var(--edge);
- border-radius:var(--r);padding:15px 16px;margin-bottom:11px;box-shadow:var(--glow);
- transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
-.rank:hover{transform:translateY(-2px);border-color:var(--edge2);
- box-shadow:0 0 0 1px rgba(150,205,255,.16), 0 0 30px rgba(90,160,255,.3), 0 16px 36px rgba(0,0,0,.5)}
-.rank.ref{background:rgba(18,28,48,.7);border-style:dashed;border-color:rgba(130,190,255,.26);
- box-shadow:var(--glow-s)}
+.rank{display:flex;align-items:flex-start;gap:14px;background:var(--paper);border:1px solid var(--line);
+ border-radius:var(--r);padding:16px 18px;margin-bottom:11px;box-shadow:var(--shadow);
+ transition:border-color .16s ease,box-shadow .16s ease}
+.rank:hover{border-color:var(--co-l);box-shadow:var(--shadow-h)}
+.rank.ref{background:#f8fafc;border-style:dashed;border-color:var(--line2);box-shadow:none}
 .rank.ref .tot{color:var(--ink3)}
 .scnrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
-.scnb{font-size:11.5px;font-weight:700;color:var(--ink2);background:rgba(24,38,64,.8);
- border:1px solid var(--edge);border-radius:var(--r-p);padding:3px 9px}
-.scnb.on{background:var(--lav-b);border-color:var(--lav-l);color:var(--lav)}
+.scnb{font-size:13px;font-weight:700;color:var(--ink2);background:var(--wash);
+ border:1px solid var(--line);border-radius:var(--r-p);padding:3px 10px}
+.scnb.on{background:var(--co-b);border-color:var(--co-l);color:var(--co-d)}
 .scnb b{font-weight:800;color:var(--ink)}
 .scnb.stable{background:var(--mint-b);border-color:var(--mint-l);color:var(--mint)}
 .scnb.swing{background:var(--peach-b);border-color:var(--peach-l);color:var(--peach)}
-table.scn tr.on td{background:rgba(70,80,160,.3);font-weight:700}
+table.scn tr.on td{background:var(--co-b);font-weight:700}
 .rank .body{flex:1;min-width:0}
-.rank .nm{font-size:16.5px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.rank .why{font-size:12.5px;color:var(--ink2);margin-top:5px;line-height:1.6}
-.rank .tot{text-align:right;font-size:25px;font-weight:800;color:var(--lav);flex:0 0 auto;letter-spacing:-1px}
-.mini{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
-.mini div{font-size:11.5px;color:var(--ink2);background:rgba(24,38,64,.8);border:1px solid var(--edge);
- border-radius:var(--r-p);padding:3px 10px;font-weight:600}
+.rank .nm{font-size:18px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:var(--ink)}
+.rank .why{font-size:14px;color:var(--ink2);margin-top:6px;line-height:1.65}
+.rank .tot{text-align:right;font-size:28px;font-weight:800;color:var(--co);flex:0 0 auto;letter-spacing:-1px;line-height:1.2}
+.mini{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.mini div{font-size:13px;color:var(--ink2);background:var(--wash);border:1px solid var(--line);
+ border-radius:var(--r-p);padding:3px 11px;font-weight:600}
 .mini div b{color:var(--ink);font-weight:800}
 
 /* 알림 상자 */
-.warn,.info,.okb{border-radius:var(--r-s);padding:12px 15px;font-size:13px;margin:9px 0;border:1px solid}
-.warn{background:var(--peach-b);border-color:var(--peach-l);color:#ffd0ad;box-shadow:0 0 16px rgba(255,160,100,.12)}
-.info{background:var(--sky-b);border-color:var(--sky-l);color:#bfe2ff;box-shadow:0 0 16px rgba(90,160,255,.16)}
-.okb{background:var(--mint-b);border-color:var(--mint-l);color:#a9f0dd;box-shadow:0 0 16px rgba(90,220,190,.14)}
+.warn,.info,.okb{border-radius:var(--r-s);padding:13px 16px;font-size:14.5px;margin:10px 0;border:1px solid;line-height:1.7}
+.warn{background:var(--peach-b);border-color:var(--peach-l);color:#5e2a08}
+.info{background:var(--sky-b);border-color:var(--sky-l);color:#12325f}
+.okb{background:var(--mint-b);border-color:var(--mint-l);color:#0a4636}
 .warn b,.info b,.okb b{font-weight:800}
 
-.drop{border:2px dashed rgba(130,190,255,.4);border-radius:var(--r);padding:28px;text-align:center;color:var(--ink2);
- background:rgba(18,30,52,.6);cursor:pointer;font-size:13.5px;box-shadow:var(--glow-s);
- transition:border-color .14s ease,box-shadow .14s ease}
-.drop:hover,.drop.hot{border-color:rgba(160,210,255,.8);box-shadow:0 0 26px rgba(100,170,255,.4);color:var(--ink)}
+.drop{position:relative;border:2px dashed var(--line2);border-radius:var(--r);padding:28px;text-align:center;color:var(--ink2);
+ background:#f8fafc;cursor:pointer;font-size:15px;transition:border-color .15s ease,background .15s ease}
+.drop:hover,.drop.hot{border-color:var(--co);background:var(--co-b);color:var(--ink)}
 
-details{background:rgba(20,32,55,.7);border:1px solid var(--edge);border-radius:var(--r-s);margin:7px 0;overflow:hidden;
- box-shadow:var(--glow-s)}
-details>summary{cursor:pointer;padding:11px 14px;font-size:13px;font-weight:700;color:var(--ink);list-style:none}
+details{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-s);margin:8px 0;overflow:hidden;box-shadow:var(--shadow-s)}
+details>summary{cursor:pointer;padding:12px 15px;font-size:14.5px;font-weight:700;color:var(--ink);list-style:none}
 details>summary::-webkit-details-marker{display:none}
-details>summary::before{content:"";display:inline-block;width:0;height:0;margin-right:8px;vertical-align:1px;
- border-left:5px solid var(--ink3);border-top:4px solid transparent;border-bottom:4px solid transparent;transition:transform .15s ease}
+details>summary::before{content:"";display:inline-block;width:0;height:0;margin-right:9px;vertical-align:1px;
+ border-left:6px solid var(--co);border-top:4.5px solid transparent;border-bottom:4.5px solid transparent;transition:transform .15s ease}
 details[open]>summary::before{transform:rotate(90deg)}
-details>summary:hover{background:var(--lav-b)}
-details>div{padding:2px 14px 14px;background:var(--paper)}
+details>summary:hover{background:var(--co-b)}
+details[open]>summary{border-bottom:1px solid var(--line)}
+details>div{padding:10px 15px 15px;background:var(--paper)}
 
-.sub{font-size:12.5px;color:var(--ink3);line-height:1.6}
-.nodata{color:var(--ink3);font-size:12.5px}
-.sg{display:grid;grid-template-columns:76px 1fr;gap:9px 13px;font-size:13px;align-items:start}
-.sg>b{color:var(--lav);font-weight:800;font-size:12px;padding-top:2px}
-.bar{height:8px;background:var(--wash2);border-radius:var(--r-p);overflow:hidden;margin-top:4px}
-.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--lav),var(--mint))}
+.sub{font-size:14px;color:var(--ink3);line-height:1.65}
+.nodata{color:var(--ink3);font-size:13.5px}
+.sg{display:grid;grid-template-columns:80px 1fr;gap:10px 14px;font-size:14.5px;align-items:start}
+.sg>b{color:var(--co-d);font-weight:800;font-size:13.5px;padding-top:2px}
+.bar{height:8px;background:var(--wash2);border-radius:var(--r-p);overflow:hidden;margin-top:5px}
+.bar>i{display:block;height:100%;background:var(--co)}
 
 @media(max-width:760px){
- header h1{font-size:19px}
- .hwlogo{width:62px;height:62px}
- header .wrap{gap:12px}
+ header{padding:20px 16px 18px}
+ header h1{font-size:21px}
+ header .sub{font-size:14px}
+ .hwlogo{width:60px;height:60px}
+ .hwlogo span{font-size:29px}
+ header .wrap{gap:13px}
+ nav{padding:9px 12px}
+ nav button{padding:8px 13px;font-size:14px}
  main{padding-block:18px 56px}
- .card{padding:15px;border-radius:15px}
- .rank{flex-wrap:wrap;gap:11px}
- .rank .tot{width:100%;text-align:left;font-size:21px}
- table{font-size:11.5px}
- th,td{padding:6px 6px}
+ .card{padding:16px;border-radius:14px}
+ .rank{flex-wrap:wrap;gap:8px;padding:15px}
+ .rank .tot{width:100%;text-align:left;font-size:24px}
+ table{font-size:13px}
+ th,td{padding:7px 7px}
  .sg{grid-template-columns:1fr;gap:3px 0}
- .sg>b{padding-top:8px}
+ .sg>b{padding-top:9px}
+}
+@media print{
+ body{background:#fff;font-size:12pt}
+ nav,.btn,.drop{display:none!important}
+ header{border-bottom:2px solid var(--ink)}
+ .card,.rank,.scroll,details{box-shadow:none;break-inside:avoid}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -460,6 +414,33 @@ function josa(w,a,b){const c=w.charCodeAt(w.length-1);if(c<0xAC00||c>0xD7A3)retu
 function load(){try{const r=localStorage.getItem('hbj_goyang_sel');if(r)ST.IN=JSON.parse(r)||{};}catch(e){}}
 function save(){try{localStorage.setItem('hbj_goyang_sel',JSON.stringify(ST.IN));}catch(e){}}
 
+/* ===== 2학년 선택과목 실측 =====
+   학교알리미 2026년 교과별 학업성취 사항, 2학년 1학기. 성취도 분포 비율(소수 첫째 자리)에서 과목별 수강자 수를 역산했다.
+   g: 2학년 인원, g1: 1학년 인원, r: 학년 전체가 듣는 과목, s: [선택과목, 수강자], u: 수강자를 역산할 수 없던 과목.
+   체육·예술 과목과 사회·과학 융합선택 9과목은 석차등급이 나오지 않아 뺐다. 1등급 = 수강자의 10% 이내(소수점 아래 버림). */
+const SEL={"gj":{"g":242,"g1":242,"r":["문학","대수","영어Ⅰ"],"s":[["지구과학",51],["세계사",69],["창의 공학 설계",70],["물리학",71],["화학",80],["중국어",80],["생명과학",85],["세계시민과 지리",92],["윤리와 사상",134],["사회와 문화",144],["일본어",162],["생활과학 탐구",172]],"u":["생명과학 실험"]},"goe204443":{"g":189,"g1":188,"r":["문학","대수","영어Ⅰ"],"s":[["기하",36],["동아시아 역사 기행",37],["물리학",40],["영어 발표와 토론",44],["지구과학",46],["정치",48],["화학",49],["독서 토론과 글쓰기",52],["세계시민과 지리",75],["윤리와 사상",77],["일본어",92],["중국어",97],["생명과학",99],["사회와 문화",153]],"u":["물리학 실험"]},"goe204447":{"g":221,"g1":206,"r":["문학","영어Ⅰ"],"s":[["인공지능 수학",40],["중국어",46],["세계 문화와 영어",49],["물리학",53],["지구과학",56],["세계시민과 지리",57],["화학",60],["세계사",65],["생명과학",78],["주제 탐구 독서",95],["윤리와 사상",125],["사회와 문화",143],["일본어",175],["대수",186]],"u":["화학 실험"]},"dh":{"g":245,"g1":272,"r":["문학","대수","영어Ⅰ","일본어"],"s":[["한문",10],["중국어",19],["영미 문학 읽기",25],["지구과학",39],["세계사",44],["경제",49],["도시의 미래 탐구",61],["물리학",68],["생명과학",70],["화학",74],["정보",86],["주제 탐구 독서",97],["윤리와 사상",109],["기술·가정",124]],"u":["국제 경제"]},"di":{"g":244,"g1":272,"r":["문학","대수","영어Ⅰ"],"s":[["중국어",33],["세계사",47],["물리학",47],["기하",49],["화학",52],["지구과학",67],["미디어 영어",76],["현대사회와 윤리",78],["생명과학",85],["스페인어",103],["정치",104],["일본어",108],["독서 토론과 글쓰기",119],["세계시민과 지리",127]],"u":[]},"goe204461":{"g":198,"g1":239,"r":["문학","대수","영어Ⅰ"],"s":[["지식 재산 일반",17],["지구과학",31],["중국어 회화",31],["세계사",34],["경제",34],["세계 문화와 영어",36],["물리학",52],["세계시민과 지리",64],["일본어",69],["화학",70],["기하",75],["인공지능 기초",81],["생명과학",86],["주제 탐구 독서",87],["현대사회와 윤리",106],["사회와 문화",117]],"u":[]},"goe204428":{"g":186,"g1":194,"r":["문학","대수","영어Ⅰ"],"s":[["중국어",36],["지구과학",48],["동아시아 역사 기행",52],["물리학",52],["정치",55],["한국지리 탐구",56],["수학과제 탐구",59],["화학",66],["미디어 영어",68],["생명과학",79],["문학과 영상",84],["현대사회와 윤리",125],["일본어",150]],"u":["프로그래밍"]},"goe204465":{"g":237,"g1":253,"r":["문학","대수","영어Ⅰ"],"s":[["화학",27],["중국어",35],["경제",47],["물리학",59],["지구과학",64],["기하",70],["세계사",70],["미디어 영어",73],["생명과학",81],["세계시민과 지리",86],["정치",93],["독서 토론과 글쓰기",94],["윤리와 사상",130],["스페인어",181]],"u":[]},"bm":{"g":260,"g1":273,"r":["문학","대수"],"s":[["중국어",28],["아동발달과 부모",35],["기하",75],["물리학",81],["일본어",95],["화학",99],["세계시민과 지리",100],["인공지능 기초",102],["정치",109],["영어Ⅰ",130],["현대사회와 윤리",155]],"u":["국제 경제","생명과학 실험"]},"bs":{"g":241,"g1":273,"r":["문학","대수","영어Ⅰ"],"s":[["도시의 미래 탐구",22],["로봇과 공학세계",40],["국제 관계의 이해",52],["세계사",61],["수학과제 탐구",81],["생명과학",102],["물리학",110],["화학",112],["현대사회와 윤리",114],["사회와 문화",122],["일본어",135],["데이터 과학",160]],"u":["인공지능 수학","데이터과학과 머신러닝"]},"goe204477":{"g":120,"g1":114,"r":["독서와 작문","대수","영어Ⅰ","생명과학","일본어"],"s":[["중국어",14],["수학과제 탐구",17],["물리학",24],["물질과 에너지",31],["세계사",41],["도시의 미래 탐구",51],["현대사회와 윤리",82],["사회와 문화",95]],"u":[]},"bsin":{"g":239,"g1":266,"r":["문학","대수","영어Ⅰ"],"s":[["중국어",26],["세계사",72],["인공지능 기초",91],["세계시민과 지리",102],["물리학",103],["화학",116],["일본어",122],["지구과학",132],["생명과학",140],["현대사회와 윤리",142],["사회와 문화",149]],"u":["과학과제 연구"]},"goe204485":{"g":236,"g1":248,"r":["문학","대수","영어Ⅰ"],"s":[["세계 문화와 영어",33],["정치",49],["지구과학",52],["세계시민과 지리",57],["세계사",57],["프로그래밍",58],["중국어",65],["기하",81],["물리학",84],["세계 문제와 미래 사회",90],["생명과학",94],["화학",95],["사회와 문화",109],["윤리와 사상",111],["일본어",113]],"u":[]},"goe204489":{"g":263,"g1":261,"r":["문학","영어Ⅰ"],"s":[["물리학",49],["데이터 과학",50],["지구과학",53],["중국어",56],["세계사",62],["화학",69],["생명과학",89],["대수",95],["세계시민과 지리",131],["일본어",157],["윤리와 사상",165],["사회와 문화",171]],"u":[]},"goe204494":{"g":227,"g1":236,"r":["문학","대수","영어Ⅰ"],"s":[["인공지능 수학",19],["화학",29],["물리학",46],["생명과학",46],["세계 문화와 영어",53],["정보",54],["중국어",54],["지구과학",64],["세계시민과 지리",89],["세계사",90],["독서 토론과 글쓰기",98],["일본어",119],["사회와 문화",128],["윤리와 사상",134]],"u":[]},"sw":{"g":159,"g1":174,"r":["문학","대수","영어Ⅰ"],"s":[["지구과학",25],["기하",44],["물리학",46],["생명과학",47],["화학",50],["중국어",52],["세계사",63],["주제 탐구 독서",77],["정치",81],["세계시민과 지리",96],["현대사회와 윤리",107],["일본어",107]],"u":[]},"goe204502":{"g":249,"g1":243,"r":["문학","대수","영어Ⅰ"],"s":[["프로그래밍",21],["지식 재산 일반",37],["중국어",51],["세계사",56],["지구과학",57],["미디어 영어",59],["세계시민과 지리",63],["물리학",70],["법과 사회",72],["기하",77],["화학",89],["주제 탐구 독서",97],["생명과학",104],["윤리와 사상",114],["일본어",119],["사회와 문화",138]],"u":["과학과제 연구"]},"ag":{"g":275,"g1":293,"r":["문학","대수","영어Ⅰ"],"s":[["인공지능 수학",46],["중국어",47],["물리학",60],["지구과학",63],["생명과학",75],["화학",77],["세계사",80],["데이터 과학",85],["세계시민과 지리",101],["현대사회와 윤리",164],["일본어",168],["사회와 문화",171]],"u":[]},"dj":{"g":273,"g1":285,"r":["문학","대수"],"s":[["프로그래밍",21],["한문",21],["고급 화학",25],["데이터 과학",35],["세계시민과 지리",60],["중국어",60],["지구과학",64],["세계사",75],["생명과학",88],["물리학",105],["화학",117],["현대사회와 윤리",137],["사회와 문화",138],["일본어",192],["영어Ⅰ",196],["확률과 통계",222]],"u":[]},"isd":{"g":266,"g1":280,"r":["문학","대수"],"s":[["중국어",23],["창의 공학 설계",38],["소프트웨어와 생활",51],["세계사",69],["물리학",82],["화학",87],["세계시민과 지리",99],["주제 탐구 독서",105],["지구과학",118],["생명과학",119],["현대사회와 윤리",169],["사회와 문화",178],["일본어",192],["영어Ⅰ",226]],"u":[]},"jd":{"g":262,"g1":277,"r":["문학","대수","영어Ⅰ"],"s":[["경제 수학",26],["물리학",59],["중국어",59],["지구과학",65],["화학",78],["인공지능 기초",104],["생명과학",107],["세계시민과 지리",114],["세계사",122],["현대사회와 윤리",184],["사회와 문화",189],["일본어",203]],"u":[]},"jh":{"g":262,"g1":277,"r":["문학","대수","영어Ⅰ"],"s":[["과학과제 연구",11],["영미 문학 읽기",34],["정보",44],["지구과학",52],["중국어",63],["경제",68],["생명과학",81],["물리학",83],["화학",97],["미적분Ⅰ",98],["일본어",111],["주제 탐구 독서",130],["세계시민과 지리",132],["세계사",132],["윤리와 사상",141]],"u":[]},"jb":{"g":243,"g1":270,"r":["문학","대수","영어Ⅰ"],"s":[["중국어",21],["생명과학 실험",22],["세계 문화와 영어",36],["동아시아 역사 기행",38],["경제",58],["법과 사회",72],["세계시민과 지리",73],["윤리와 사상",92],["지구과학",101],["프로그래밍",101],["물리학",110],["일본어",121],["화학",133],["생명과학",147]],"u":["물리학 실험"]},"je":{"g":283,"g1":296,"r":["문학","대수","영어Ⅰ"],"s":[["중국어",41],["세계사",99],["일본어",108],["한국지리 탐구",122],["기하",134],["물리학",139],["현대사회와 윤리",148],["화학",151],["지구과학",151],["사회와 문화",155],["생명과학",167]],"u":["물리학 실험","생명과학 실험"]},"js":{"g":248,"g1":267,"r":["대수","영어Ⅰ"],"s":[["아동발달과 부모",19],["정치",34],["세계사",46],["한문",48],["기하",49],["지구과학",59],["물리학",61],["화학",77],["세계시민과 지리",85],["생명과학",85],["스페인어",87],["정보",135],["일본어",139],["사회와 문화",147],["현대사회와 윤리",150],["문학",204]],"u":[]},"pd":{"g":232,"g1":255,"r":["문학","대수","영어Ⅰ"],"s":[["프로그래밍",8],["과학과제 연구",21],["현대사회와 윤리",25],["인공지능 수학",27],["지구과학",37],["경제",43],["중국어",48],["물리학",53],["세계시민과 지리",70],["화학",76],["세계사",83],["생명과학",87],["윤리와 사상",135],["일본어",160],["사회와 문화",169]],"u":[]},"goe204554":{"g":247,"g1":245,"r":["문학","대수","영어Ⅰ"],"s":[["한문",17],["세계시민과 지리",50],["세계사",60],["중국어",60],["데이터 과학",61],["물리학",83],["지구과학",85],["화학",93],["일본어",109],["생명과학",110],["현대사회와 윤리",114],["사회와 문화",146]],"u":["과학과제 연구"]},"goe204558":{"g":180,"g1":236,"r":["문학","대수","영어Ⅰ","정보"],"s":[["지구과학",44],["미디어 영어",47],["세계사",47],["물리학",51],["화학",58],["생명과학",59],["인공지능 수학",62],["세계시민과 지리",63],["독서 토론과 글쓰기",71],["윤리와 사상",95],["사회와 문화",123]],"u":[]},"goe204562":{"g":255,"g1":261,"r":["문학","대수","영어Ⅰ"],"s":[["언어생활과 한자",38],["세계사",54],["한국지리 탐구",58],["지구과학",64],["중국어",71],["생명과학",103],["정보",104],["물리학",109],["화학",122],["사회와 문화",130],["현대사회와 윤리",133],["기술·가정",143],["일본어",146]],"u":[]},"goe204566":{"g":248,"g1":256,"r":["대수","영어Ⅰ","일본어"],"s":[["경제 수학",26],["중국어",33],["지구과학",44],["세계시민과 지리",58],["현대사회와 윤리",69],["세계사",71],["물리학",78],["생명과학",90],["화학",105],["문학",124],["사회와 문화",134]],"u":["세계 문제와 미래 사회"]}};
+function selOf(s){
+ if(s._sel!==undefined)return s._sel;
+ const d=SEL[s.id];
+ if(!d||!d.s.length){s._sel=null;return null;}
+ const list=d.s.map(([n,N])=>({n,N,one:Math.floor(N/10)}));
+ let T=0,O=0;list.forEach(x=>{T+=x.N;O+=x.one;});
+ s._sel={g:d.g,g1:d.g1,req:d.r,unk:d.u,list,T,O,rate:O/T*100,avgN:T/list.length,avgOne:O/list.length,
+  low:list.filter(x=>x.one<=3),zero:list.filter(x=>x.one===0),g1one:Math.floor(d.g1/10)};
+ return s._sel;
+}
+function selRange(){const r=SCH.map(selOf).filter(Boolean).map(x=>x.rate);return [Math.min(...r),Math.max(...r)];}
+function selHtml(s){
+ const sl=selOf(s);if(!sl)return '<span class="nodata">자료 없음</span>';
+ let h=`2학년 선택과목 실제 1등급 비율 <b>${sl.rate.toFixed(2)}%</b> <span class="sub">(1학년 공통과목은 ${sl.g1}명 중 ${sl.g1one}명, ${f1(sl.g1one/sl.g1*100)}%)</span>`;
+ h+=`<br><span class="sub">2026학년도 2학년 1학기 실측 · 2학년 ${sl.g}명 · 선택과목 ${sl.list.length}개 · 과목당 평균 ${Math.round(sl.avgN)}명 수강, 1등급 평균 ${f1(sl.avgOne)}명</span>`;
+ if(sl.low.length)h+=`<div style="margin-top:6px"><span class="tag o">1등급 3명 이하</span> <span class="sub">${sl.low.map(x=>x.n+' '+x.N+'명 → '+x.one+'명').join(' · ')}</span></div>`;
+ h+=`<details style="margin-top:8px"><summary>2학년 1학기 과목별 수강자·1등급 인원 전체 보기</summary><div><div class="scroll" style="margin-top:8px"><table><thead><tr><th class="l">과목</th><th>수강자</th><th>1등급</th><th>실제 비율</th></tr></thead><tbody>`+
+  sl.list.slice().sort((a,b)=>b.N-a.N).map(x=>`<tr><td class="l">${x.n}</td><td>${x.N}명</td><td class="${x.one<=3?'vwarn':''}">${x.one}명</td><td>${f1(x.one/x.N*100)}%</td></tr>`).join('')+
+  `</tbody></table></div><div class="sub" style="margin-top:6px">학년 전체가 듣는 과목(1등급 ${Math.floor(sl.g/10)}명): ${sl.req.join(' · ')||'-'}${sl.unk.length?'<br>분포가 한쪽으로 몰려 수강자 수를 역산할 수 없던 과목: '+sl.unk.join(' · '):''}</div></div></details>`;
+ return h;
+}
+
 /* ===== 점수 ===== */
 function scSize(s){
  const n=s.stu26[0], p=s.stu25[0];
@@ -469,6 +450,9 @@ function scSize(s){
  else if(n>=180)v=lin(n,180,200,60,76);
  else if(n>=160)v=lin(n,160,180,40,60);
  else v=clamp(40-(160-n)*0.55,8,40);
+ /* 규모 절반 + 2학년 선택과목 실제 1등급 비율 절반, 1등급 3명 이하 과목 1개당 1.5점(최대 9점) 감점 */
+ const sl=selOf(s);
+ if(sl){v=v*0.5+lin(sl.rate,9.0,9.9,40,100)*0.5;v-=Math.min(9,sl.low.length*1.5);}
  const tr=p?(n-p)/p:0;
  if(tr<=-0.08)v-=5;else if(tr<=-0.03)v-=2;else if(tr>=0.05)v+=2;
  const per=s.cls[0]?n/s.cls[0]:0;
@@ -585,7 +569,7 @@ function bandOf(p){
 const BANDS=['a','b','c','d','e'];
 const BANDLAB={a:'최상위권 (상위 4% 이내)',b:'상위권 (4~11%)',c:'중상위권 (11~23%)',
  d:'중위권 (23~40%)',e:'중하위권 (40% 초과)',none:'-'};
-const BANDG5={a:'5등급제 1등급이 나올 수 있는 구간',b:'5등급제 1~2등급 구간',
+const BANDG5={a:'5등급제 1등급이 나올 수 있는 구간 (공통과목 기준)',b:'5등급제 1~2등급 구간',
  c:'5등급제 2~3등급 구간',d:'5등급제 3등급 구간',e:'5등급제 3~4등급 구간',none:''};
 /* 중학교 성적은 고교 진학 후 그대로 유지되지 않습니다.
    아래 이동은 통계가 아니라 '한 구간 위/아래'라는 가정입니다. */
@@ -629,11 +613,9 @@ function evalSch(s,opt){
 function reasons(e,opt){
  const s=e.s,r=[];
  const n=s.stu26[0];
- if(n>=270)r.push(`1학년 ${n}명 — 선택과목 분반이 충분해 과목별 1등급 정원이 넉넉하게 나오는 규모`);
- else if(n>=240)r.push(`1학년 ${n}명 — 규모 안정권`);
- else if(n>=200)r.push(`1학년 ${n}명 — 보통 규모`);
- else if(n>=180)r.push(`1학년 ${n}명 — 권장선(180명) 경계`);
- else r.push(`1학년 ${n}명 — 권장선 미달, 소인수 분반 주의`);
+ const sz=n>=240?'규모 안정권':n>=200?'보통 규모':n>=180?'권장선(180명) 경계':'권장선 미달';
+ const sl=selOf(s);
+ r.push(`1학년 ${n}명 — ${sz}`+(sl?` · 2학년 선택과목 1등급 실측 ${sl.rate.toFixed(2)}%`:''));
  if(s.specM.length)r.push(`수학 전문교과 ${s.specM.join('·')} 개설`);
  if(s.specS.length)r.push(`과학 전문교과 ${s.specS.join('·')} 개설`);
  if(s.specE.length>=2)r.push(`영어 전문교과 ${s.specE.length}과목`);
@@ -653,7 +635,9 @@ function cautions(e,opt){
  const n=s.stu26[0],p=s.stu25[0];
  if(n<160)c.push(`1학년 ${n}명. 선택과목이 소인수로 쪼개져 과목별 1등급 인원이 1명 이하가 되는 구간이 생길 수 있습니다. 내신 변별이 불안정합니다.`);
  else if(n<180)c.push(`1학년 ${n}명으로 권장선(180명) 아래입니다. 소수 선택과목에서 등급 확보가 흔들릴 수 있습니다.`);
- if(p&&(n-p)/p<=-0.08)c.push(`1학년 인원이 전년 ${p}명에서 ${n}명으로 줄었습니다. 감소 추세가 이어지면 선택과목 분반 수도 함께 줄어듭니다.`);
+ if(p&&(n-p)/p<=-0.08)c.push(`1학년 인원이 전년 ${p}명에서 ${n}명으로 줄었습니다. 감소 추세가 이어지면 선택과목별 수강자 수도 함께 줄어듭니다.`);
+ const sl=selOf(s);
+ if(sl&&(sl.low.length>=3||sl.zero.length))c.push(`2학년 선택과목 중 ${sl.low.length}과목은 실제 수강자가 적어 1등급이 3명 이하였습니다(${sl.low.slice(0,4).map(x=>x.n+' '+x.N+'명 → 1등급 '+x.one+'명').join(', ')}${sl.low.length>4?' 외':''}). 이 과목을 고르면 1등급 자리가 매우 좁습니다.`);
  if(e.de==null)c.push(`성취도 자료가 없어 나머지 항목만으로 계산되었습니다. 다른 29개교는 성취도가 반영되어 있어, 이 학교의 종합 점수는 실제보다 높게 나올 수 있습니다.`);
  if(s.club&&!s.club.n&&s.club.skip)c.push(`${s.club.skip}.`);
  if(s.maxpick>=6)c.push(`한 선택군에서 택${s.maxpick}까지 고르게 되어 있어 과목이 넓게 흩어집니다. 소인수 과목 선택 시 등급 위험을 함께 보셔야 합니다.`);
@@ -741,7 +725,7 @@ function pctCalc(){
  if($('scnOut'))$('scnOut').innerHTML=
   `<div class="card" style="padding:13px"><h3 style="margin-top:0">진학 후 세 가지 경우</h3>`+
   `<div class="scroll"><table class="scn"><thead><tr><th class="l">가정</th><th class="l">고교 교내 위치</th><th class="l">내신 등급 구간</th></tr></thead><tbody>${rows}</tbody></table></div>`+
-  `<div class="sub" style="margin-top:9px">위아래 이동은 통계가 아니라 <b>구간 하나만큼 오르거나 내린다</b>고 본 가정입니다. 실제 변동 폭은 학생과 학교에 따라 크게 다릅니다. 그래서 이 프로그램은 어느 학생에게도 1등급을 보장한다고 말하지 않습니다. <b>세 경우에서 모두 점수가 크게 흔들리지 않는 학교</b>를 고르시는 편이 안전합니다.</div></div>`;
+  `<div class="sub" style="margin-top:9px">위아래 이동은 통계가 아니라 <b>구간 하나만큼 오르거나 내린다</b>고 본 가정입니다. 내신 등급 구간도 학년 전체가 함께 듣는 <b>공통과목 기준</b>입니다. 2학년 선택과목은 수강자가 나뉘어 1등급이 10%보다 적게 나오고, 물리학·화학·기하처럼 상위권이 몰리는 과목에서는 같은 학생도 한 단계 밀릴 수 있습니다. 실제 변동 폭은 학생과 학교에 따라 크게 다릅니다. 그래서 이 프로그램은 어느 학생에게도 1등급을 보장한다고 말하지 않습니다. <b>세 경우에서 모두 점수가 크게 흔들리지 않는 학교</b>를 고르시는 편이 안전합니다.</div></div>`;
  const useBand=bandShift(band,scnDir(ST.scn));
  return {p,band,useBand};
 }
@@ -786,6 +770,8 @@ function run(){
  {const tn=trNote(opt.track);
   if(tn)h+=`<div class="${tn.k==='weak'?'info':'warn'}">${tn.m}</div>`;}
  h+=`<h3>추천 학교 — 종합 점수 순${opt.gu.length?' · '+opt.gu.join('·'):''}</h3>`;
+ {const [a,b]=selRange();
+ h+=`<div class="info"><b>정원 규모 점수에는 2학년 선택과목의 실제 1등급 비율이 들어갑니다.</b> 1학년 공통과목은 학년 전체의 10%가 1등급이지만, 2학년부터는 과목마다 수강자가 나뉘고 10%에서 소수점 아래 인원이 잘립니다. 고양시 30개교의 2026학년도 2학년 1학기 실측으로 선택과목 1등급은 <b>${a.toFixed(1)}~${b.toFixed(1)}%</b>에 그쳤고, 수강자 30명대 과목은 1등급이 3명뿐입니다. 상위권이 몰리는 과목에서 경쟁이 더 치열해지는 효과는 점수에 넣지 못했습니다.</div>`;}
  if(opt.rawBand!=='none')h+=`<div class="info">각 카드의 <b>상승 시·유지 시·하락 시</b> 점수는 <b>그 상황에 놓인 학생에게 이 학교가 얼마나 맞는가</b>를 나타냅니다. 성적이 떨어지면 점수가 높아지는 학교가 있는데, 성적이 좋아진다는 뜻이 아니라 <b>정원이 커서 중하위권에게도 등급 확보 여지가 남는 학교</b>라는 뜻입니다. 지금 선택하신 가정은 <b>${SCN.find(x=>x[0]===opt.scn)[1].replace(' 시','')}</b>이며, 목록 순서는 그 가정으로 매겼습니다. <b>편차가 작은 학교</b>일수록 성적이 어느 쪽으로 움직여도 선택이 덜 흔들립니다.</div>`;
  if(opt.gu.length)h+=`<div class="okb">선택하신 통학 가능 지역 <b>${opt.gu.join('·')}</b>의 학교만 종합 점수가 높은 차례대로 늘어놓았습니다. 등수를 매긴 것이 아니라 점수 순서이며, 점수 차가 1점 안쪽이면 사실상 같은 수준으로 보셔야 합니다. 다른 구의 학교는 섞지 않고 아래에 따로 모았습니다.</div>`;
  ev.forEach((e,i)=>{h+=rankCard(e,i,opt);});
@@ -843,6 +829,7 @@ function renderTable(){
   return {s,e,nm:s.name,gu:s.gu,fnd:s.fnd,n1:s.stu26[0],cls:s.cls[0],
    per:s.cls[0]?Math.round(s.stu26[0]/s.cls[0]*10)/10:null,
    dn:s.stu26[0]-s.stu25[0],
+   g2r:selOf(s)?selOf(s).rate:null,g2low:selOf(s)?selOf(s).low.length:null,
    sm:s.specM.length,ss:s.specS.length,se:s.specE.length,
    adv:s.advN,nsub:s.nsub,g3:s.g3,
    fit:tr?Math.round(s.tr[tr]/s.trtot[tr]*100):Math.round(TRK.reduce((a,t)=>a+s.tr[t]/s.trtot[t],0)/TRK.length*100),
@@ -857,7 +844,7 @@ function renderTable(){
    tot:e.tot};
  });
  const cols=[['nm','학교','l'],['gu','지역',''],['fnd','설립',''],['n1','1학년',''],['cls','학급',''],
-  ['dn','전년대비',''],['de','D·E %',''],['ab','A·B %',''],['avgc','평균',''],['club','동아리',''],['adv','과학II',''],
+  ['dn','전년대비',''],['g2r','선택 1등급 %',''],['g2low','1등급 3명↓ 과목',''],['de','D·E %',''],['ab','A·B %',''],['avgc','평균',''],['club','동아리',''],['adv','과학II',''],
   ['sm','수학전문',''],['ss','과학전문',''],['se','영어전문',''],['nsub','선택과목',''],['g3','3학년',''],
   ['fit','계열적합 %',''],['tq','탐구형 과제 %',''],['pf','수행평가',''],
   ['etc','기타(재수) %',''],['uniP','대학 진학 %',''],['tot','종합','']];
@@ -880,6 +867,8 @@ function renderTable(){
    if(c[0]==='ab')return `<td class="${v>=48?'vgood':v<38?'vwarn':''}">${f1(v)}</td>`;
    if(c[0]==='tq')return `<td class="${v>=48?'vgood':v<40?'vwarn':''}">${f1(v)}</td>`;
    if(c[0]==='n1')return `<td class="${v<160?'vbad':v<180?'vwarn':''}">${v}</td>`;
+   if(c[0]==='g2r')return `<td class="${v>=9.6?'vgood':v<9.3?'vwarn':''}">${v.toFixed(2)}</td>`;
+   if(c[0]==='g2low')return `<td class="${v>=3?'vwarn':''}">${v}</td>`;
    return `<td>${typeof v==='number'?(Math.round(v*10)/10):v}</td>`;
   }).join('')+'</tr>';
  });
@@ -918,6 +907,7 @@ function cardOf(s,opt){
  h+=`<div class="sg">
   <b>종합</b><div class="sc ${e.tot>=80?'s1':e.tot>=70?'s2':e.tot>=60?'s3':'s4'}" style="font-size:18px">${f1(e.tot)} <span class="sub">(반영 항목 ${e.have}/5)</span></div>
   <b>학생수</b><div>1학년 ${s.stu26[0]}명 (${s.cls[0]}학급, 학급당 ${Math.round(s.stu26[0]/s.cls[0]*10)/10}명) · 2학년 ${s.stu26[1]} · 3학년 ${s.stu26[2]}<br><span class="sub">전년 1학년 ${s.stu25[0]}명 → ${s.stu26[0]}명 (${s.stu26[0]-s.stu25[0]>=0?'+':''}${s.stu26[0]-s.stu25[0]})</span></div>
+  <b>선택과목<br>1등급</b><div>${selHtml(s)}</div>
   <b>성취도</b><div>${(()=>{const a=s.ach;if(!a&&e.de==null)return '<span class="nodata">자료 없음 — 학교알리미 교과별 학업성취 사항 파일을 받아 넣어 주세요</span>';
     if(!a)return '직접 입력 D·E <b>'+f1(e.de)+'%</b>';
     let h=`<b>D·E ${f1(a.deCore)}%</b> · A·B ${f1(a.ab)}% <span class="sub">(5단계 평가 과목 ${a.nCore5}개 기준)</span>`;
@@ -977,6 +967,7 @@ function renderDetail(){
   const es=uniq.map(id=>evalSch(schById(id),opt));
   const rowsDef=[['종합',e=>f1(e.tot)],['1학년 인원',e=>e.s.stu26[0]+'명'],['학급수',e=>e.s.cls[0]],
    ['학급당',e=>Math.round(e.s.stu26[0]/e.s.cls[0]*10)/10+'명'],['전년 대비',e=>(e.s.stu26[0]-e.s.stu25[0]>=0?'+':'')+(e.s.stu26[0]-e.s.stu25[0])],
+   ['선택과목 1등급 비율',e=>{const x=selOf(e.s);return x?x.rate.toFixed(2)+'%':'-';}],['1등급 3명 이하 과목',e=>{const x=selOf(e.s);return x?x.low.length+'개':'-';}],
    ['D·E 합계',e=>e.de==null?'-':f1(e.de)+'%'],
    ['A·B 합계',e=>(e.s.ach&&e.s.ach.ab!=null)?f1(e.s.ach.ab)+'%':'-'],
    ['주요교과 D·E',e=>(e.s.ach&&e.s.ach.deMain!=null)?f1(e.s.ach.deMain)+'%':'-'],
@@ -991,7 +982,7 @@ function renderDetail(){
    ['수행평가 과제 수',e=>(e.s.pf&&e.s.pf.ns)?e.s.pf.ns.tot+'건':'-'],
    ['수행평가 점수',e=>e.parts.perf.v==null?'-':Math.round(e.parts.perf.v)],
    ['진로 점수',e=>e.parts.car.v==null?'-':Math.round(e.parts.car.v)]];
-  if(opt.track)rowsDef.splice(12,0,[opt.track+' 적합',e=>e.s.tr[opt.track]+'/'+e.s.trtot[opt.track]]);
+  if(opt.track)rowsDef.splice(14,0,[opt.track+' 적합',e=>e.s.tr[opt.track]+'/'+e.s.trtot[opt.track]]);
   h+='<div class="card"><h3 style="margin-top:0">비교표</h3><div class="scroll"><table><thead><tr><th>항목</th>'+
     es.map(e=>`<th>${e.s.name}</th>`).join('')+'</tr></thead><tbody>'+
     rowsDef.map(([l,f])=>`<tr><td class="l">${l}</td>`+es.map(e=>`<td>${f(e)}</td>`).join('')+'</tr>').join('')+
@@ -1135,10 +1126,10 @@ const CRIT=[
   bad:'D와 E 등급 합계가 30%를 넘으면 학업 수준이 낮아 내신이 평가 절하될 위험 구간으로 봅니다.',
   good:'15% 이하면 학업 수준이 보장된 학교로 봅니다.',
   how:'<b>30개교 실측값이 모두 들어가 있습니다.</b> 선생님이 받아 주신 교과별 학업성취 사항 파일을 과목별로 전부 집계했습니다(학교당 47~107개 과목).<br><br><b>집계에서 한 가지를 바로잡았습니다.</b> 3학년 진로·융합 선택 과목은 A·B·C 3단계로만 평가해 D와 E가 구조적으로 존재하지 않습니다. 이 과목까지 섞어 평균을 내면 3단계 과목이 많은 학교일수록 D·E가 낮게 나옵니다. 고양시 30개교의 5단계 평가 과목 수는 26개에서 37개까지 차이가 났고, 섞어 계산한 값과 5단계 과목만으로 계산한 값은 학교에 따라 19%p까지 벌어졌습니다. 가좌고는 섞으면 32.8%, 5단계 과목만 보면 51.7%입니다. 그래서 <b>5단계 평가 과목만으로 D·E를 계산</b>합니다. 섞어 계산한 값도 학교 상세에 함께 적어 두었습니다.<br><br><b>고양시 30개 일반고의 실제 분포는 32.0%에서 58.1%, 중앙값 44.0%입니다.</b> 영상이 말한 30%·15% 기준은 어떤 집계 방식인지 분명하지 않고, 5단계 과목 기준으로는 고양시에 30% 미만인 학교가 한 곳도 없습니다. 그래서 절대 기준을 그대로 쓰지 않고 실측 분포에 맞춰 28% 이하 100점, 36% 86점, 44% 68점, 50% 48점, 58% 27점으로 환산했습니다.<br><br>같은 방식으로 집계한 고양국제고는 3.0%, 고양외고는 5.7%였습니다. 특목고와 일반고의 차이를 보여 주는 값이자 집계가 제대로 작동한다는 확인입니다. A·B 합계도 함께 보여 드립니다. D·E가 하위권 비율이라면 A·B는 상위권 밀집도입니다.'},
- {t:'기준 5. 정원 규모 — 과목별 1등급 정원이 나오는가',
-  bad:'1학년 160명 미만이면 선택과목이 소인수로 쪼개져 1등급 확보가 매우 불안정해집니다.',
-  good:'180명 이상을 권장선으로 봅니다. 270명을 넘으면 선택과목 분반이 넉넉합니다. 다만 이것은 <b>학교의 조건</b>이지 특정 학생이 1등급을 받는다는 뜻이 아닙니다.',
-  how:'1학년 인원을 280명 이상 100점, 240명 90점, 200명 76점, 180명 60점, 160명 40점으로 환산하고 그 아래는 더 깎습니다. 여기에 전년 대비 신입생 증감(8% 이상 감소 시 감점), 학급당 인원이 20명 미만인 경우를 반영합니다. <b>이 자료는 보안문자가 없어 고양시 30개교 전부 자동 수집해 두었습니다.</b>'},
+ {t:'기준 5. 정원 규모 — 선택과목에서도 1등급 인원이 나오는가',
+  bad:'1학년 160명 미만이거나 선택과목이 잘게 흩어져 있으면 수강자 30명대 과목이 늘어나고, 그 과목은 1등급이 3명뿐입니다. 수강자 10명 미만 과목은 1등급이 아예 없습니다.',
+  good:'1학년 180명 이상을 권장선으로 봅니다. 등급은 분반이 아니라 <b>그 과목 수강자 전체</b>로 매기므로, 중요한 것은 학급 수가 아니라 과목당 수강자 수입니다. 2학년 선택과목의 실제 1등급 비율이 9.6% 이상이고 1등급 3명 이하 과목이 적으면 선택과목에서도 등급 확보 여지가 큰 학교로 봅니다. 다만 이것은 <b>학교의 조건</b>이지 특정 학생이 1등급을 받는다는 뜻이 아닙니다.',
+  how:'<b>1학년 공통과목은 학년 전체의 10%가 1등급이지만, 2학년 선택과목은 그보다 적게 나옵니다.</b> 과목마다 수강자가 나뉘고, 10%에서 소수점 아래 인원은 버리기 때문입니다(수강자 39명이면 1등급 3명, 7.7%). 학교알리미 2026년 교과별 학업성취 사항의 2학년 1학기 성취도 분포 비율에서 과목별 수강자 수를 역산해 30개교의 실제 1등급 인원을 셌습니다. 고양시 30개교의 선택과목 1등급 비율은 9.1%에서 9.8% 사이였습니다.<br><br><b>점수 계산.</b> 1학년 인원 환산값(280명 이상 100점, 240명 90점, 200명 76점, 180명 60점, 160명 40점)과 선택과목 실제 1등급 비율 환산값(9.0% 40점 ~ 9.9% 100점)을 절반씩 더하고, 1등급이 3명 이하인 선택과목 1개당 1.5점(최대 9점)을 뺍니다. 여기에 전년 대비 신입생 증감(8% 이상 감소 시 감점)과 학급당 인원 20명 미만을 반영합니다.<br><br><b>넣지 못한 것.</b> 물리학·화학·기하처럼 상위권이 몰리는 과목에서는 수강자 안에서의 경쟁이 더 치열해져 같은 학생도 등급이 밀릴 수 있습니다. 이 효과는 과목별 성적 분포만으로는 잴 수 없어 점수에 넣지 않았습니다.'},
 
  {t:'참고 자료. 정규동아리 편성 — 탐구 활동의 토대가 있는가',
   bad:'동아리가 취미·체육 위주로만 편성되어 있으면 교과 밖 탐구를 이어 갈 자리가 적습니다.',
@@ -1154,6 +1145,7 @@ function renderCrit(){
  <div class="sg">
   <b>대상</b><div>고양시 평준화 일반계 고등학교 30개교. 직업계고 5개교(경기영상과학고·고양고·신일비즈니스고·일산고·일산국제컨벤션고)와 특목고 3개교(고양국제고·고양외고·고양예고)는 제외했습니다. 백석고는 자율형 공립고 2.0이지만 평준화 배정 대상이라 포함했습니다.</div>
   <b>학생수</b><div>학교알리미 2026년 정시 2차(5월) 공시 '학년별·학급별 학생수'. 전년 비교는 2025년 같은 차수.</div>
+  <b>선택과목</b><div>학교알리미 2026년 '교과별 학업성취 사항'의 <b>2학년 1학기</b> 성취도 분포 비율에서 과목별 수강자 수를 역산했습니다. 비율이 소수 첫째 자리까지 공시되므로 분포를 정확히 재현하는 가장 작은 인원을 수강자로 잡았습니다. 학년 전체가 듣는 과목은 학생수 공시와 1~2명 차이로 일치했고, 역산한 수강자로 계산한 학생 1인당 이수 학점도 학교마다 27~30학점으로 맞아떨어졌습니다. 체육·예술 과목과 사회·과학 융합선택 9과목은 석차등급이 나오지 않아 뺐고, 분포가 한 등급에 몰려 인원을 정할 수 없는 과목(주로 실험 과목)도 뺐습니다. 지금 2학년은 5등급제 첫 학년이라 중3 학생이 앞으로 겪을 구조와 같습니다.</div>
   <b>교육과정</b><div>경기도교육청 학교별 교육과정 운영 현황 중 <b>2027학년도 입학생</b> 편제표. 30개교 모두 2027 자료가 확보되어 있습니다.</div>
   <b>성취도</b><div>학교알리미 2026년 '교과별 학업성취 사항'. 선생님이 직접 받아 주신 파일 33개를 집계했습니다. 일반계 30개교 전부 확보.</div>
   <b>동아리</b><div>학교알리미 2026년 '동아리 활동 현황' 공시 자료. 29개교에서 동아리명 목록을 확보했습니다. 공시 범위가 학교마다 달라 개수 자체를 비교하기는 어렵습니다.</div>
