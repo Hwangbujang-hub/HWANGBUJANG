@@ -341,8 +341,8 @@ details>div{padding:10px 15px 15px;background:var(--paper)}
 </div>
 
 <div class="card">
- <h3>직접 입력 — 수행평가·졸업생 진로</h3>
- <div class="sub" style="margin-bottom:10px">졸업생 진로 현황은 2025년 공시값이 30개교 모두 들어가 있습니다. 더 최근 값이나 학교에서 직접 받으신 값이 있으면 여기에 넣으시면 그 학교만 입력값이 우선합니다.</div>
+ <h3>직접 입력 — 수행평가·성취도</h3>
+ <div class="sub" style="margin-bottom:10px">평가계획이나 학교알리미 화면을 보고 직접 판단한 값을 넣으면 그 학교만 입력값이 내장값보다 우선합니다.</div>
  <div class="grid g2">
   <div>
    <label>수행평가 학술성 평가 (평가계획 PDF를 보고 판단)</label>
@@ -357,18 +357,6 @@ details>div{padding:10px 15px 15px;background:var(--paper)}
   <div>
    <label>성취도 D·E 합계 % — 파일 없이 화면에서 읽은 값을 직접 넣을 때</label>
    <input type="number" id="inDe" step="0.1" placeholder="예: 24.8">
-  </div>
-  <div>
-   <label>졸업생 기타(재수) 비율 %</label>
-   <input type="number" id="inEtc" step="0.1" placeholder="예: 32.5">
-  </div>
-  <div>
-   <label>전문대 진학 비율 %</label>
-   <input type="number" id="inJun" step="0.1" placeholder="예: 8.0">
-  </div>
-  <div>
-   <label>취업자 비율 %</label>
-   <input type="number" id="inJob" step="0.1" placeholder="예: 1.5">
   </div>
   <div style="grid-column:1/-1">
    <label>메모 (상담 때 쓸 내용)</label>
@@ -393,7 +381,7 @@ details>div{padding:10px 15px 15px;background:var(--paper)}
 
 <section id="s5">
 <h2>판단 기준 해설</h2>
-<div class="info">단순히 내신 따기 쉬운 학교가 아니라, 2028 대입 개편과 고교학점제에서 실제로 유리한 학교를 가리는 다섯 가지 기준입니다. 각 기준이 이 프로그램에서 어떻게 점수로 바뀌는지 함께 적었습니다.</div>
+<div class="info">단순히 내신 따기 쉬운 학교가 아니라, 2028 대입 개편과 고교학점제에서 실제로 유리한 학교를 가리는 네 가지 기준입니다. 각 기준이 이 프로그램에서 어떻게 점수로 바뀌는지 함께 적었습니다.</div>
 <div id="crit"></div>
 <h2>자료의 출처와 한계</h2>
 <div class="card" id="limits"></div>
@@ -538,29 +526,12 @@ function perfAuto(s){
  v-=(p.ns.rn||0)*1.2;
  return clamp(v,0,100);
 }
-/* 졸업생 진로 — 기타(재수) 비율은 보여 주는 값이고, 점수 반영은 약하게 잡는다.
-   재수 비율이 높다고 곧 좋은 학교라고 단정할 수 없기 때문이다. */
-function carOf(s,o){
- o=o||{};
- if(o.etc!=null&&o.etc!=='')
-  return {etc:+o.etc, low:(+(o.jun||0))+(+(o.job||0)), src:'직접 입력'};
- if(s&&s.car)
-  return {etc:s.car.etcP, low:s.car.colP+s.car.jobP, src:s.car.yr+'년 공시'};
- return null;
-}
-function scCareer(s,o){
- const c=carOf(s,o);
- if(!c)return null;
- let v=lin(c.etc,9,42,44,86);
- if(c.low>=40)v-=8;else if(c.low>=30)v-=4;
- return clamp(v,0,100);
-}
 
 const BASEW={
- balance:{size:21,curri:29,ach:27,perf:15,car:8},
- safe:   {size:31,curri:21,ach:28,perf:13,car:7},
- mood:   {size:15,curri:25,ach:35,perf:17,car:8},
- curri:  {size:15,curri:44,ach:23,perf:13,car:5}
+ balance:{size:23,curri:31,ach:30,perf:16},
+ safe:   {size:33,curri:23,ach:30,perf:14},
+ mood:   {size:16,curri:27,ach:38,perf:19},
+ curri:  {size:16,curri:46,ach:24,perf:14}
 };
 function bandOf(p){
  if(p==null)return 'none';
@@ -582,15 +553,23 @@ const SCN=[['up','상승 시',1],['keep','유지 시',0],['down','하락 시',-1
 function scnDir(k){const r=SCN.find(x=>x[0]===k);return r?r[2]:0;}
 function weights(pref,band){
  const w=Object.assign({},BASEW[pref]||BASEW.balance);
- const adj={a:{curri:7,ach:4,size:-8,perf:2,car:-3},
-            b:{curri:4,ach:3,size:-4,perf:1,car:-2},
+ const adj={a:{curri:7,ach:4,size:-8,perf:2},
+            b:{curri:4,ach:3,size:-4,perf:1},
             c:{},
-            d:{size:7,curri:-5,ach:-3,perf:2,car:-1},
-            e:{size:10,curri:-9,ach:-5,perf:4,car:0},
+            d:{size:7,curri:-5,ach:-3,perf:2},
+            e:{size:10,curri:-9,ach:-5,perf:4},
             none:{}}[band]||{};
  for(const k in adj)w[k]=Math.max(4,w[k]+adj[k]);
  return w;
 }
+/* ===== 자율형 공립고 내신 경쟁 보정 =====
+   면학 분위기를 보고 지원하는 학생이 모여, 같은 학생도 중학교 석차보다 교내 위치가 한 구간 낮아진다고 본다(현장 판단에 따른 가정, 통계 아님).
+   구간을 한 칸 내려 가중치를 다시 잡고, 등급 하나를 잃는 무게만큼 종합 점수에서 뺀다. 상위권일수록 등급 하나의 무게가 크다. */
+const COMP_RE=/자율형 공립고/;
+function isComp(s){return COMP_RE.test((s.kind||'')+' '+(s.type||''));}
+const COMP_PEN={a:8,b:7,c:5,d:4,e:3,none:5};
+const COMP_MUL={safe:1.3,balance:1,curri:0.8,mood:0.6};
+function compPen(s,opt){if(!isComp(s))return 0;return Math.round((COMP_PEN[opt.band]||COMP_PEN.none)*(COMP_MUL[opt.pref]||1)*10)/10;}
 function evalSch(s,opt){
  const o=ST.IN[s.id]||{};
  const de=deOf(s);
@@ -598,15 +577,17 @@ function evalSch(s,opt){
   size:{v:scSize(s),lab:'정원 규모',auto:true},
   curri:{v:scCurri(s,opt.track),lab:'교육과정 편성',auto:true},
   ach:{v:scAch(de),lab:'성취도 분포',auto:true},
-  perf:{v:(o.pf!=null&&o.pf!=='')?+o.pf:perfAuto(s),lab:'수행평가 학술성',auto:(o.pf==null||o.pf===''),man:(o.pf!=null&&o.pf!=='')},
-  car:{v:scCareer(s,o),lab:'졸업생 진로',auto:!(o.etc!=null&&o.etc!=='')}
+  perf:{v:(o.pf!=null&&o.pf!=='')?+o.pf:perfAuto(s),lab:'수행평가 학술성',auto:(o.pf==null||o.pf===''),man:(o.pf!=null&&o.pf!=='')}
  };
- if(opt.autoOnly){parts.perf.v=null;parts.car.v=null;}
- const w=weights(opt.pref,opt.band);
+ if(opt.autoOnly){parts.perf.v=null;}
+ const comp=isComp(s);
+ const bandHere=(comp&&opt.band&&opt.band!=='none')?bandShift(opt.band,-1):opt.band;
+ const w=weights(opt.pref,bandHere);
  let sw=0,acc=0,have=0;
  for(const k in parts){if(parts[k].v!=null){sw+=w[k];acc+=parts[k].v*w[k];have++;}}
- const tot=sw?acc/sw:0;
- return {s,parts,w,tot,have,de};
+ const pen=compPen(s,opt);
+ const tot=(sw?acc/sw:0)-pen;
+ return {s,parts,w,tot,have,de,comp,pen,bandHere};
 }
 
 /* ===== 근거 문장 ===== */
@@ -625,7 +606,6 @@ function reasons(e,opt){
   r.push(`${opt.track} 핵심과목 ${h}/${t}개 개설`);}
  r.push(`선택과목 총 ${s.nsub}종 · 3학년 ${s.g3}종`);
  if(e.de!=null)r.push(`성취도 D·E ${f1(e.de)}%${s.ach&&s.ach.ab!=null?' · A·B '+f1(s.ach.ab)+'%':''}`);
- if(s.car)r.push(`졸업생 기타(재수) ${f1(s.car.etcP)}% · 대학 ${f1(s.car.uniP)}%`);
  if(s.club&&s.club.n)r.push(`정규동아리 ${s.club.n}개`);
  if(s.pf&&s.pf.ns&&s.pf.ns.tot>=15)r.push(`수행평가 과제 ${s.pf.ns.tot}건 중 탐구형 ${f1(s.pf.ns.rp)}%`);
  return r;
@@ -633,6 +613,9 @@ function reasons(e,opt){
 function cautions(e,opt){
  const s=e.s,c=[];
  const n=s.stu26[0],p=s.stu25[0];
+ if(e.comp){const sh=opt.band&&opt.band!=='none'&&e.bandHere!==opt.band;
+  c.push(`<b>자율형 공립고 — 내신 경쟁 보정 적용.</b> 면학 분위기를 보고 지원하는 학생이 모이는 학교라 중학교 석차보다 교내 위치가 한 구간 낮아진다고 보고 계산했습니다`+
+   (sh?` (예상 위치 ${BANDLAB[opt.band]} → ${BANDLAB[e.bandHere]})`:(opt.band==='e'?' (이미 가장 낮은 구간이라 위치는 그대로 두었습니다)':''))+`. 종합 점수에서 ${f1(e.pen)}점을 뺐습니다.`);}
  if(n<160)c.push(`1학년 ${n}명. 선택과목이 소인수로 쪼개져 과목별 1등급 인원이 1명 이하가 되는 구간이 생길 수 있습니다. 내신 변별이 불안정합니다.`);
  else if(n<180)c.push(`1학년 ${n}명으로 권장선(180명) 아래입니다. 소수 선택과목에서 등급 확보가 흔들릴 수 있습니다.`);
  if(p&&(n-p)/p<=-0.08)c.push(`1학년 인원이 전년 ${p}명에서 ${n}명으로 줄었습니다. 감소 추세가 이어지면 선택과목별 수강자 수도 함께 줄어듭니다.`);
@@ -725,7 +708,7 @@ function pctCalc(){
  if($('scnOut'))$('scnOut').innerHTML=
   `<div class="card" style="padding:13px"><h3 style="margin-top:0">진학 후 세 가지 경우</h3>`+
   `<div class="scroll"><table class="scn"><thead><tr><th class="l">가정</th><th class="l">고교 교내 위치</th><th class="l">내신 등급 구간</th></tr></thead><tbody>${rows}</tbody></table></div>`+
-  `<div class="sub" style="margin-top:9px">위아래 이동은 통계가 아니라 <b>구간 하나만큼 오르거나 내린다</b>고 본 가정입니다. 내신 등급 구간도 학년 전체가 함께 듣는 <b>공통과목 기준</b>입니다. 2학년 선택과목은 수강자가 나뉘어 1등급이 10%보다 적게 나오고, 물리학·화학·기하처럼 상위권이 몰리는 과목에서는 같은 학생도 한 단계 밀릴 수 있습니다. 실제 변동 폭은 학생과 학교에 따라 크게 다릅니다. 그래서 이 프로그램은 어느 학생에게도 1등급을 보장한다고 말하지 않습니다. <b>세 경우에서 모두 점수가 크게 흔들리지 않는 학교</b>를 고르시는 편이 안전합니다.</div></div>`;
+  `<div class="sub" style="margin-top:9px">위아래 이동은 통계가 아니라 <b>구간 하나만큼 오르거나 내린다</b>고 본 가정입니다. 내신 등급 구간도 학년 전체가 함께 듣는 <b>공통과목 기준</b>입니다. 2학년 선택과목은 수강자가 나뉘어 1등급이 10%보다 적게 나오고, 물리학·화학·기하처럼 상위권이 몰리는 과목에서는 같은 학생도 한 단계 밀릴 수 있습니다. 자율형 공립고(백석고·저현고)는 이 표보다 <b>한 구간 더 낮은 위치</b>로 계산합니다. 실제 변동 폭은 학생과 학교에 따라 크게 다릅니다. 그래서 이 프로그램은 어느 학생에게도 1등급을 보장한다고 말하지 않습니다. <b>세 경우에서 모두 점수가 크게 흔들리지 않는 학교</b>를 고르시는 편이 안전합니다.</div></div>`;
  const useBand=bandShift(band,scnDir(ST.scn));
  return {p,band,useBand};
 }
@@ -757,14 +740,14 @@ function run(){
    return Math.max(...v)-Math.min(...v);}).sort((a,b)=>a-b);
   opt.spreadMed=sp.length?sp[Math.floor(sp.length/2)]:null;
  }
- const w=ev.length?ev[0].w:weights(opt.pref,opt.band);
+ const w=weights(opt.pref,opt.band);
  let h='<h2>2단계 — 분석 결과</h2>';
  if(opt.autoOnly){h+='<div class="info">자동 수집 자료(정원 규모·교육과정 편성)만으로 계산한 점수입니다. 30개교가 같은 조건으로 비교되므로 공정하지만, 성취도와 수행평가는 반영되지 않습니다.</div>';}
  else if(nDe>0&&nDe<list.length+(opt.onlyData?0:0)&&!opt.onlyData&&nDe<SCH.length){
   h+=`<div class="warn"><b>비교 조건이 학교마다 다릅니다.</b> 성취도 자료가 들어간 학교는 ${nDe}개교입니다. 자료를 넣은 학교는 성취도까지 채점에 들어가고, 넣지 않은 학교는 정원과 교육과정만으로 채점되어 상대적으로 높게 나올 수 있습니다. 공정하게 보시려면 위의 <b>성취도 자료가 들어간 학교끼리만 비교</b> 또는 <b>자동 수집 자료만으로 비교</b>를 켜 주세요.</div>`;
  }
  h+=`<div class="card"><h3>적용된 가중치</h3><div class="mini">`+
-   [['size','정원 규모'],['curri','교육과정 편성'],['ach','성취도 분포'],['perf','수행평가'],['car','졸업생 진로']]
+   [['size','정원 규모'],['curri','교육과정 편성'],['ach','성취도 분포'],['perf','수행평가']]
    .map(([k,l])=>`<div>${l} <b>${w[k]}</b></div>`).join('')+
    `</div><div class="sub" style="margin-top:8px">상위 백분율과 선택하신 우선순위에 따라 자동으로 조정된 값입니다. 자료가 없는 항목은 그 학교 계산에서 제외하고 남은 항목으로 다시 나눕니다.</div></div>`;
  {const tn=trNote(opt.track);
@@ -772,6 +755,8 @@ function run(){
  h+=`<h3>추천 학교 — 종합 점수 순${opt.gu.length?' · '+opt.gu.join('·'):''}</h3>`;
  {const [a,b]=selRange();
  h+=`<div class="info"><b>정원 규모 점수에는 2학년 선택과목의 실제 1등급 비율이 들어갑니다.</b> 1학년 공통과목은 학년 전체의 10%가 1등급이지만, 2학년부터는 과목마다 수강자가 나뉘고 10%에서 소수점 아래 인원이 잘립니다. 고양시 30개교의 2026학년도 2학년 1학기 실측으로 선택과목 1등급은 <b>${a.toFixed(1)}~${b.toFixed(1)}%</b>에 그쳤고, 수강자 30명대 과목은 1등급이 3명뿐입니다. 상위권이 몰리는 과목에서 경쟁이 더 치열해지는 효과는 점수에 넣지 못했습니다.</div>`;}
+ {const cs=ev.filter(e=>e.comp);
+  if(cs.length)h+=`<div class="info"><b>${cs.map(e=>e.s.name).join('·')}(자율형 공립고)에는 내신 경쟁 보정을 넣었습니다.</b> 교육과정이 일반계와 다르고 면학 분위기를 보고 지원하는 학생이 모이므로, 같은 학생도 중학교 석차보다 교내 위치가 한 구간 낮아진다고 보았습니다. 가중치를 낮아진 구간에 맞춰 다시 잡은 뒤, 등급 하나를 잃는 무게만큼 종합 점수에서 뺐습니다(지금 조건에서 −${f1(cs[0].pen)}점). 통계로 잰 값이 아니라 현장 판단에 따른 가정입니다.</div>`;}
  if(opt.rawBand!=='none')h+=`<div class="info">각 카드의 <b>상승 시·유지 시·하락 시</b> 점수는 <b>그 상황에 놓인 학생에게 이 학교가 얼마나 맞는가</b>를 나타냅니다. 성적이 떨어지면 점수가 높아지는 학교가 있는데, 성적이 좋아진다는 뜻이 아니라 <b>정원이 커서 중하위권에게도 등급 확보 여지가 남는 학교</b>라는 뜻입니다. 지금 선택하신 가정은 <b>${SCN.find(x=>x[0]===opt.scn)[1].replace(' 시','')}</b>이며, 목록 순서는 그 가정으로 매겼습니다. <b>편차가 작은 학교</b>일수록 성적이 어느 쪽으로 움직여도 선택이 덜 흔들립니다.</div>`;
  if(opt.gu.length)h+=`<div class="okb">선택하신 통학 가능 지역 <b>${opt.gu.join('·')}</b>의 학교만 종합 점수가 높은 차례대로 늘어놓았습니다. 등수를 매긴 것이 아니라 점수 순서이며, 점수 차가 1점 안쪽이면 사실상 같은 수준으로 보셔야 합니다. 다른 구의 학교는 섞지 않고 아래에 따로 모았습니다.</div>`;
  ev.forEach((e,i)=>{h+=rankCard(e,i,opt);});
@@ -808,10 +793,10 @@ function rankCard(e,i,opt,ref){
    `<span class="scnb ${cl}">${lb}</span></div>`;
  }
  return `<div class="rank ${cls}"><div class="body">
-   <div class="nm">${e.s.name} <span class="pill">${e.s.gu}</span> <span class="pill">${e.s.fnd}</span>${e.s.kind!=='일반고'?' <span class="pill">'+e.s.kind+'</span>':''}${ref?' <span class="pill">통학 지역 밖</span>':''} <span class="pill ${e.have>=4?'pg':'pn'}">반영 ${e.have}/5</span></div>
+   <div class="nm">${e.s.name} <span class="pill">${e.s.gu}</span> <span class="pill">${e.s.fnd}</span>${e.s.kind!=='일반고'?' <span class="pill">'+e.s.kind+'</span>':(e.comp?' <span class="pill">'+e.s.type+'</span>':'')}${e.comp?' <span class="tag o">내신 경쟁 보정 −'+f1(e.pen)+'</span>':''}${ref?' <span class="pill">통학 지역 밖</span>':''} <span class="pill ${e.have>=4?'pg':'pn'}">반영 ${e.have}/4</span></div>
    <div class="why">${rs.slice(0,4).join(' · ')}</div>
    <div class="mini">`+
-   ['size','curri','ach','perf','car'].map(k=>{const pv=e.parts[k];
+   ['size','curri','ach','perf'].map(k=>{const pv=e.parts[k];
      return `<div>${pv.lab} <b>${pv.v==null?'자료없음':Math.round(pv.v)}</b></div>`;}).join('')+
    `</div>${scnHtml}${cs.length?'<div class="warn" style="margin-top:8px">'+cs.map(x=>'· '+x).join('<br>')+'</div>':''}
    </div><div class="tot">${f1(e.tot)}</div></div>`;
@@ -839,15 +824,13 @@ function renderTable(){
    club:(s.club&&s.club.n)?s.club.n:null,
    tq:(s.pf&&s.pf.ns&&s.pf.ns.tot>=15)?s.pf.ns.rp:null,
    tn:(s.pf&&s.pf.ns)?s.pf.ns.tot:null,
-   etc:(o.etc==null||o.etc==='')?(s.car?s.car.etcP:null):+o.etc,
-   uniP:s.car?s.car.uniP:null,
    tot:e.tot};
  });
  const cols=[['nm','학교','l'],['gu','지역',''],['fnd','설립',''],['n1','1학년',''],['cls','학급',''],
   ['dn','전년대비',''],['g2r','선택 1등급 %',''],['g2low','1등급 3명↓ 과목',''],['de','D·E %',''],['ab','A·B %',''],['avgc','평균',''],['club','동아리',''],['adv','과학II',''],
   ['sm','수학전문',''],['ss','과학전문',''],['se','영어전문',''],['nsub','선택과목',''],['g3','3학년',''],
   ['fit','계열적합 %',''],['tq','탐구형 과제 %',''],['pf','수행평가',''],
-  ['etc','기타(재수) %',''],['uniP','대학 진학 %',''],['tot','종합','']];
+  ['tot','종합','']];
  rows.sort((a,b)=>{
   let x=a[sortKey],y=b[sortKey];
   if(x==null)x=-1e9;if(y==null)y=-1e9;
@@ -901,11 +884,11 @@ function curriBlock(s){
 function cardOf(s,opt){
  const e=evalSch(s,opt),o=ST.IN[s.id]||{};
  const rs=reasons(e,opt),cs=cautions(e,opt);
- let h=`<div class="card"><h3 style="margin-top:0">${s.full} <span class="pill">${s.gu}</span> <span class="pill">${s.fnd}</span> <span class="pill">${s.kind}</span></h3>`;
+ let h=`<div class="card"><h3 style="margin-top:0">${s.full} <span class="pill">${s.gu}</span> <span class="pill">${s.fnd}</span> <span class="pill">${isComp(s)&&s.kind==='일반고'?s.type:s.kind}</span></h3>`;
  h+=`<div class="sub" style="margin-bottom:8px">${s.slogan}</div>`;
  h+=`<div class="chips" style="margin-bottom:10px">${(s.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>`;
  h+=`<div class="sg">
-  <b>종합</b><div class="sc ${e.tot>=80?'s1':e.tot>=70?'s2':e.tot>=60?'s3':'s4'}" style="font-size:18px">${f1(e.tot)} <span class="sub">(반영 항목 ${e.have}/5)</span></div>
+  <b>종합</b><div class="sc ${e.tot>=80?'s1':e.tot>=70?'s2':e.tot>=60?'s3':'s4'}" style="font-size:18px">${f1(e.tot)} <span class="sub">(반영 항목 ${e.have}/4)</span>${e.comp?`<br><span class="tag o">내신 경쟁 보정 −${f1(e.pen)}</span> <span class="sub">자율형 공립고 — 교내 위치를 중학교 석차보다 한 구간 낮게 보고 계산</span>`:''}</div>
   <b>학생수</b><div>1학년 ${s.stu26[0]}명 (${s.cls[0]}학급, 학급당 ${Math.round(s.stu26[0]/s.cls[0]*10)/10}명) · 2학년 ${s.stu26[1]} · 3학년 ${s.stu26[2]}<br><span class="sub">전년 1학년 ${s.stu25[0]}명 → ${s.stu26[0]}명 (${s.stu26[0]-s.stu25[0]>=0?'+':''}${s.stu26[0]-s.stu25[0]})</span></div>
   <b>선택과목<br>1등급</b><div>${selHtml(s)}</div>
   <b>성취도</b><div>${(()=>{const a=s.ach;if(!a&&e.de==null)return '<span class="nodata">자료 없음 — 학교알리미 교과별 학업성취 사항 파일을 받아 넣어 주세요</span>';
@@ -916,12 +899,6 @@ function cardOf(s,opt){
     if(gs.length)h+=`<br><span class="sub">학년별 D·E ${gs.map(x=>x+'학년 '+f1(g[x].de)+'%').join(' · ')}</span>`;
     h+=`<br><span class="sub">3단계 평가 과목까지 모두 섞어 계산하면 ${f1(a.deDil)}%로 낮아집니다. 학교마다 3단계 과목 비중이 달라 이 값은 비교에 쓰지 않습니다.</span>`;
     return h;})()}</div>
-  <b>졸업생 진로</b><div>${(()=>{const c=s.car;const o=ST.IN[s.id]||{};
-    if(o.etc!=null&&o.etc!=='')return `직접 입력 기타(재수) <b>${f1(+o.etc)}%</b>`;
-    if(!c)return '<span class="nodata">자료 없음</span>';
-    return `기타(재수) <b>${f1(c.etcP)}%</b> · 대학 ${f1(c.uniP)}% · 전문대학 ${f1(c.colP)}% · 취업 ${f1(c.jobP)}%`+
-     `<br><span class="sub">${c.yr}년 공시(4차, ${c.yr}년 11월) 기준 · 졸업자 ${c.grad}명 중 진학 ${c.adv}명 · 취업 ${c.job}명 · 기타 ${c.etc}명</span>`+
-     `<br><span class="sub">기타는 재수·입대·미정을 모두 포함합니다. 재수 비율이 높다고 곧 좋은 학교라고 볼 수는 없어 종합 점수에는 작게만 반영합니다.</span>`;})()}</div>
   <b>동아리</b><div>${(()=>{const c=s.club;
     if(!c||!c.n)return '<span class="nodata">'+((c&&c.skip)||'공시 자료 미확보')+'</span>';
     let h=`정규동아리 <b>${c.n}개</b> <span class="sub">(이름으로 성격 판별 가능 ${f1(c.cls)}%)</span>`;
@@ -972,7 +949,6 @@ function renderDetail(){
    ['A·B 합계',e=>(e.s.ach&&e.s.ach.ab!=null)?f1(e.s.ach.ab)+'%':'-'],
    ['주요교과 D·E',e=>(e.s.ach&&e.s.ach.deMain!=null)?f1(e.s.ach.deMain)+'%':'-'],
    ['전 과목 평균',e=>(e.s.ach&&e.s.ach.avgCore!=null)?f1(e.s.ach.avgCore)+'점':'-'],
-   ['기타(재수) %',e=>e.s.car?f1(e.s.car.etcP)+'%':'-'],['대학 진학 %',e=>e.s.car?f1(e.s.car.uniP)+'%':'-'],
    ['정규동아리 수',e=>(e.s.club&&e.s.club.n)?e.s.club.n+'개':'-'],['과학 진로선택',e=>e.s.advN+'과목'],
    ['수학 전문교과',e=>e.s.specM.join('·')||'-'],['과학 전문교과',e=>e.s.specS.join('·')||'-'],
    ['영어 전문교과',e=>e.s.specE.length+'과목'],['선택과목 수',e=>e.s.nsub+'종'],['3학년 선택',e=>e.s.g3+'종'],
@@ -980,9 +956,8 @@ function renderDetail(){
    ['성취도 점수',e=>e.parts.ach.v==null?'-':Math.round(e.parts.ach.v)],
    ['탐구형 과제 비율',e=>(e.s.pf&&e.s.pf.ns&&e.s.pf.ns.rp!=null)?f1(e.s.pf.ns.rp)+'%':'-'],
    ['수행평가 과제 수',e=>(e.s.pf&&e.s.pf.ns)?e.s.pf.ns.tot+'건':'-'],
-   ['수행평가 점수',e=>e.parts.perf.v==null?'-':Math.round(e.parts.perf.v)],
-   ['진로 점수',e=>e.parts.car.v==null?'-':Math.round(e.parts.car.v)]];
-  if(opt.track)rowsDef.splice(14,0,[opt.track+' 적합',e=>e.s.tr[opt.track]+'/'+e.s.trtot[opt.track]]);
+   ['수행평가 점수',e=>e.parts.perf.v==null?'-':Math.round(e.parts.perf.v)]];
+  if(opt.track)rowsDef.splice(12,0,[opt.track+' 적합',e=>e.s.tr[opt.track]+'/'+e.s.trtot[opt.track]]);
   h+='<div class="card"><h3 style="margin-top:0">비교표</h3><div class="scroll"><table><thead><tr><th>항목</th>'+
     es.map(e=>`<th>${e.s.name}</th>`).join('')+'</tr></thead><tbody>'+
     rowsDef.map(([l,f])=>`<tr><td class="l">${l}</td>`+es.map(e=>`<td>${f(e)}</td>`).join('')+'</tr>').join('')+
@@ -1077,21 +1052,20 @@ function handleFiles(fs){
 function saveIn(){
  const id=$('upSch').value;if(!id)return;
  const o=ST.IN[id]||{};
- o.pf=$('inPf').value;o.etc=$('inEtc').value;o.jun=$('inJun').value;o.job=$('inJob').value;o.memo=$('inMemo').value;
+ o.pf=$('inPf').value;o.memo=$('inMemo').value;
  o.deManual=$('inDe').value;
  ST.IN[id]=o;save();
  $('upMsg').innerHTML='<div class="okb">저장했습니다.</div>';renderUp();
 }
 function renderUp(){
  const id=$('upSch').value,o=ST.IN[id]||{};
- $('inPf').value=o.pf||'';$('inEtc').value=o.etc||'';$('inJun').value=o.jun||'';$('inDe').value=o.deManual||'';
- $('inJob').value=o.job||'';$('inMemo').value=o.memo||'';
- let h='<div class="scroll"><table><thead><tr><th>학교</th><th>표 전체 D·E %</th><th>체육예술 제외 %</th><th>1학년 공통 %</th><th>1학년 평균</th><th>수행평가</th><th>기타 %</th><th>파일</th></tr></thead><tbody>';
+ $('inPf').value=o.pf||'';$('inDe').value=o.deManual||'';$('inMemo').value=o.memo||'';
+ let h='<div class="scroll"><table><thead><tr><th>학교</th><th>표 전체 D·E %</th><th>체육예술 제외 %</th><th>1학년 공통 %</th><th>1학년 평균</th><th>수행평가</th><th>파일</th></tr></thead><tbody>';
  let cnt=0;
  SCH.forEach(s=>{
   const v=ST.IN[s.id];if(!v)return;cnt++;
   h+=`<tr><td class="l">${s.name}</td><td>${v.deRaw==null?'-':f1(v.deRaw)}</td><td>${v.deCore==null?'-':f1(v.deCore)}</td><td>${v.deG1==null?'-':f1(v.deG1)}</td>
-   <td>${v.avg==null?'-':f1(v.avg)}</td><td>${v.pf||'-'}</td><td>${v.etc||'-'}</td><td class="l sub">${v.achFile||'-'}</td></tr>`;
+   <td>${v.avg==null?'-':f1(v.avg)}</td><td>${v.pf||'-'}</td><td class="l sub">${v.achFile||'-'}</td></tr>`;
  });
  h+='</tbody></table></div>';
  $('upList').innerHTML=cnt?`<div class="sub" style="margin-bottom:6px">자료가 들어간 학교 ${cnt}개 / 30개</div>`+h
@@ -1114,19 +1088,15 @@ const CRIT=[
   bad:'수학 글쓰기, 스크랩, 요약, 감상문처럼 학술적 깊이가 없고 단순 과제 중심이면 학교 수준이 낮다는 신호로 봅니다.',
   good:'실험 탐구, 데이터 분석 발표, 자유주제 학술 탐구처럼 학생의 학술 역량을 요구하는 활동이 들어 있어야 세특이 살아납니다.',
   how:'<b>30개교의 평가계획 본문을 전부 읽어 자동 분석해 두었습니다.</b> 학교알리미에 올라온 교과별 교수·학습 및 평가 운영 계획 파일(PDF·한글·한글 압축본 포함) 전 과목·전 학년분을 받아, 학교당 3만~340만 자를 추출했습니다. 거기서 수행평가 과제명을 뽑아 <b>탐구형 과제의 비율</b>을 계산합니다. 탐구형은 실험·탐구·데이터·분석·설계·프로젝트·논증·논술·토론·포트폴리오·가설·모델링·보고서·시뮬레이션 등을 포함한 과제, 단순과제형은 스크랩·요약·감상문·암기·학습지·퀴즈·필사 등을 포함한 과제로 봅니다. 문서 분량이 학교마다 10배 넘게 차이 나므로 <b>키워드 등장 횟수는 쓰지 않고 과제명 기준 비율만</b> 점수로 환산했습니다. 과제명이 15건 미만으로 추출된 학교는 자동 판정을 하지 않고 비워 둡니다. 자료 입력 탭에서 직접 판정을 넣으면 자동값을 덮어씁니다. 학교별 과제명 전체 목록은 학교 상세 화면에서 보실 수 있습니다.'},
- {t:'기준 2. 졸업생 진로 현황 — 면학 분위기의 간접 지표',
-  bad:'취업자가 많고 전문대 진학 비율이 지나치게 높으면 면학 분위기가 느슨할 수 있습니다.',
-  good:'기타(재수) 비율이 30%를 넘으면 상위권이 재도전할 만큼 목표가 높고 경쟁이 치열한 학교로 봅니다.',
-  how:'<b>30개교 실측값이 모두 들어갔습니다.</b> 학교알리미 학교정보의 13-다 졸업생의 진로 현황을 <b>2025년 공시(4차, 2025년 11월)</b>로 받았습니다. 2025년 2월 졸업생이 대상입니다.<br><br><b>앞서 이 항목을 비워 둔 것은 제 확인이 부족했기 때문입니다.</b> 공시 조회 쪽 경로만 보고 2026년으로 조회해 \'데이터 없음\'을 받았는데, 이 항목은 11월 4차 공시라 2026년분이 아직 올라오지 않았을 뿐이고 2025년을 고르면 자료가 나옵니다. 선생님이 받는 과정을 보여 주신 덕에 바로잡았습니다.<br><br><b>고양시 30개교의 기타 비율은 9.1%에서 42.1%, 중앙값 27.9%입니다.</b> 영상이 말한 30% 기준을 넘는 학교가 12곳입니다. 가장 높은 곳은 일산대진고 42.1%, 저현고 38.9%, 정발고 37.0%이고, 가장 낮은 곳은 신원고 9.1%, 성사고 16.4%, 서정고 17.5%입니다.<br><br><b>점수에는 작게만 반영합니다.</b> 기타 비율 9%를 44점, 42%를 86점으로 완만하게 환산하고, 전문대와 취업 비율 합계가 30%·40%를 넘을 때 4점·8점을 깎습니다. 가중치도 다른 항목보다 낮게(균형 기준 100 중 8) 잡았습니다. 이유는 분명합니다. <b>기타 항목은 재수생만 세는 칸이 아닙니다.</b> 입대, 진로 미정, 자료 미제출이 모두 여기 들어갑니다. 재수 비율이 높다는 것이 상위권의 재도전을 뜻할 수도 있지만, 진학 실적이 좋지 않아 어쩔 수 없이 남은 경우일 수도 있습니다. 공시 숫자만으로는 둘을 가릴 수 없습니다. 그래서 <b>수치는 그대로 보여 드리되 순위를 좌우하지 않게</b> 두었습니다. 상담에서는 그 학교의 실제 대입 실적과 함께 보셔야 합니다.<br><br>눈에 띄는 값도 함께 적어 둡니다. 능곡고는 전문대학 34.6%로 대학교 28.9%보다 높고, 신원고는 취업 15.0%, 백석고는 14.4%입니다. 전문대와 취업 비율이 높은 학교는 학생 구성이 다를 수 있으니 숫자 하나로 판단하지 마시고 학교에 직접 확인하시는 쪽이 정확합니다.'},
- {t:'기준 3. 교육과정 편성표 — 과목이 제때, 깊게 열리는가',
+ {t:'기준 2. 교육과정 편성표 — 과목이 제때, 깊게 열리는가',
   bad:'물리학 같은 주요 과목이 3학년 1학기로 밀려 있으면 학습 수준이나 분위기가 낮게 평가받을 수 있습니다.',
   good:'2학년 1학기 정상 개설이 표준이고, 1학년 2학기에 선행 개설하거나 전문 교과까지 갖춘 학교는 수준 높은 학생을 전제로 설계한 경우가 많습니다.',
   how:'<b>고양시 30개교를 전수 확인한 결과, 물리학·화학·생명과학·지구과학 네 과목이 모두 2학년 1학기에 개설되어 있었습니다.</b> 즉 이 기준만으로는 고양시 안에서 학교가 갈리지 않습니다. 평준화 지역이라 표준 편제를 공유하기 때문입니다. 그래서 변별력이 실제로 있는 지표로 바꾸어 점수화했습니다. 과학 진로선택 8과목(역학과 에너지·전자기와 양자·물질과 에너지·화학 반응의 세계·세포와 물질대사·생물의 유전·지구시스템과학·행성우주과학) 개설 수, <b>수학·과학·영어 전문교과 보유</b>(전문 수학, 고급 대수, 고급 미적분, 고급 수학Ⅰ, 화학 실험, 생명과학 실험, 물리학 실험, 과학과제 연구, 심화 영어 독해와 작문 등), 선택과목 총 종수, 3학년 선택과목 종수, 희망 계열 핵심과목 개설률을 합산합니다.<br><br><b>계열별로 이 항목의 힘이 다릅니다.</b> 30개교의 핵심과목 개설 수를 세어 보면 이렇습니다. <b>자연과학은 기준 14과목 중 10~13과목(중앙 12과목)</b>으로 거의 모든 학교가 비슷하게 엽니다. 자연계 지망이라면 이 항목에서 학교가 갈리지 않으니 정원 규모와 성취도 분포를 먼저 보셔야 합니다. <b>예체능은 기준 10과목 중 1~6과목(중앙 4과목)</b>으로, 열리는 과목 자체가 적습니다. 백마고는 스포츠 과학 한 과목뿐입니다. 모수가 작아 한두 과목 차이로 점수가 크게 흔들리고, 예체능 진학은 실기와 교외 활동 비중이 커서 교육과정만으로 학교를 고르기 어렵습니다. 그래서 희망 계열로 자연과학이나 예체능을 고르시면 <b>추천 목록 위에 이 내용을 띄웁니다</b>. 나머지 계열은 의약·생명 6~9과목, 공학·IT 5~10과목, 인문·어문 4~11과목, 사회·경영 7~12과목, 사범·교육 3~6과목으로 학교 사이에 쓸 만한 차이가 있습니다. 이 경고는 고정 문구가 아니라 <b>자료에서 그때그때 계산</b>하므로, 편제표를 갱신하면 경고가 붙는 계열도 바뀝니다.'},
- {t:'기준 4. 성취도별 분포 비율 — 내신이 평가 절하되지 않는가',
+ {t:'기준 3. 성취도별 분포 비율 — 내신이 평가 절하되지 않는가',
   bad:'D와 E 등급 합계가 30%를 넘으면 학업 수준이 낮아 내신이 평가 절하될 위험 구간으로 봅니다.',
   good:'15% 이하면 학업 수준이 보장된 학교로 봅니다.',
   how:'<b>30개교 실측값이 모두 들어가 있습니다.</b> 선생님이 받아 주신 교과별 학업성취 사항 파일을 과목별로 전부 집계했습니다(학교당 47~107개 과목).<br><br><b>집계에서 한 가지를 바로잡았습니다.</b> 3학년 진로·융합 선택 과목은 A·B·C 3단계로만 평가해 D와 E가 구조적으로 존재하지 않습니다. 이 과목까지 섞어 평균을 내면 3단계 과목이 많은 학교일수록 D·E가 낮게 나옵니다. 고양시 30개교의 5단계 평가 과목 수는 26개에서 37개까지 차이가 났고, 섞어 계산한 값과 5단계 과목만으로 계산한 값은 학교에 따라 19%p까지 벌어졌습니다. 가좌고는 섞으면 32.8%, 5단계 과목만 보면 51.7%입니다. 그래서 <b>5단계 평가 과목만으로 D·E를 계산</b>합니다. 섞어 계산한 값도 학교 상세에 함께 적어 두었습니다.<br><br><b>고양시 30개 일반고의 실제 분포는 32.0%에서 58.1%, 중앙값 44.0%입니다.</b> 영상이 말한 30%·15% 기준은 어떤 집계 방식인지 분명하지 않고, 5단계 과목 기준으로는 고양시에 30% 미만인 학교가 한 곳도 없습니다. 그래서 절대 기준을 그대로 쓰지 않고 실측 분포에 맞춰 28% 이하 100점, 36% 86점, 44% 68점, 50% 48점, 58% 27점으로 환산했습니다.<br><br>같은 방식으로 집계한 고양국제고는 3.0%, 고양외고는 5.7%였습니다. 특목고와 일반고의 차이를 보여 주는 값이자 집계가 제대로 작동한다는 확인입니다. A·B 합계도 함께 보여 드립니다. D·E가 하위권 비율이라면 A·B는 상위권 밀집도입니다.'},
- {t:'기준 5. 정원 규모 — 선택과목에서도 1등급 인원이 나오는가',
+ {t:'기준 4. 정원 규모 — 선택과목에서도 1등급 인원이 나오는가',
   bad:'1학년 160명 미만이거나 선택과목이 잘게 흩어져 있으면 수강자 30명대 과목이 늘어나고, 그 과목은 1등급이 3명뿐입니다. 수강자 10명 미만 과목은 1등급이 아예 없습니다.',
   good:'1학년 180명 이상을 권장선으로 봅니다. 등급은 분반이 아니라 <b>그 과목 수강자 전체</b>로 매기므로, 중요한 것은 학급 수가 아니라 과목당 수강자 수입니다. 2학년 선택과목의 실제 1등급 비율이 9.6% 이상이고 1등급 3명 이하 과목이 적으면 선택과목에서도 등급 확보 여지가 큰 학교로 봅니다. 다만 이것은 <b>학교의 조건</b>이지 특정 학생이 1등급을 받는다는 뜻이 아닙니다.',
   how:'<b>1학년 공통과목은 학년 전체의 10%가 1등급이지만, 2학년 선택과목은 그보다 적게 나옵니다.</b> 과목마다 수강자가 나뉘고, 10%에서 소수점 아래 인원은 버리기 때문입니다(수강자 39명이면 1등급 3명, 7.7%). 학교알리미 2026년 교과별 학업성취 사항의 2학년 1학기 성취도 분포 비율에서 과목별 수강자 수를 역산해 30개교의 실제 1등급 인원을 셌습니다. 고양시 30개교의 선택과목 1등급 비율은 9.1%에서 9.8% 사이였습니다.<br><br><b>점수 계산.</b> 1학년 인원 환산값(280명 이상 100점, 240명 90점, 200명 76점, 180명 60점, 160명 40점)과 선택과목 실제 1등급 비율 환산값(9.0% 40점 ~ 9.9% 100점)을 절반씩 더하고, 1등급이 3명 이하인 선택과목 1개당 1.5점(최대 9점)을 뺍니다. 여기에 전년 대비 신입생 증감(8% 이상 감소 시 감점)과 학급당 인원 20명 미만을 반영합니다.<br><br><b>넣지 못한 것.</b> 물리학·화학·기하처럼 상위권이 몰리는 과목에서는 수강자 안에서의 경쟁이 더 치열해져 같은 학생도 등급이 밀릴 수 있습니다. 이 효과는 과목별 성적 분포만으로는 잴 수 없어 점수에 넣지 않았습니다.'},
@@ -1149,7 +1119,7 @@ function renderCrit(){
   <b>교육과정</b><div>경기도교육청 학교별 교육과정 운영 현황 중 <b>2027학년도 입학생</b> 편제표. 30개교 모두 2027 자료가 확보되어 있습니다.</div>
   <b>성취도</b><div>학교알리미 2026년 '교과별 학업성취 사항'. 선생님이 직접 받아 주신 파일 33개를 집계했습니다. 일반계 30개교 전부 확보.</div>
   <b>동아리</b><div>학교알리미 2026년 '동아리 활동 현황' 공시 자료. 29개교에서 동아리명 목록을 확보했습니다. 공시 범위가 학교마다 달라 개수 자체를 비교하기는 어렵습니다.</div>
-  <b>진로</b><div>학교알리미 2025년 공시(4차, 2025년 11월) '졸업생의 진로 현황'. 30개교 전부 확보했습니다. 2025년 2월 졸업생이 대상이라 지금 입학하는 학생과는 3년 차이가 납니다. 직접 입력란에 값을 넣으면 그 학교만 입력값이 우선합니다.</div>
+  <b>자율형<br>공립고</b><div>백석고·저현고는 자율형 공립고 2.0으로 교육과정이 일반계와 다르고, 면학 분위기를 보고 지원하는 학생이 모입니다. 그래서 같은 학생도 중학교 석차보다 교내 위치가 <b>한 구간 낮아진다</b>고 보고 가중치를 다시 잡습니다. 이어서 등급 하나를 잃는 무게만큼 종합 점수에서 뺍니다. 감점은 중학교 위치에 따라 최상위권 8점, 상위권 7점, 중상위권 5점, 중위권 4점, 중하위권 3점(성적 미입력 시 5점)이고, 우선순위가 내신 안정이면 1.3배, 교육과정 폭이면 0.8배, 면학 분위기면 0.6배로 조정합니다. 통계로 측정한 값이 아니라 현장 판단에 따른 가정입니다.</div>
   <b>합격선</b><div>평준화 지역은 추첨 배정이라 합격선 개념이 없습니다. 입력한 상위 백분율은 <b>배정 후 교내에서의 예상 위치</b>를 가늠하는 용도로만 씁니다.</div>
   <b>성적 변동</b><div>중학교 석차는 고등학교에서 그대로 이어지지 않습니다. 그래서 이 프로그램은 어떤 학생에게도 1등급을 보장한다고 말하지 않고, <b>상승 시·유지 시·하락 시</b> 세 경우로 나누어 가중치를 다시 잡고 점수를 각각 보여 줍니다. 세 경우의 이동 폭은 <b>구간 하나만큼</b>이라는 가정이며 통계로 측정한 값이 아닙니다. 실제 변동 폭은 학생과 학교에 따라 크게 다릅니다. 추천 목록은 등수가 아니라 종합 점수 순서이고, 점수 차가 1점 안쪽이면 사실상 같은 수준으로 보셔야 합니다. 세 경우에서 점수 편차가 작은 학교일수록 성적이 어느 쪽으로 움직여도 선택이 덜 흔들립니다.</div>
   <b>주의</b><div>이 점수는 공시 자료로 계산한 참고값입니다. 학교 분위기, 교사 구성, 통학 여건, 학생 성향처럼 숫자로 잡히지 않는 요소가 실제 결과를 더 크게 좌우합니다. 최종 판단은 상담에서 하셔야 합니다.</div>
